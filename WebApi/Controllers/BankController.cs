@@ -16,9 +16,7 @@ public class BankController : BaseApiController
     [HttpPost]
     public async Task<IActionResult> Create([FromBody] CreateBankModel request)
     {
-        await _repository.Add(request);
-
-        return Ok();
+        return Ok(await _repository.Add(request));
     }
 
     [HttpGet("{id}")]
@@ -26,5 +24,24 @@ public class BankController : BaseApiController
     {
         var bank = await _repository.GetById(id);
         return Ok(bank);
+    }
+
+    [HttpPut]
+    public async Task<IActionResult> Update([FromBody] UpdateBankModel request)
+    {
+        return Ok(await _repository.Update(request));
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> Delete([FromRoute] int id)
+    {
+        return Ok(await _repository.Delete(id));
+    }
+
+    [HttpGet("all")]
+    public async Task<IActionResult> GetAll()
+    {
+        var banks = await _repository.GetAll();
+        return Ok(banks);
     }
 }

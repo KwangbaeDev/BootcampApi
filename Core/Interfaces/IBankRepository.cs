@@ -4,10 +4,9 @@ namespace Core.Interfaces;
 
 public interface IBankRepository
 {
-    Task Add(CreateBankModel model);
+    Task<BankDTO> Add(CreateBankModel model);
     Task<BankDTO> GetById(int id);
-    //update
-    //Delete
-    //GetById
-    //GetAll
+    Task<BankDTO> Update(UpdateBankModel model);
+    Task<bool> Delete(int id);
+    Task<List<BankDTO>> GetAll();
 }
