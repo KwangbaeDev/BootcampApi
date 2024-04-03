@@ -1,4 +1,4 @@
-﻿using Core.Interfaces;
+﻿using Core.Interfaces.Repositories;
 using Core.Models;
 using Infrastructure.Contexts;
 using Infrastructure.Entities;
@@ -86,6 +86,11 @@ public class BankRepository : IBankRepository
         };
 
         return bankDTO;
+    }
+
+    public async Task<bool> NameIsAlreadyTaken(string name)
+    {
+        return await _context.Bancos.AnyAsync(bank => bank.Nombre == name);
     }
 
     public async Task<BankDTO> Update(UpdateBankModel model)

@@ -1,6 +1,8 @@
-﻿using Core.Interfaces;
+﻿using Core.Interfaces.Repositories;
+using Core.Interfaces.Services;
 using Infrastructure.Contexts;
 using Infrastructure.Repositories;
+using Infrastructure.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,6 +15,7 @@ public static class DependencyInjection
     {
         services.AddDatabase(configuration);
         services.AddRepositories();
+        services.AddServices();
 
         return services;
     }
@@ -32,6 +35,13 @@ public static class DependencyInjection
     public static IServiceCollection AddRepositories(this IServiceCollection services)
     {
         services.AddScoped<IBankRepository, BankRepository>();
+
+        return services;
+    }
+
+    public static IServiceCollection AddServices(this IServiceCollection services)
+    {
+        services.AddScoped<IBankService, BankService>();
 
         return services;
     }
