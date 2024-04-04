@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using Core.Entities;
+using Infrastructure.Configurations;
 using Infrastructure.Entities;
 using Microsoft.EntityFrameworkCore;
 
@@ -16,20 +18,22 @@ public partial class BootcampContext : DbContext
     {
     }
 
-    public virtual DbSet<Banco> Bancos { get; set; }
+    public virtual DbSet<Bank> Banks { get; set; }
 
-    public virtual DbSet<CajaAhorro> CajaAhorros { get; set; }
+    public virtual DbSet<SavingAccount> SavingAccounts { get; set; }
 
-    public virtual DbSet<Cliente> Clientes { get; set; }
+    public virtual DbSet<Customer> Customers { get; set; }
 
-    public virtual DbSet<Cuenta> Cuentas { get; set; }
+    public virtual DbSet<Account> Accounts { get; set; }
 
-    public virtual DbSet<CuentaCorriente> CuentaCorrientes { get; set; }
+    public virtual DbSet<CurrentAccount> CurrentAccounts { get; set; }
 
-    public virtual DbSet<Movimientos> Movimientos { get; set; }
+    public virtual DbSet<Movement> Movements { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
+        modelBuilder.ApplyConfiguration(new AccountConfiguration());
+
         modelBuilder.Entity<Banco>(entity =>
         {
             entity.ToTable("Banco");
@@ -74,21 +78,6 @@ public partial class BootcampContext : DbContext
                 .HasConstraintName("Cliente_BancoId_fkey");
         });
 
-        modelBuilder.Entity<Cuenta>(entity =>
-        {
-            entity.HasKey(e => e.Id).HasName("Cuenta_pkey");
-
-            entity.Property(e => e.NumeroCuenta).HasMaxLength(100);
-            entity.Property(e => e.Saldo).HasPrecision(20, 5);
-            entity.Property(e => e.Tipo).HasMaxLength(50);
-            entity.Property(e => e.Titular).HasMaxLength(300);
-
-            entity.HasOne(d => d.Cliente).WithMany(p => p.Cuenta)
-                .HasForeignKey(d => d.ClienteId)
-                .OnDelete(DeleteBehavior.ClientSetNull)
-                .HasConstraintName("Cuenta_ClienteId_fkey");
-        });
-
         modelBuilder.Entity<CuentaCorriente>(entity =>
         {
             entity.HasKey(e => e.Id).HasName("CuentaCorriente_pkey");
@@ -118,6 +107,8 @@ public partial class BootcampContext : DbContext
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("Movimientos_CuentaId_fkey");
         });
+
+
 
         OnModelCreatingPartial(modelBuilder);
     }
