@@ -13,11 +13,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Bootcamp\\BootcampApi2\\Bootcamp\\Core\\Core.csproj",
+      "projectUniqueName": "C:\\Users\\BOOTCAMP-7\\Desktop\\Bootcamp\\Core\\Core.csproj",
       "projectName": "Core",
-      "projectPath": "C:\\Bootcamp\\BootcampApi2\\Bootcamp\\Core\\Core.csproj",
+      "projectPath": "C:\\Users\\BOOTCAMP-7\\Desktop\\Bootcamp\\Core\\Core.csproj",
       "packagesPath": "C:\\Users\\BOOTCAMP-7\\.nuget\\packages\\",
-      "outputPath": "C:\\Bootcamp\\BootcampApi2\\Bootcamp\\Core\\obj\\",
+      "outputPath": "C:\\Users\\BOOTCAMP-7\\Desktop\\Bootcamp\\Core\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "C:\\Users\\BOOTCAMP-7\\AppData\\Roaming\\NuGet\\NuGet.Config",

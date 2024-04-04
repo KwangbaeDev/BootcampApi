@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Bootcamp\\BootcampApi2\\Bootcamp\\Infrastructure\\Infrastructure.csproj": {}
+    "C:\\Users\\BOOTCAMP-7\\Desktop\\Bootcamp\\Infrastructure\\Infrastructure.csproj": {}
   },
   "projects": {
-    "C:\\Bootcamp\\BootcampApi2\\Bootcamp\\Core\\Core.csproj": {
+    "C:\\Users\\BOOTCAMP-7\\Desktop\\Bootcamp\\Core\\Core.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Bootcamp\\BootcampApi2\\Bootcamp\\Core\\Core.csproj",
+        "projectUniqueName": "C:\\Users\\BOOTCAMP-7\\Desktop\\Bootcamp\\Core\\Core.csproj",
         "projectName": "Core",
-        "projectPath": "C:\\Bootcamp\\BootcampApi2\\Bootcamp\\Core\\Core.csproj",
+        "projectPath": "C:\\Users\\BOOTCAMP-7\\Desktop\\Bootcamp\\Core\\Core.csproj",
         "packagesPath": "C:\\Users\\BOOTCAMP-7\\.nuget\\packages\\",
-        "outputPath": "C:\\Bootcamp\\BootcampApi2\\Bootcamp\\Core\\obj\\",
+        "outputPath": "C:\\Users\\BOOTCAMP-7\\Desktop\\Bootcamp\\Core\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\BOOTCAMP-7\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -64,14 +64,14 @@
         }
       }
     },
-    "C:\\Bootcamp\\BootcampApi2\\Bootcamp\\Infrastructure\\Infrastructure.csproj": {
+    "C:\\Users\\BOOTCAMP-7\\Desktop\\Bootcamp\\Infrastructure\\Infrastructure.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Bootcamp\\BootcampApi2\\Bootcamp\\Infrastructure\\Infrastructure.csproj",
+        "projectUniqueName": "C:\\Users\\BOOTCAMP-7\\Desktop\\Bootcamp\\Infrastructure\\Infrastructure.csproj",
         "projectName": "Infrastructure",
-        "projectPath": "C:\\Bootcamp\\BootcampApi2\\Bootcamp\\Infrastructure\\Infrastructure.csproj",
+        "projectPath": "C:\\Users\\BOOTCAMP-7\\Desktop\\Bootcamp\\Infrastructure\\Infrastructure.csproj",
         "packagesPath": "C:\\Users\\BOOTCAMP-7\\.nuget\\packages\\",
-        "outputPath": "C:\\Bootcamp\\BootcampApi2\\Bootcamp\\Infrastructure\\obj\\",
+        "outputPath": "C:\\Users\\BOOTCAMP-7\\Desktop\\Bootcamp\\Infrastructure\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\BOOTCAMP-7\\AppData\\Roaming\\NuGet\\NuGet.Config",
@@ -88,8 +88,8 @@
           "net7.0": {
             "targetAlias": "net7.0",
             "projectReferences": {
-              "C:\\Bootcamp\\BootcampApi2\\Bootcamp\\Core\\Core.csproj": {
-                "projectPath": "C:\\Bootcamp\\BootcampApi2\\Bootcamp\\Core\\Core.csproj"
+              "C:\\Users\\BOOTCAMP-7\\Desktop\\Bootcamp\\Core\\Core.csproj": {
+                "projectPath": "C:\\Users\\BOOTCAMP-7\\Desktop\\Bootcamp\\Core\\Core.csproj"
               }
             }
           }

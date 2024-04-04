@@ -10,3 +10,15 @@ C:\Bootcamp\BootcampApi2\Bootcamp\Core\obj\Debug\net7.0\Core.dll
 C:\Bootcamp\BootcampApi2\Bootcamp\Core\obj\Debug\net7.0\refint\Core.dll
 C:\Bootcamp\BootcampApi2\Bootcamp\Core\obj\Debug\net7.0\Core.pdb
 C:\Bootcamp\BootcampApi2\Bootcamp\Core\obj\Debug\net7.0\ref\Core.dll
+C:\Users\BOOTCAMP-7\Desktop\Bootcamp\Core\bin\Debug\net7.0\Core.deps.json
+C:\Users\BOOTCAMP-7\Desktop\Bootcamp\Core\bin\Debug\net7.0\Core.dll
+C:\Users\BOOTCAMP-7\Desktop\Bootcamp\Core\bin\Debug\net7.0\Core.pdb
+C:\Users\BOOTCAMP-7\Desktop\Bootcamp\Core\obj\Debug\net7.0\Core.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\BOOTCAMP-7\Desktop\Bootcamp\Core\obj\Debug\net7.0\Core.AssemblyInfoInputs.cache
+C:\Users\BOOTCAMP-7\Desktop\Bootcamp\Core\obj\Debug\net7.0\Core.AssemblyInfo.cs
+C:\Users\BOOTCAMP-7\Desktop\Bootcamp\Core\obj\Debug\net7.0\Core.csproj.CoreCompileInputs.cache
+C:\Users\BOOTCAMP-7\Desktop\Bootcamp\Core\obj\Debug\net7.0\Core.sourcelink.json
+C:\Users\BOOTCAMP-7\Desktop\Bootcamp\Core\obj\Debug\net7.0\Core.dll
+C:\Users\BOOTCAMP-7\Desktop\Bootcamp\Core\obj\Debug\net7.0\refint\Core.dll
+C:\Users\BOOTCAMP-7\Desktop\Bootcamp\Core\obj\Debug\net7.0\Core.pdb
+C:\Users\BOOTCAMP-7\Desktop\Bootcamp\Core\obj\Debug\net7.0\ref\Core.dll
