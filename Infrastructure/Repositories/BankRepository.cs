@@ -1,7 +1,7 @@
 ﻿using Core.Interfaces.Repositories;
 using Core.Models;
 using Infrastructure.Contexts;
-using Infrastructure.Entities;
+using Core.Entities;
 using Microsoft.EntityFrameworkCore;
 
 namespace Infrastructure.Repositories;
