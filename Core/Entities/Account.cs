@@ -1,4 +1,5 @@
 ﻿using Core.Constants;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Core.Entities;
 

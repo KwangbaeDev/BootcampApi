@@ -19,7 +19,7 @@ public class CustomerConfiguration : IEntityTypeConfiguration<Customer>
         entity
             .HasOne(customer => customer.Bank)
             .WithMany(bank => bank.Customers)
-            .HasForeignKey(customer => customer.Id);
+            .HasForeignKey(customer => customer.BankId);
 
         entity
             .HasMany(customer => customer.Accounts)

@@ -14,6 +14,6 @@ public class SavingAccountConfiguration : IEntityTypeConfiguration<SavingAccount
         entity
             .HasOne(savingAccount => savingAccount.Accounts)
             .WithMany(account => account.SavingAccounts)
-            .HasForeignKey(savingAccount => savingAccount.Id);
+            .HasForeignKey(savingAccount => savingAccount.AccountId);
     }
 }

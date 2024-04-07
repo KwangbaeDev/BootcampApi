@@ -34,35 +34,37 @@ namespace Infrastructure.Migrations
                 {
                     Id = table.Column<int>(type: "integer", nullable: false)
                         .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
-                    Name = table.Column<string>(type: "text", nullable: false),
-                    BuyValue = table.Column<decimal>(type: "numeric", nullable: false),
-                    SellValue = table.Column<decimal>(type: "numeric", nullable: false)
+                    Name = table.Column<string>(type: "character varying(50)", maxLength: 50, nullable: false),
+                    BuyValue = table.Column<decimal>(type: "numeric(20,5)", nullable: false),
+                    SellValue = table.Column<decimal>(type: "numeric(20,5)", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_Currency", x => x.Id);
+                    table.PrimaryKey("Currency_pkey", x => x.Id);
                 });
 
             migrationBuilder.CreateTable(
-                name: "Customer",
+                name: "Customers",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false),
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     Name = table.Column<string>(type: "character varying(300)", maxLength: 300, nullable: false),
                     Lastname = table.Column<string>(type: "character varying(300)", maxLength: 300, nullable: true),
                     DocumentNumber = table.Column<string>(type: "character varying(150)", maxLength: 150, nullable: false),
                     Address = table.Column<string>(type: "character varying(400)", maxLength: 400, nullable: true),
                     Mail = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: true),
                     Phone = table.Column<string>(type: "character varying(150)", maxLength: 150, nullable: true),
-                    Estado = table.Column<int>(type: "integer", nullable: false),
-                    BankId = table.Column<int>(type: "integer", nullable: false)
+                    CustomerStatus = table.Column<int>(type: "integer", nullable: false),
+                    BankId = table.Column<int>(type: "integer", nullable: false),
+                    Birth = table.Column<DateTime>(type: "timestamp with time zone", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("Customer_pkey", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_Customer_Banks_Id",
-                        column: x => x.Id,
+                        name: "FK_Customers_Banks_BankId",
+                        column: x => x.BankId,
                         principalTable: "Banks",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -92,9 +94,9 @@ namespace Infrastructure.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_Accounts_Customer_CustomerId",
+                        name: "FK_Accounts_Customers_CustomerId",
                         column: x => x.CustomerId,
-                        principalTable: "Customer",
+                        principalTable: "Customers",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                 });
@@ -145,10 +147,11 @@ namespace Infrastructure.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "SavingAccount",
+                name: "SavingAccounts",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "integer", nullable: false),
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
                     SavingType = table.Column<int>(type: "integer", nullable: false),
                     HolderName = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
                     AccountId = table.Column<int>(type: "integer", nullable: false)
@@ -157,8 +160,8 @@ namespace Infrastructure.Migrations
                 {
                     table.PrimaryKey("SavingAccount_pkey", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_SavingAccount_Accounts_Id",
-                        column: x => x.Id,
+                        name: "FK_SavingAccounts_Accounts_AccountId",
+                        column: x => x.AccountId,
                         principalTable: "Accounts",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -180,8 +183,18 @@ namespace Infrastructure.Migrations
                 column: "AccountId");
 
             migrationBuilder.CreateIndex(
+                name: "IX_Customers_BankId",
+                table: "Customers",
+                column: "BankId");
+
+            migrationBuilder.CreateIndex(
                 name: "IX_Movements_AccountId",
                 table: "Movements",
+                column: "AccountId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_SavingAccounts_AccountId",
+                table: "SavingAccounts",
                 column: "AccountId");
         }
 
@@ -195,7 +208,7 @@ namespace Infrastructure.Migrations
                 name: "Movements");
 
             migrationBuilder.DropTable(
-                name: "SavingAccount");
+                name: "SavingAccounts");
 
             migrationBuilder.DropTable(
                 name: "Accounts");
@@ -204,7 +217,7 @@ namespace Infrastructure.Migrations
                 name: "Currency");
 
             migrationBuilder.DropTable(
-                name: "Customer");
+                name: "Customers");
 
             migrationBuilder.DropTable(
                 name: "Banks");
