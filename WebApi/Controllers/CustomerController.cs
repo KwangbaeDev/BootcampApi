@@ -19,4 +19,10 @@ public class CustomerController : BaseApiController
         var customers = await _customerService.GetFiltered(filter);
         return Ok(customers);
     }
+
+    [HttpPost]
+    public async Task<IActionResult> Create([FromBody] CreateCustomerModel request)
+    {
+        return Ok(await _customerService.Add(request));
+    }
 }

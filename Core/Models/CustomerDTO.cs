@@ -9,7 +9,7 @@ public class CustomerDTO
     public string? Address { get; set; }
     public string? Mail { get; set; }
     public string? Phone { get; set; }
-    public string CustomerStatus { get; set; } = string.Empty;
+    public int CustomerStatus { get; set; } = 0;
     public DateTime? Birth { get; set; }
     public BankDTO Bank { get; set; } = null!;
 }

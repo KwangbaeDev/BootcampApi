@@ -1,8 +1,11 @@
-﻿using Core.Interfaces.Repositories;
+﻿using Core.Constants;
+using Core.Entities;
+using Core.Interfaces.Repositories;
 using Core.Models;
 using Core.Requests;
 using Infrastructure.Contexts;
 using Microsoft.EntityFrameworkCore;
+using System.Timers;
 
 namespace Infrastructure.Repositories;
 
@@ -28,6 +31,7 @@ public class CustomerRepository : ICustomerRepository
                 x.Birth.Value.Year >= filter.BirthYearFrom);
         }
 
+
         if (filter.BirthYearTo is not null)
         {
             query = query.Where(x =>
@@ -35,12 +39,9 @@ public class CustomerRepository : ICustomerRepository
                 x.Birth.Value.Year <= filter.BirthYearTo);
         }
 
+
         if (filter.BankId is not null)
         {
-            foreach (var customer in query)
-            {
-                await Console.Out.WriteLineAsync("customer: " + customer.Name);
-            }
             query = query.Where(x =>
                 x.BankId == filter.BankId);
         }
@@ -49,23 +50,23 @@ public class CustomerRepository : ICustomerRepository
         if (filter.DocumentNumber is not null)
         {
             query = query.Where(x =>
-                x.DocumentNumber != null &&
-                x.DocumentNumber.Length <= filter.DocumentNumber);
+                x.DocumentNumber == filter.DocumentNumber);
         }
+
 
         if (filter.Mail is not null)
         {
             query = query.Where(x =>
-                x.Mail != null &&
-                x.Mail.Length <= filter.DocumentNumber);
+                x.Mail == filter.Mail);
         }
 
-        if (filter.Fullname is not null)
+
+        if (filter.FullName is not null)
         {
             query = query.Where(x =>
-                x.DocumentNumber != null &&
-                x.DocumentNumber.Length <= filter.DocumentNumber);
+                x.Name + " " + x.Lastname == filter.FullName);
         }
+
 
         var result = await query.ToListAsync();
 
@@ -78,7 +79,7 @@ public class CustomerRepository : ICustomerRepository
             Address = x.Address,
             Mail = x.Mail,
             Phone = x.Phone,
-            CustomerStatus = nameof(x.CustomerStatus),
+            CustomerStatus = (int)x.CustomerStatus,
             Birth = x.Birth,
             Bank = new BankDTO
             {
@@ -89,5 +90,60 @@ public class CustomerRepository : ICustomerRepository
                 Address = x.Bank.Address
             }
         }).ToList();
+    }
+    
+    public async Task<CustomerDTO> Add(CreateCustomerModel model)
+    {
+        if (Enum.IsDefined(typeof(CustomerStatus), model.CustomerStatus) == false)
+        {
+            throw new Exception("The CustomerStatus provided is not valid.");
+        }
+
+        var bank = await _context.Banks.FindAsync(model.BankId);
+        if (bank is null)
+        {
+            throw new Exception("Bank not found");
+        }
+
+
+        var customerToCreate = new Customer
+        {
+            Name = model.Name,
+            Lastname = model.Lastname,
+            DocumentNumber = model.DocumentNumber,
+            Address = model.Address,
+            Mail = model.Mail,
+            Phone = model.Phone,
+            CustomerStatus = (CustomerStatus)model.CustomerStatus,
+            Birth = model.Birth,
+            BankId = model.BankId,
+        };
+
+        _context.Customers.Add(customerToCreate);
+
+        await _context.SaveChangesAsync();
+
+        var customerDTO = new CustomerDTO
+        {
+            Id = customerToCreate.Id,
+            Name = customerToCreate.Name,
+            Lastname = customerToCreate.Lastname,
+            DocumentNumber = customerToCreate.DocumentNumber,
+            Address = customerToCreate.Address,
+            Mail = customerToCreate.Mail,
+            Phone = customerToCreate.Phone,
+            CustomerStatus = model.CustomerStatus,
+            Birth = customerToCreate.Birth,
+            Bank = new BankDTO()
+            {
+                 Id = bank.Id,
+                 Name = bank.Name,
+                 Phone = bank.Phone,
+                 Mail = bank.Mail,
+                 Address = bank.Address,
+            },
+        };
+
+        return customerDTO;
     }
 }

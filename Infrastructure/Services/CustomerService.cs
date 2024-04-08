@@ -18,4 +18,9 @@ public class CustomerService : ICustomerService
     {
         return await _repository.GetFiltered(filter);
     }
+
+    public async Task<CustomerDTO> Add(CreateCustomerModel model)
+    {
+        return await _repository.Add(model);
+    }
 }
