@@ -23,4 +23,19 @@ public class CustomerService : ICustomerService
     {
         return await _repository.Add(model);
     }
+
+    public async Task<CustomerDTO> GetById(int id)
+    {
+        return await _repository.GetById(id);
+    }
+
+    public async Task<List<CustomerDTO>> GetAll()
+    {
+        return await _repository.GetAll();
+    }
+
+    //public async Task<CustomerDTO> Update(UpdateBankModel model)
+    //{
+    //    return await _repository.Update(model);
+    //}
 }

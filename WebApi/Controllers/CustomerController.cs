@@ -25,4 +25,24 @@ public class CustomerController : BaseApiController
     {
         return Ok(await _customerService.Add(request));
     }
+
+    [HttpGet("{id}")]
+    public async Task<IActionResult> GetById([FromRoute] int id)
+    {
+        var customer = await _customerService.GetById(id);
+        return Ok(customer);
+    }
+
+    [HttpGet("all")]
+    public async Task<IActionResult> GetAll()
+    {
+        var costumers = await _customerService.GetAll();
+        return Ok(costumers);
+    }
+
+    //[HttpPut]
+    //public async Task<IActionResult> Update([FromBody] UpdateCustomerModel request)
+    //{
+    //    return Ok(await _customerService.Update(request));
+    //}
 }
