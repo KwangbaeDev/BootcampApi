@@ -5,6 +5,7 @@ using Core.Entities;
 using Microsoft.EntityFrameworkCore;
 using Core.Requests;
 using Mapster;
+using Core.Exceptions;
 
 namespace Infrastructure.Repositories;
 
@@ -21,6 +22,7 @@ public class BankRepository : IBankRepository
     {
         var bankToCreate = model.Adapt<Bank>();
 
+
         _context.Banks.Add(bankToCreate);
 
         await _context.SaveChangesAsync();
@@ -34,7 +36,8 @@ public class BankRepository : IBankRepository
     {
         var bank = await _context.Banks.FindAsync(id);
 
-        if (bank is null) throw new Exception("Bank not found");
+        //if (bank is null) throw new Exception("Bank not found");
+        if (bank is null) throw new NotFoundException($"Bank with id: {id} doest not exist");
 
         _context.Banks.Remove(bank);
 
@@ -54,9 +57,11 @@ public class BankRepository : IBankRepository
 
     public async Task<BankDTO> GetById(int id)
     {
+        //throw new Exception("No se pudo conectar a la base de datos");
+
         var bank = await _context.Banks.FindAsync(id);
 
-        if (bank is null) throw new Exception("Bank not found");
+        if (bank is null) throw new NotFoundException($"Bank with id: {id} doest not exist");
 
         var bankDTO = bank.Adapt<BankDTO>();
 
@@ -65,6 +70,7 @@ public class BankRepository : IBankRepository
 
     public async Task<bool> NameIsAlreadyTaken(string name)
     {
+
         return await _context.Banks.AnyAsync(bank => bank.Name == name);
     }
 
@@ -73,6 +79,7 @@ public class BankRepository : IBankRepository
         var bank = await _context.Banks.FindAsync(model.Id);
 
         if (bank is null) throw new Exception("Bank was not found");
+        //if (bank is null) throw new NotFoundException($"Bank with id: {id} doest not exist");
 
         model.Adapt(bank);
 

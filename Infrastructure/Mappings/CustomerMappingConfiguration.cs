@@ -23,6 +23,7 @@ public class CustomerMappingConfiguration : IRegister
             .Map(x => x.BankId, src => src.BankId);
 
         config.NewConfig<Customer, CustomerDTO>()
+            .Map(x => x.Id, src => src.Id)
             .Map(x => x.Name, src => src.Name)
             .Map(x => x.Lastname, src => src.Lastname)
             .Map(x => x.DocumentNumber, src => src.DocumentNumber)

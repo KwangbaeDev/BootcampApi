@@ -9,6 +9,9 @@ public class CurrencyConfiguration : IEntityTypeConfiguration<Currency>
     public void Configure(EntityTypeBuilder<Currency> entity)
     {
         entity
+            .ToTable("Currencies");
+
+        entity
             .HasKey(e => e.Id)
             .HasName("Currency_pkey");
 

@@ -29,6 +29,8 @@ public partial class BootcampContext : DbContext
 
     public virtual DbSet<Movement> Movements { get; set; }
 
+    public virtual DbSet<Currency> Currencies { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfiguration(new AccountConfiguration());

@@ -17,9 +17,10 @@ namespace Infrastructure.Validations
                 .Must(BeValidCustomerStatus)
                 .WithMessage("The CustomerStatus provided is not valid.");
 
-            //RuleFor(x => x.BankId)
+
+            //RuleFor(x => x.BankId
             //    .NotNull()
-            //    .WithMessage("BankId is required.");
+            //    .WithMessage("Bank is required.");
 
             //RuleFor(x => x.BankId)
             //    .Must(BeValidBank)
