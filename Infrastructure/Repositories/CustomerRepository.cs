@@ -137,20 +137,35 @@ public class CustomerRepository : ICustomerRepository
         return customerDTO;
     }
 
-    //public async Task<CustomerDTO> Update(UpdateCustomerModel model)
-    //{
-    //    var customer = await _context.Customers.FindAsync(model.Id);
+    public async Task<CustomerDTO> Update(UpdateCustomerModel model)
+    {
+        var banks = await _context.Banks.ToListAsync();
 
-    //    if (customer is null) throw new Exception("Bank was not found.");
+        var customer = await _context.Customers.FindAsync(model.Id);
 
-    //    model.Adapt(customer);
+        if (customer is null) throw new Exception("Customer was not found.");
 
-    //    _context.Customers.Update(customer);
+        model.Adapt(customer);
 
-    //    await _context.SaveChangesAsync();
+        _context.Customers.Update(customer);
 
-    //    var customerDTO = customer.Adapt<CustomerDTO>();
+        await _context.SaveChangesAsync();
 
-    //    return customerDTO;
-    //}
+        var customerDTO = customer.Adapt<CustomerDTO>();
+
+        return customerDTO;
+    }
+
+    public async Task<bool> Delete(int id)
+    {
+        var customer = await _context.Customers.FindAsync(id);
+
+        if (customer is null) throw new Exception("Customer not found.");
+
+        _context.Customers.Remove(customer);
+
+        var result = await _context.SaveChangesAsync();
+
+        return result > 0;
+    }
 }

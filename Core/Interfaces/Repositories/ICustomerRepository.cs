@@ -9,5 +9,6 @@ public interface ICustomerRepository
     Task<CustomerDTO> Add(CreateCustomerModel model);
     Task<CustomerDTO> GetById(int id);
     Task<List<CustomerDTO>> GetAll();
-    //Task<CustomerDTO> Update(UpdateCustomerModel model);
+    Task<CustomerDTO> Update(UpdateCustomerModel model);
+    Task<bool> Delete(int id);
 }

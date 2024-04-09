@@ -2,6 +2,7 @@
 using Core.Interfaces.Services;
 using Core.Models;
 using Core.Requests;
+using Infrastructure.Repositories;
 
 namespace Infrastructure.Services;
 
@@ -34,8 +35,14 @@ public class CustomerService : ICustomerService
         return await _repository.GetAll();
     }
 
-    //public async Task<CustomerDTO> Update(UpdateBankModel model)
-    //{
-    //    return await _repository.Update(model);
-    //}
+    public async Task<CustomerDTO> Update(UpdateCustomerModel model)
+    {
+        return await _repository.Update(model);
+    }
+
+    public async Task<bool> Delete(int id)
+    {
+        return await _repository.Delete(id);
+    }
+
 }

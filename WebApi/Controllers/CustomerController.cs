@@ -40,9 +40,15 @@ public class CustomerController : BaseApiController
         return Ok(costumers);
     }
 
-    //[HttpPut]
-    //public async Task<IActionResult> Update([FromBody] UpdateCustomerModel request)
-    //{
-    //    return Ok(await _customerService.Update(request));
-    //}
+    [HttpPut]
+    public async Task<IActionResult> Update([FromBody] UpdateCustomerModel request)
+    {
+        return Ok(await _customerService.Update(request));
+    }
+
+    [HttpDelete("{id}")]
+    public async Task<IActionResult> Delete([FromRoute] int id)
+    {
+        return Ok(await _customerService.Delete(id));
+    }
 }
