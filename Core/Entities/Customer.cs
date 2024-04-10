@@ -27,4 +27,5 @@ public class Customer
     public virtual Bank Bank { get; set; } = null!;
 
     public ICollection<Account> Accounts { get; set; } = new List<Account>();
+    public ICollection<CreditCard> CreditCards { get; set; } = new List<CreditCard>();
 }

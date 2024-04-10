@@ -3,6 +3,7 @@ using System;
 using Infrastructure.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(BootcampContext))]
-    partial class BootcampContextModelSnapshot : ModelSnapshot
+    [Migration("20240410125424_CreditCardMigration")]
+    partial class CreditCardMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -33,6 +36,9 @@ namespace Infrastructure.Migrations
                     b.Property<decimal>("Balance")
                         .HasPrecision(20, 5)
                         .HasColumnType("numeric(20,5)");
+
+                    b.Property<int?>("CreditCardId")
+                        .HasColumnType("integer");
 
                     b.Property<int>("CurrencyId")
                         .HasColumnType("integer");
@@ -57,6 +63,8 @@ namespace Infrastructure.Migrations
 
                     b.HasKey("Id")
                         .HasName("Account_pkey");
+
+                    b.HasIndex("CreditCardId");
 
                     b.HasIndex("CurrencyId");
 
@@ -331,6 +339,10 @@ namespace Infrastructure.Migrations
 
             modelBuilder.Entity("Core.Entities.Account", b =>
                 {
+                    b.HasOne("Core.Entities.CreditCard", null)
+                        .WithMany("Accounts")
+                        .HasForeignKey("CreditCardId");
+
                     b.HasOne("Core.Entities.Currency", "Currency")
                         .WithMany("Accounts")
                         .HasForeignKey("CurrencyId")
@@ -423,6 +435,11 @@ namespace Infrastructure.Migrations
             modelBuilder.Entity("Core.Entities.Bank", b =>
                 {
                     b.Navigation("Customers");
+                });
+
+            modelBuilder.Entity("Core.Entities.CreditCard", b =>
+                {
+                    b.Navigation("Accounts");
                 });
 
             modelBuilder.Entity("Core.Entities.Currency", b =>
