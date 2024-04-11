@@ -1,5 +1,6 @@
 ﻿using Core.Interfaces.Services;
 using Core.Requests;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers;
@@ -14,6 +15,7 @@ public class CustomerController : BaseApiController
     }
 
     [HttpGet("filtered")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> GetFiltered([FromQuery] FilterCustomersModel filter)
     {
         var customers = await _customerService.GetFiltered(filter);
@@ -21,12 +23,14 @@ public class CustomerController : BaseApiController
     }
 
     [HttpPost]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Create([FromBody] CreateCustomerModel request)
     {
         return Ok(await _customerService.Add(request));
     }
 
     [HttpGet("{id}")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> GetById([FromRoute] int id)
     {
         var customer = await _customerService.GetById(id);
@@ -34,6 +38,7 @@ public class CustomerController : BaseApiController
     }
 
     [HttpGet("all")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> GetAll()
     {
         var costumers = await _customerService.GetAll();
@@ -41,12 +46,14 @@ public class CustomerController : BaseApiController
     }
 
     [HttpPut]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Update([FromBody] UpdateCustomerModel request)
     {
         return Ok(await _customerService.Update(request));
     }
 
     [HttpDelete("{id}")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Delete([FromRoute] int id)
     {
         return Ok(await _customerService.Delete(id));

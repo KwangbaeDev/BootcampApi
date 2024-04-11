@@ -18,6 +18,20 @@ public class CreditCardRepository : ICreditCardRepository
     }
     public async Task<CreditCardDTO> Add(CreateCreditCardModel model)
     {
+        var customer = await _context.Customers.FindAsync(model.CustomerId);
+
+        if (customer is null)
+        {
+            throw new Exception("Customer not found");
+        }
+
+        var currency = await _context.Currencies.FindAsync(model.CurrencyId);
+
+        if (currency is null)
+        {
+            throw new Exception("Currency not found");
+        }
+
         var creditCardToCreate = model.Adapt<CreditCard>();
 
         _context.CreditCards.Add(creditCardToCreate);

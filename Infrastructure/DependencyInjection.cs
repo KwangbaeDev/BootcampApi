@@ -55,6 +55,7 @@ public static class DependencyInjection
         services.AddScoped<ICustomerService, CustomerService>();
         services.AddScoped<ICurrencyService, CurrencyService>();
         services.AddScoped<ICreditCardService, CreditCardService>();
+        services.AddScoped<IJwtProvider, JwtProvider>();
 
         return services;
     }
