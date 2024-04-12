@@ -14,7 +14,7 @@ public class CurrentAccountConfiguration : IEntityTypeConfiguration<CurrentAccou
 
         entity
             .HasOne(currentaccount => currentaccount.Account)
-            .WithMany(account => account.CurrentAccounts)
-            .HasForeignKey(currentaccout => currentaccout.AccountId);
+            .WithOne(p => p.CurrentAccount)
+            .HasForeignKey<CurrentAccount>(d => d.AccountId);
     }
 }
