@@ -20,61 +20,100 @@ public class AccountRepository : IAccountRepository
     }
 
     public async Task<AccountDTO> Add(CreateAccountModel model)
+    //{
+    //    var customer = await _context.Customers
+    //                                 .Include(x => x.Bank)
+    //                                 .FirstOrDefaultAsync(x => x.Id == model.CustomerId);
+
+    //    if (customer is null)
+    //    {
+    //        throw new Exception("Customer not found");
+    //    }
+
+    //    var currency = await _context.Currencies.FindAsync(model.CurrencyId);
+
+    //    if (currency is null)
+    //    {
+    //        throw new Exception("Currency not found");
+    //    }
+
+    //    var accountToCreate = model.Adapt<Account>();
+
+    //    _context.Accounts.Add(accountToCreate);
+
+    //    await _context.SaveChangesAsync();
+
+    //    AccountDTO accountDTO;
+
+    //    switch (model.Type)
+    //    {
+    //        case AccountType.Saving:
+    //            var savingAccountDTO = new SavingAcountDTO
+    //            {
+    //                Id = accountToCreate.Id,
+    //                SavingType = SavingType.Insight,
+    //                HolderName = model.Holder
+    //            };
+
+    //            accountDTO = savingAccountDTO;
+    //            break;
+    //        case AccountType.Current:
+    //            var currentAccountDTO = new CurrentAccountDTO
+    //            {
+    //                Id = accountToCreate.Id,
+    //                OperationalLimit = null,
+    //                MonthAverage = null,
+    //                Interest = null
+    //            };
+
+    //            accountDTO = currentAccountDTO;
+    //            break;
+    //        default:
+    //            throw new Exception("Invalid account type");
+    //    }
+
+    //    accountDTO = accountToCreate.Adapt(accountDTO);
+
+    //    return accountDTO;
+    //}
     {
-        var customer = await _context.Customers
-                                     .Include(x => x.Bank)
-                                     .FirstOrDefaultAsync(x => x.Id == model.CustomerId);
-
-        if (customer is null)
+        /*A modo de ejemplo*/
+        #region PRUEBA
+        var currency = new Currency()
         {
-            throw new Exception("Customer not found");
+            Name = "Dolares Americanos",
+            BuyValue = 10,
+            SellValue = 20,
+        };
+        _context.Currencies.Add(currency);
+
+        //throw new Exception("Algo malo pasó");
+        #endregion
+
+        var account = model.Adapt<Account>();
+
+        if (account.Type == AccountType.Saving)
+        {
+            account.SavingAccount = model.CreateSavingAccount.Adapt<SavingAccount>();
         }
 
-        var currency = await _context.Currencies.FindAsync(model.CurrencyId);
-
-        if (currency is null)
+        if (account.Type == AccountType.Current)
         {
-            throw new Exception("Currency not found");
+            account.CurrentAccount = model.CreateCurrentAccount.Adapt<CurrentAccount>();
         }
 
-        var accountToCreate = model.Adapt<Account>();
-
-        _context.Accounts.Add(accountToCreate);
+        _context.Accounts.Add(account);
 
         await _context.SaveChangesAsync();
 
-        AccountDTO accountDTO;
+        var createdAccount = await _context.Accounts
+            .Include(a => a.Currency)
+            .Include(a => a.Customer)
+            .Include(a => a.SavingAccount)
+            .Include(a => a.CurrentAccount)
+            .FirstOrDefaultAsync(a => a.Id == account.Id);
 
-        switch (model.Type)
-        {
-            case AccountType.Saving:
-                var savingAccountDTO = new SavingAcountDTO
-                {
-                    Id = accountToCreate.Id,
-                    SavingType = SavingType.Insight,
-                    HolderName = model.Holder
-                };
-
-                accountDTO = savingAccountDTO;
-                break;
-            case AccountType.Current:
-                var currentAccountDTO = new CurrentAccountDTO
-                {
-                    Id = accountToCreate.Id,
-                    OperationalLimit = null,
-                    MonthAverage = null,
-                    Interest = null
-                };
-
-                accountDTO = currentAccountDTO;
-                break;
-            default:
-                throw new Exception("Invalid account type");
-        }
-
-        accountDTO = accountToCreate.Adapt(accountDTO);
-
-        return accountDTO;
+        return createdAccount.Adapt<AccountDTO>();
     }
 
     public async Task<bool> Delete(int id)
@@ -95,7 +134,14 @@ public class AccountRepository : IAccountRepository
 
     public async Task<AccountDTO> GetById(int id)
     {
-        var account = await _context.Accounts.FindAsync(id);
+        var account = await _context.Accounts
+            .Include(a => a.Currency)
+            .Include(a => a.Customer)
+            .Include(a => a.SavingAccount)
+            .Include(a => a.CurrentAccount)
+            .FirstOrDefaultAsync(x => x.Id == id);
+
+        /*var account = await _context.Accounts.FindAsync(id)*/;
 
         if (account is null || account.IsDeleted == IsDeleteStatus.True)
         {

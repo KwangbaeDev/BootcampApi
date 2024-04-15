@@ -1,5 +1,6 @@
 ﻿using Core.Constants;
 using Core.Entities;
+using Core.Models;
 
 namespace Core.Requests;
 
@@ -10,4 +11,6 @@ public class CreateAccountModel
     public AccountType Type { get; set; }
     public int CurrencyId { get; set; }
     public int CustomerId { get; set; }
+    public CreateSavingAccountModel? CreateSavingAccount { get; set; }
+    public CreateCurrentAccountModel? CreateCurrentAccount { get; set; }
 }

@@ -33,6 +33,10 @@ public partial class BootcampContext : DbContext
 
     public virtual DbSet<CreditCard> CreditCards { get; set; }
 
+    public virtual DbSet<Company_Business> CompanyBusinesses { get; set; }
+
+    public virtual DbSet<Promotion> Promotions { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfiguration(new AccountConfiguration());
@@ -50,6 +54,10 @@ public partial class BootcampContext : DbContext
         modelBuilder.ApplyConfiguration(new SavingAccountConfiguration());
 
         modelBuilder.ApplyConfiguration(new CreditCardConfiguration());
+
+        modelBuilder.ApplyConfiguration(new Company_BusinessConfiguration());
+
+        modelBuilder.ApplyConfiguration(new PromotionConfiguration());
 
 
         OnModelCreatingPartial(modelBuilder);

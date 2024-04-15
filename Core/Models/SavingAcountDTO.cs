@@ -1,12 +1,11 @@
 ﻿using Core.Constants;
 using Core.Entities;
+using Core.Requests;
 
 namespace Core.Models;
 
-public class SavingAcountDTO : AccountDTO
+public class SavingAcountDTO
 {
     public int? Id { get; set; }
-    public SavingType SavingType { get; set; } = SavingType.Insight;
-    public string HolderName { get; set; } = string.Empty;
-    public AccountDTO Account { get; set; } = null!;
+    public string SavingType { get; set; } = string.Empty;
 }
