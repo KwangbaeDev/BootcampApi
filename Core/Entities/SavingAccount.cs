@@ -8,5 +8,5 @@ public class SavingAccount
     public SavingType SavingType { get; set; } = SavingType.Insight;
     public string HolderName { get; set; } = string.Empty;
     public int AccountId { get; set; }
-    public Account Accounts { get; set; } = null!;
+    public Account Account { get; set; } = null!;
 }

@@ -6,6 +6,7 @@ using Core.Requests;
 using Infrastructure.Contexts;
 using Mapster;
 using Microsoft.EntityFrameworkCore;
+using System.Net.NetworkInformation;
 
 namespace Infrastructure.Repositories;
 
@@ -36,42 +37,42 @@ public class AccountRepository : IAccountRepository
             throw new Exception("Currency not found");
         }
 
-        //AccountDTO accountDTO;
-        //switch (model.Type)
-        //{
-        //    case 0:
-        //        var savingAccount = model.Adapt<SavingAccount>();
-        //        _context.SavingAccounts.Add(savingAccount);
-        //        await _context.SaveChangesAsync();
-        //        accountDTO = new AccountDTO
-        //        {
-        //            Id = savingAccount.Id,
-        //            Type = (AccountType)SavingType.Insight,
-        //            Holder = savingAccount.HolderName,
-        //            Accounts = savingAccount.Adapt<AccountDTO>()
-        //        };
-        //        break;
-        //    case 1:
-        //        var currentAccount = model.Adapt<CurrentAccount>();
-        //        _context.CurrentAccounts.Add(currentAccount);
-        //        await _context.SaveChangesAsync();
-        //        accountDTO = new AccountDTO
-        //        {
-        //            Id = currentAccount.Id,
-        //            Accounts = currentAccount.Adapt<AccountDTO>()
-        //        };
-        //        break;
-        //    default:
-        //        throw new Exception("Invalid account type");
-        //}
-
         var accountToCreate = model.Adapt<Account>();
 
         _context.Accounts.Add(accountToCreate);
 
         await _context.SaveChangesAsync();
 
-        var accountDTO = accountToCreate.Adapt<AccountDTO>();
+        AccountDTO accountDTO;
+
+        switch (model.Type)
+        {
+            case AccountType.Saving:
+                var savingAccountDTO = new SavingAcountDTO
+                {
+                    Id = accountToCreate.Id,
+                    SavingType = SavingType.Insight,
+                    HolderName = model.Holder
+                };
+
+                accountDTO = savingAccountDTO;
+                break;
+            case AccountType.Current:
+                var currentAccountDTO = new CurrentAccountDTO
+                {
+                    Id = accountToCreate.Id,
+                    OperationalLimit = null,
+                    MonthAverage = null,
+                    Interest = null
+                };
+
+                accountDTO = currentAccountDTO;
+                break;
+            default:
+                throw new Exception("Invalid account type");
+        }
+
+        accountDTO = accountToCreate.Adapt(accountDTO);
 
         return accountDTO;
     }
@@ -116,9 +117,9 @@ public class AccountRepository : IAccountRepository
             querry = querry.Where(x =>
                 x.Number == filter.Number);
 
-        //if (filter.Type is not null)
-        //    querry = querry.Where(x =>
-        //        x.Type == filter.Type);
+        if (filter.Type is not null)
+            querry = querry.Where(x =>
+                x.Type == filter.Type);
 
         if (filter.Currency is not null)
             querry = querry.Where(x =>

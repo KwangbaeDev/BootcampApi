@@ -30,7 +30,7 @@ public class AccountConfiguration : IEntityTypeConfiguration<Account>
 
         entity
             .HasOne(account => account.SavingAccount)
-            .WithOne(savingAccount => savingAccount.Accounts)
+            .WithOne(savingAccount => savingAccount.Account)
             .HasForeignKey<SavingAccount>(savingAccount => savingAccount.AccountId);
 
         entity
