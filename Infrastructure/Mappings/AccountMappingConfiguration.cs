@@ -36,7 +36,7 @@ public class AccountMappingConfiguration : IRegister
             .Map(x => x.Type, src => (AccountStatus)src.Type)
             .Map(x => x.Balance, src => src.Balance)
             .Map(x => x.Status, src => (AccountStatus)src.Status)
-            .Map(x => x.IsDeleted, src => (IsDeleteStatus)src.IsDeleted)
+            //.Map(x => x.IsDeleted, src => (IsDeleteStatus)src.IsDeleted)
             .Map(x => x.Currency, src => src.Currency)
             .Map(x => x.Customer, src => src.Customer)
             .Map(dest => dest.SavingAccount, src =>

@@ -1,6 +1,6 @@
 ﻿namespace Core.Requests;
 
-public class CreateCompany_BusinessModel
+public class CreateEnterpriseModel
 {
     public string? Name { get; set; }
     public string? Address { get; set; }

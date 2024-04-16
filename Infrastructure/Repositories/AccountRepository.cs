@@ -179,7 +179,7 @@ public class AccountRepository : IAccountRepository
     public async Task<List<AccountDTO>> GettAll()
     {
         var account = await _context.Accounts
-                                    .Where(a => a.IsDeleted != IsDeleteStatus.False)
+                                    .Where(a => a.IsDeleted != IsDeleteStatus.True)
                                     .ToListAsync();
 
         var accountDTO = account.Adapt<List<AccountDTO>>();
@@ -191,7 +191,7 @@ public class AccountRepository : IAccountRepository
     {
         var account = await _context.Accounts.FindAsync(model.Id);
 
-        if (account is null)
+        if (account is null || account.IsDeleted == IsDeleteStatus.True)
         {
             throw new Exception("Account was not found");
         }

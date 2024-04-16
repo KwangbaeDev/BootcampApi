@@ -1,8 +1,6 @@
-﻿using Core.Entities;
+﻿namespace Core.Requests;
 
-namespace Core.Models;
-
-public class PromotionDTO
+public class UpdatePromotionModel
 {
     public int Id { get; set; }
     public string Name { get; set; } = string.Empty;

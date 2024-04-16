@@ -11,7 +11,7 @@ public class AccountDTO
     public AccountType Type { get; set; } = AccountType.Current;
     public decimal Balance { get; set; }
     public String Status { get; set; } = string.Empty;
-    public IsDeleteStatus IsDeleted { get; set; } = IsDeleteStatus.False;
+    //public IsDeleteStatus IsDeleted { get; set; } = IsDeleteStatus.False;
     public CurrencyDTO Currency { get; set; } = null!;
     public CustomerDTO Customer { get; set; } = null!;
 

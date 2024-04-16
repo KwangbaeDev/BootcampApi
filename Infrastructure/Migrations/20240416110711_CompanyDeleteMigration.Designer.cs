@@ -3,6 +3,7 @@ using System;
 using Infrastructure.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(BootcampContext))]
-    partial class BootcampContextModelSnapshot : ModelSnapshot
+    [Migration("20240416110711_CompanyDeleteMigration")]
+    partial class CompanyDeleteMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -100,6 +103,40 @@ namespace Infrastructure.Migrations
                         .HasName("Bank_pkey");
 
                     b.ToTable("Banks");
+                });
+
+            modelBuilder.Entity("Core.Entities.Company_Business", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("integer");
+
+                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
+
+                    b.Property<string>("Address")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<string>("Email")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<int>("IsDeleted")
+                        .HasColumnType("integer");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.Property<string>("Phone")
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
+
+                    b.HasKey("Id")
+                        .HasName("Company_Business_pkey");
+
+                    b.ToTable("CompanyBusinesses");
                 });
 
             modelBuilder.Entity("Core.Entities.CreditCard", b =>
@@ -273,38 +310,6 @@ namespace Infrastructure.Migrations
                     b.ToTable("Customers");
                 });
 
-            modelBuilder.Entity("Core.Entities.Enterprise", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("Address")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<int>("IsDeleted")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("Name")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Phone")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Enterprises");
-                });
-
             modelBuilder.Entity("Core.Entities.Movement", b =>
                 {
                     b.Property<int>("Id")
@@ -347,40 +352,27 @@ namespace Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("Discount")
+                    b.Property<int>("CompanyBusinessId")
                         .HasColumnType("integer");
 
-                    b.Property<DateTime>("End")
+                    b.Property<DateTime?>("DurationTime")
                         .HasColumnType("timestamp with time zone");
-
-                    b.Property<int>("IsDeleted")
-                        .HasColumnType("integer");
 
                     b.Property<string>("Name")
                         .IsRequired()
-                        .HasColumnType("text");
+                        .HasMaxLength(100)
+                        .HasColumnType("character varying(100)");
 
-                    b.Property<DateTime>("Start")
-                        .HasColumnType("timestamp with time zone");
+                    b.Property<decimal?>("PercentageOff")
+                        .HasPrecision(20, 5)
+                        .HasColumnType("numeric(20,5)");
 
-                    b.HasKey("Id");
+                    b.HasKey("Id")
+                        .HasName("Promotion_pkey");
+
+                    b.HasIndex("CompanyBusinessId");
 
                     b.ToTable("Promotions");
-                });
-
-            modelBuilder.Entity("Core.Entities.PromotionEnterprise", b =>
-                {
-                    b.Property<int>("PromotionId")
-                        .HasColumnType("integer");
-
-                    b.Property<int>("EnterpriseId")
-                        .HasColumnType("integer");
-
-                    b.HasKey("PromotionId", "EnterpriseId");
-
-                    b.HasIndex("EnterpriseId");
-
-                    b.ToTable("PromotionEnterprises");
                 });
 
             modelBuilder.Entity("Core.Entities.SavingAccount", b =>
@@ -482,23 +474,15 @@ namespace Infrastructure.Migrations
                     b.Navigation("Account");
                 });
 
-            modelBuilder.Entity("Core.Entities.PromotionEnterprise", b =>
+            modelBuilder.Entity("Core.Entities.Promotion", b =>
                 {
-                    b.HasOne("Core.Entities.Enterprise", "Enterprise")
-                        .WithMany("PromotionsEnterprises")
-                        .HasForeignKey("EnterpriseId")
+                    b.HasOne("Core.Entities.Company_Business", "CompanyBusinesses")
+                        .WithMany("Promotions")
+                        .HasForeignKey("CompanyBusinessId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("Core.Entities.Promotion", "Promotion")
-                        .WithMany("PromotionsEnterprises")
-                        .HasForeignKey("PromotionId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("Enterprise");
-
-                    b.Navigation("Promotion");
+                    b.Navigation("CompanyBusinesses");
                 });
 
             modelBuilder.Entity("Core.Entities.SavingAccount", b =>
@@ -526,6 +510,11 @@ namespace Infrastructure.Migrations
                     b.Navigation("Customers");
                 });
 
+            modelBuilder.Entity("Core.Entities.Company_Business", b =>
+                {
+                    b.Navigation("Promotions");
+                });
+
             modelBuilder.Entity("Core.Entities.Currency", b =>
                 {
                     b.Navigation("Accounts");
@@ -538,16 +527,6 @@ namespace Infrastructure.Migrations
                     b.Navigation("Accounts");
 
                     b.Navigation("CreditCards");
-                });
-
-            modelBuilder.Entity("Core.Entities.Enterprise", b =>
-                {
-                    b.Navigation("PromotionsEnterprises");
-                });
-
-            modelBuilder.Entity("Core.Entities.Promotion", b =>
-                {
-                    b.Navigation("PromotionsEnterprises");
                 });
 #pragma warning restore 612, 618
         }
