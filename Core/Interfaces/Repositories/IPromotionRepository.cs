@@ -5,6 +5,7 @@ namespace Core.Interfaces.Repositories;
 
 public interface IPromotionRepository
 {
+    Task<List<PromotionDTO>> GetFiltered(FilterPromotionModel filter);
     Task<PromotionDTO> Add(CreatePromotionModel model);
     Task<PromotionDTO> GetById(int id);
     Task<List<PromotionDTO>> GettAll();

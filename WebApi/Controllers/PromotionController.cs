@@ -22,6 +22,15 @@ namespace WebApi.Controllers
         }
 
 
+        [HttpGet("filtered")]
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> GetFiltered([FromQuery] FilterPromotionModel filter)
+        {
+            var promotion = await _promotionService.GetFiltered(filter);
+            return Ok(promotion);
+        }
+
+
         [HttpGet("{id}")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> GetById([FromRoute] int id)

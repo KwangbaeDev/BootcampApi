@@ -29,6 +29,11 @@ public class PromotionService : IPromotionService
         return await _promotionRepository.GetById(id);
     }
 
+    public async Task<List<PromotionDTO>> GetFiltered(FilterPromotionModel filter)
+    {
+        return await _promotionRepository.GetFiltered(filter);
+    }
+
     public async Task<List<PromotionDTO>> GettAll()
     {
         return await _promotionRepository.GettAll();

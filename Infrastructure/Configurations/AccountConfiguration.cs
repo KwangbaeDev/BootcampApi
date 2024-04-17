@@ -8,9 +8,19 @@ public class AccountConfiguration : IEntityTypeConfiguration<Account>
 {
     public void Configure(EntityTypeBuilder<Account> entity)
     {
-        entity.HasKey(e => e.Id).HasName("Account_pkey");
-        entity.Property(e => e.Number).HasMaxLength(100);
-        entity.Property(e => e.Balance).HasPrecision(20, 5);
+        entity
+            .HasKey(e => e.Id)
+            .HasName("Account_pkey");
+
+
+        entity
+            .Property(e => e.Number)
+            .HasMaxLength(100);
+
+
+        entity
+            .Property(e => e.Balance)
+            .HasPrecision(20, 5);
 
 
         entity

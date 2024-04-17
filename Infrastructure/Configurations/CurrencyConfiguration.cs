@@ -27,6 +27,12 @@ public class CurrencyConfiguration : IEntityTypeConfiguration<Currency>
             .Property(e => e.SellValue)
             .HasColumnType("numeric(20,5)");
 
+
+        entity
+            .HasOne(currency => currency.Product)
+            .WithMany(product => product.Currencies)
+            .HasForeignKey(currency => currency.ProductId);
+
         entity
             .HasMany(currency => currency.Accounts)
             .WithOne(account => account.Currency)

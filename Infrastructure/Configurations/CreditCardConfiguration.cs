@@ -49,6 +49,7 @@ public class CreditCardConfiguration : IEntityTypeConfiguration<CreditCard>
             .HasPrecision(20,5).IsRequired();
 
 
+
         entity
             .HasOne(creditcard => creditcard.Currency)
             .WithMany(currency => currency.CreditCards)
@@ -58,5 +59,10 @@ public class CreditCardConfiguration : IEntityTypeConfiguration<CreditCard>
             .HasOne(creditcard => creditcard.Customer)
             .WithMany(customer => customer.CreditCards)
             .HasForeignKey(creditcard => creditcard.CustomerId);
+
+        entity
+            .HasOne(creditCard => creditCard.Product)
+            .WithMany(product => product.CreditCards)
+            .HasForeignKey(creditCard => creditCard.ProductId);
     }
 }

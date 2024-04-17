@@ -24,6 +24,12 @@ public class PromotionMappingConfiguration : IRegister
             .Map(x => x.Name, src => src.Name)
             .Map(x => x.Start, src => src.Start)
             .Map(x => x.End, src => src.Start)
-            .Map(x => x.Discount, src => src.Discount);
+            .Map(x => x.Discount, src => src.Discount)
+            .AfterMapping((src, x) =>
+            {
+                x.Enterprises = src.PromotionsEnterprises
+                .Select(pe => pe.Enterprise.Adapt<EnterpriseDTO>())
+                .ToList();
+            });
     }
 }

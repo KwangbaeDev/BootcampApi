@@ -1,5 +1,6 @@
 ﻿using Core.Constants;
 using Core.Entities;
+using Core.Exceptions;
 using Core.Interfaces.Repositories;
 using Core.Models;
 using Core.Requests;
@@ -7,6 +8,7 @@ using Infrastructure.Contexts;
 using Mapster;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory;
 
 namespace Infrastructure.Repositories;
 
@@ -23,32 +25,30 @@ public class PromotionRepository : IPromotionRepository
     {
         var promotion = model.Adapt<Promotion>();
 
+
+        foreach (int enterpriseId in model.RelatedEnterpriseIds)
+        {
+            var promotionEnterprise = new PromotionEnterprise
+            {
+                Promotion = promotion,
+                EnterpriseId = enterpriseId
+            };
+            _context.PromotionEnterprises.Add(promotionEnterprise);
+        }
+
         _context.Promotions.Add(promotion);
 
         await _context.SaveChangesAsync();
 
-        if (model.EnterpriseIds != null && model.EnterpriseIds.Any())
-        {
-            foreach (var enterpriseIds in model.EnterpriseIds)
-            {
-                var promotionEnterprise = new PromotionEnterprise
-                {
-                    PromotionId = promotion.Id,
-                    EnterpriseId = enterpriseIds
-                };
+        var createdPromotion = await _context.Promotions
+                                             .Include(x => x.PromotionsEnterprises)
+                                             .ThenInclude(x => x.Enterprise)
+                                             .FirstOrDefaultAsync(x => x.Id == promotion.Id);
 
-                _context.PromotionEnterprises.Add(promotionEnterprise);
-            }
 
-            await _context.SaveChangesAsync();
-        }
+        var promotionDTO = promotion.Adapt<PromotionDTO>();
 
-        var promotionToCreate = await _context.Promotions
-            .Include(x => x.PromotionsEnterprises)
-            .ThenInclude(x => x.Enterprise)
-            .FirstOrDefaultAsync(x => x.Id == promotion.Id);
-
-        return promotionToCreate.Adapt<PromotionDTO>();
+        return promotionDTO;
     }
 
     public async Task<bool> Delete(int id)
@@ -69,7 +69,6 @@ public class PromotionRepository : IPromotionRepository
 
     public async Task<PromotionDTO> GetById(int id)
     {
-        //var promotion = await _context.Promotions.FindAsync(id);
         var promotion = await _context.Promotions
                                       .Include(x => x.PromotionsEnterprises)
                                       .ThenInclude(x => x.Enterprise)
@@ -85,33 +84,91 @@ public class PromotionRepository : IPromotionRepository
         return promotionDTO;
     }
 
+    public async Task<List<PromotionDTO>> GetFiltered(FilterPromotionModel filter)
+    {
+        var query = _context.Promotions
+                         .Include(x => x.PromotionsEnterprises)
+                         .ThenInclude(x => x.Enterprise)
+                         .AsQueryable();
+
+        if (filter.Name is not null)
+        {
+            query = query.Where(x =>
+                x.Name == filter.Name);
+        }
+
+        if (filter.PromotionTimeFrom is not null)
+        {
+            query = query.Where(x =>
+                x.Start != null &&
+                x.Start.Value.Year >= filter.PromotionTimeFrom);
+        }
+
+        if (filter.PromotionTimeTo is not null)
+        {
+            query = query.Where(x =>
+                x.End != null &&
+                x.End.Value.Year <= filter.PromotionTimeTo);
+        }
+
+        if (filter.Discount is not null)
+        {
+            query = query.Where(x =>
+                x.Discount == filter.Discount);
+        }
+
+        var result = await query.ToListAsync();
+        var promotionDTO = result.Adapt<List<PromotionDTO>>();
+        return promotionDTO;
+    }
+
     public async Task<List<PromotionDTO>> GettAll()
     {
-        var promotion = await _context.Promotions
+        var promotions = await _context.Promotions
                                             .Where(x => x.IsDeleted != IsDeleteStatus.True)
+                                            .Include(x => x.PromotionsEnterprises)
+                                            .ThenInclude(x => x.Enterprise)
                                             .ToListAsync();
 
-        var promotionDTO = promotion.Adapt<List<PromotionDTO>>();
+        var promotionDTOs = promotions.Select(x => x.Adapt<PromotionDTO>()).ToList();
 
-        return promotionDTO;
+        return promotionDTOs;
     }
 
     public async Task<PromotionDTO> Update(UpdatePromotionModel model)
     {
-        var promotion = await _context.Promotions.FindAsync(model.Id);
+        var query = _context.Promotions
+                         .Include(a => a.PromotionsEnterprises)
+                         .ThenInclude(a => a.Enterprise)
+                         .AsQueryable();
 
-        if (promotion is null || promotion.IsDeleted == IsDeleteStatus.True)
+        var result = await query.ToListAsync();
+
+        var promotion = await _context.Promotions
+        .Include(x => x.PromotionsEnterprises)
+        .FirstOrDefaultAsync(x => x.Id == model.Id);
+
+        if (promotion == null || promotion.IsDeleted == IsDeleteStatus.True)
         {
-            throw new Exception("Promotion was not found.");
+            throw new NotFoundException("Promotion not found");
         }
+
         model.Adapt(promotion);
 
-        _context.Promotions.Update(promotion);
+        promotion.PromotionsEnterprises.Clear();
+
+        foreach (int enterpriseId in model.RelatedEnterpriseIds)
+        {
+            var promotionEnterprise = new PromotionEnterprise
+            {
+                PromotionId = promotion.Id,
+                EnterpriseId = enterpriseId
+            };
+            promotion.PromotionsEnterprises.Add(promotionEnterprise);
+        }
 
         await _context.SaveChangesAsync();
-
         var promotionDTO = promotion.Adapt<PromotionDTO>();
-
         return promotionDTO;
     }
 }

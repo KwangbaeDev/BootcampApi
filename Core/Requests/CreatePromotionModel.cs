@@ -7,5 +7,5 @@ public class CreatePromotionModel
     public DateTime End { get; set; }
     public int Discount { get; set; }
 
-    public List<int>? EnterpriseIds { get; set; }
+    public List<int> RelatedEnterpriseIds { get; set; } = new List<int>();
 }
