@@ -8,7 +8,8 @@ public class PromotionConfiguration : IEntityTypeConfiguration<Promotion>
 {
     public void Configure(EntityTypeBuilder<Promotion> entity)
     {
-        entity.HasKey(p => p.Id);
+        entity
+            .HasKey(p => p.Id);
 
         entity
             .Property(p => p.Start)

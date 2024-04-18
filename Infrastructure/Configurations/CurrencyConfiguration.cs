@@ -28,14 +28,20 @@ public class CurrencyConfiguration : IEntityTypeConfiguration<Currency>
             .HasColumnType("numeric(20,5)");
 
 
-        entity
-            .HasOne(currency => currency.Product)
-            .WithMany(product => product.Currencies)
-            .HasForeignKey(currency => currency.ProductId);
 
         entity
             .HasMany(currency => currency.Accounts)
             .WithOne(account => account.Currency)
             .HasForeignKey(account => account.CurrencyId);
+
+        entity
+            .HasMany(currency => currency.CreditRequests)
+            .WithOne(creditRequest => creditRequest.Currency)
+            .HasForeignKey(currency => currency.CurrencyId);
+
+        entity
+            .HasMany(currency => currency.Credits)
+            .WithOne(credit => credit.Currency)
+            .HasForeignKey(currency => currency.CurrencyId);
     }
 }

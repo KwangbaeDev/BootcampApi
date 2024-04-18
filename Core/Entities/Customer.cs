@@ -28,4 +28,6 @@ public class Customer
 
     public ICollection<Account> Accounts { get; set; } = new List<Account>();
     public ICollection<CreditCard> CreditCards { get; set; } = new List<CreditCard>();
+    public ICollection<CreditRequest> CreditRequests { get; set; } = new List<CreditRequest>();
+    public ICollection<Credit> Credits { get; set; } = new List<Credit>();
 }

@@ -60,9 +60,5 @@ public class CreditCardConfiguration : IEntityTypeConfiguration<CreditCard>
             .WithMany(customer => customer.CreditCards)
             .HasForeignKey(creditcard => creditcard.CustomerId);
 
-        entity
-            .HasOne(creditCard => creditCard.Product)
-            .WithMany(product => product.CreditCards)
-            .HasForeignKey(creditCard => creditCard.ProductId);
     }
 }

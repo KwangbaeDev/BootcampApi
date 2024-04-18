@@ -29,9 +29,5 @@ public class CurrentAccountConfiguration : IEntityTypeConfiguration<CurrentAccou
             .WithOne(p => p.CurrentAccount)
             .HasForeignKey<CurrentAccount>(d => d.AccountId);
 
-        entity
-            .HasOne(currentAccount => currentAccount.Product)
-            .WithMany(product => product.CurrentAccounts)
-            .HasForeignKey(currentAccount => currentAccount.ProductId);
     }
 }
