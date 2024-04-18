@@ -48,13 +48,13 @@ public class CustomerConfiguration : IEntityTypeConfiguration<Customer>
             .HasForeignKey(acount => acount.CustomerId);
 
         entity
-            .HasMany(customer => customer.CreditRequests)
-            .WithOne(creditRequest => creditRequest.Customer)
-            .HasForeignKey(customer => customer.CustomerId);
+            .HasMany(customer => customer.ApplicationForms)
+            .WithOne(applicationForm => applicationForm.Customer)
+            .HasForeignKey(applicationForn => applicationForn.CustomerId);
 
-        entity
-            .HasMany(customer => customer.Credits)
-            .WithOne(credit => credit.Customer)
-            .HasForeignKey(customer => customer.CustomerId);
+        //entity
+        //    .HasMany(customer => customer.Credits)
+        //    .WithOne(credit => credit.Customer)
+        //    .HasForeignKey(customer => customer.CustomerId);
     }
 }

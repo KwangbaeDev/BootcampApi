@@ -19,6 +19,4 @@ public class CreditCard
     public int CurrencyId { get; set; }
     public virtual Customer Customer { get; set; } = null!;
     public virtual Currency Currency { get; set; } = null!;
-
-
 }

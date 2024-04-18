@@ -1,5 +1,5 @@
 ﻿using Core.Constants;
-using Core.Requests;
+using Core.Requests.CustomerModels;
 using FluentValidation;
 using System;
 using System.Collections.Generic;

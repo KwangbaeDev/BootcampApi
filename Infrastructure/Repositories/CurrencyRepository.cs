@@ -1,7 +1,7 @@
 ﻿using Core.Entities;
 using Core.Interfaces.Repositories;
 using Core.Models;
-using Core.Requests;
+using Core.Requests.CurrencyModels;
 using Infrastructure.Contexts;
 using Mapster;
 using Microsoft.EntityFrameworkCore;

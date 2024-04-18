@@ -48,6 +48,7 @@ public static class DependencyInjection
         services.AddScoped<IAccountRepository, AccountRepository>();
         services.AddScoped<IEnterpriseRepository, EnterpriseRepository>();
         services.AddScoped<IPromotionRepository, PromotionRepository>();
+        services.AddScoped<IApplicationFormRepository, ApplicationFormRepository>();
 
         return services;
     }
@@ -61,6 +62,7 @@ public static class DependencyInjection
         services.AddScoped<IAccountService, AccountService>();
         services.AddScoped<IEnterpriseService, EnterpriseService>();
         services.AddScoped<IPromotionService, PromotionService>();
+        services.AddScoped<IApplicationFormService, ApplicationFormService>();
         services.AddScoped<IJwtProvider, JwtProvider>();
 
         return services;

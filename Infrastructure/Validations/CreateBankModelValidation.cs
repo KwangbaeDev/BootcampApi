@@ -1,4 +1,4 @@
-﻿using Core.Requests;
+﻿using Core.Requests.BankModels;
 using FluentValidation;
 using System.ComponentModel.DataAnnotations;
 

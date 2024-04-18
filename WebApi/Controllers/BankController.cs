@@ -1,6 +1,6 @@
 ﻿using Core.Interfaces.Repositories;
 using Core.Interfaces.Services;
-using Core.Requests;
+using Core.Requests.BankModels;
 using Infrastructure.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

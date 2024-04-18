@@ -1,5 +1,5 @@
 ﻿using Core.Models;
-using Core.Requests;
+using Core.Requests.PromotionModels;
 
 namespace Core.Interfaces.Services;
 

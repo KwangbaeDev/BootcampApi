@@ -2,7 +2,7 @@
 using Core.Entities;
 using Core.Interfaces.Repositories;
 using Core.Models;
-using Core.Requests;
+using Core.Requests.AccountModels;
 using Infrastructure.Contexts;
 using Mapster;
 using Microsoft.EntityFrameworkCore;
@@ -20,62 +20,6 @@ public class AccountRepository : IAccountRepository
     }
 
     public async Task<AccountDTO> Add(CreateAccountModel model)
-    //{
-    //    var customer = await _context.Customers
-    //                                 .Include(x => x.Bank)
-    //                                 .FirstOrDefaultAsync(x => x.Id == model.CustomerId);
-
-    //    if (customer is null)
-    //    {
-    //        throw new Exception("Customer not found");
-    //    }
-
-    //    var currency = await _context.Currencies.FindAsync(model.CurrencyId);
-
-    //    if (currency is null)
-    //    {
-    //        throw new Exception("Currency not found");
-    //    }
-
-    //    var accountToCreate = model.Adapt<Account>();
-
-    //    _context.Accounts.Add(accountToCreate);
-
-    //    await _context.SaveChangesAsync();
-
-    //    AccountDTO accountDTO;
-
-    //    switch (model.Type)
-    //    {
-    //        case AccountType.Saving:
-    //            var savingAccountDTO = new SavingAcountDTO
-    //            {
-    //                Id = accountToCreate.Id,
-    //                SavingType = SavingType.Insight,
-    //                HolderName = model.Holder
-    //            };
-
-    //            accountDTO = savingAccountDTO;
-    //            break;
-    //        case AccountType.Current:
-    //            var currentAccountDTO = new CurrentAccountDTO
-    //            {
-    //                Id = accountToCreate.Id,
-    //                OperationalLimit = null,
-    //                MonthAverage = null,
-    //                Interest = null
-    //            };
-
-    //            accountDTO = currentAccountDTO;
-    //            break;
-    //        default:
-    //            throw new Exception("Invalid account type");
-    //    }
-
-    //    accountDTO = accountToCreate.Adapt(accountDTO);
-
-    //    return accountDTO;
-    //}
     {
         /*A modo de ejemplo*/
         #region PRUEBA

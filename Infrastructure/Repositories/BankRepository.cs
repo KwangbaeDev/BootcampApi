@@ -3,9 +3,9 @@ using Core.Models;
 using Infrastructure.Contexts;
 using Core.Entities;
 using Microsoft.EntityFrameworkCore;
-using Core.Requests;
 using Mapster;
 using Core.Exceptions;
+using Core.Requests.BankModels;
 
 namespace Infrastructure.Repositories;
 

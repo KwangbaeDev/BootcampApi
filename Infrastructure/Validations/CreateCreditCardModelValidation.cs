@@ -1,5 +1,5 @@
 ﻿using Core.Constants;
-using Core.Requests;
+using Core.Requests.CreditCardModels;
 using FluentValidation;
 
 namespace Infrastructure.Validations;

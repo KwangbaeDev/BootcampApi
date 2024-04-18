@@ -30,21 +30,5 @@ public class CreditConfiguration : IEntityTypeConfiguration<Credit>
         entity
             .Property(c => c.CreditStatus)
             .IsRequired();
-
-
-        entity
-            .HasOne(credit => credit.CreditRequest)
-            .WithMany(creditRequest => creditRequest.Credits)
-            .HasForeignKey(credit => credit.CreditRequestId);
-
-        entity
-            .HasOne(credit => credit.Customer)
-            .WithMany(customer => customer.Credits)
-            .HasForeignKey(credit => credit.CustomerId);
-
-        entity
-            .HasOne(credit => credit.Currency)
-            .WithMany(currency => currency.Credits)
-            .HasForeignKey(credit => credit.CurrencyId);
     }
 }

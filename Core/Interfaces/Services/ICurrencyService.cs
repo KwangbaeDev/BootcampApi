@@ -1,5 +1,5 @@
 ﻿using Core.Models;
-using Core.Requests;
+using Core.Requests.CurrencyModels;
 using System.Threading.Tasks;
 
 namespace Core.Interfaces.Services;

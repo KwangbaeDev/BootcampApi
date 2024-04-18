@@ -35,13 +35,13 @@ public class CurrencyConfiguration : IEntityTypeConfiguration<Currency>
             .HasForeignKey(account => account.CurrencyId);
 
         entity
-            .HasMany(currency => currency.CreditRequests)
-            .WithOne(creditRequest => creditRequest.Currency)
+            .HasMany(currency => currency.ApplicationForms)
+            .WithOne(applicationForm => applicationForm.Currency)
             .HasForeignKey(currency => currency.CurrencyId);
 
-        entity
-            .HasMany(currency => currency.Credits)
-            .WithOne(credit => credit.Currency)
-            .HasForeignKey(currency => currency.CurrencyId);
+        //entity
+        //    .HasMany(currency => currency.Credits)
+        //    .WithOne(credit => credit.Currency)
+        //    .HasForeignKey(currency => currency.CurrencyId);
     }
 }
