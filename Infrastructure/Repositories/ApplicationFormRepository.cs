@@ -31,16 +31,20 @@ public class ApplicationFormRepository : IApplicationFormRepository
         }
         else
         {
-
             var newCustomer = model.Adapt<Customer>();
+
             var bankDefault = await _context.Banks.FirstOrDefaultAsync(b => b.Name == "Banco Continental");
-            if (bankDefault != null) 
+            if (bankDefault == null) 
             {
-                newCustomer.BankId = bankDefault.Id;
+                throw new Exception("There is no default bank");
             }
-            
+            newCustomer.BankId = bankDefault.Id;
+
+            var newCustomerId = _context.Customers.Max(c => c.Id) + 1;
+            newCustomer.Id = newCustomerId;
+
             _context.Customers.Add(newCustomer);
-            await _context.SaveChangesAsync();
+            //await _context.SaveChangesAsync();
 
             applicationForm.CustomerId = newCustomer.Id;
         }
