@@ -47,5 +47,20 @@ public class AccountConfiguration : IEntityTypeConfiguration<Account>
             .HasOne(account => account.CurrentAccount)
             .WithOne(savingAccount => savingAccount.Account)
             .HasForeignKey<CurrentAccount>(savingAccount => savingAccount.AccountId);
+
+        entity
+            .HasMany(account => account.Transfers)
+            .WithOne(transfer => transfer.SourceAccount)
+            .HasForeignKey(transfer => transfer.SourceAccountId);
+
+        entity
+            .HasMany(account => account.Transfers)
+            .WithOne(transfer => transfer.TargetAccount)
+            .HasForeignKey(transfer => transfer.TargetAccountId);
+
+        entity
+            .HasMany(account => account.TransferAccounts)
+            .WithOne(transferAccount => transferAccount.Account)
+            .HasForeignKey(transferAccount => transferAccount.AccountId);
     }
 }

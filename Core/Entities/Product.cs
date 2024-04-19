@@ -9,4 +9,6 @@ public class Product
 
     public int ApplicationFormId { get; set; }
     public ApplicationForm ApplicationForm { get; set; } = null!;
+
+    //public virtual ICollection<ApplicationForm> ApplicationForms { get; set; } = new List<ApplicationForm>();
 }

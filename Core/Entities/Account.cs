@@ -12,11 +12,15 @@ public class Account
     public decimal Balance { get; set; }
     public AccountStatus Status { get; set; } = AccountStatus.Active;
     public IsDeleteStatus IsDeleted { get; set; } = IsDeleteStatus.False;
+
     public int CurrencyId { get; set; }
     public Currency Currency { get; set; } = null!;  
     public int CustomerId { get; set; }
     public Customer Customer { get; set; } = null!;
     public SavingAccount? SavingAccount { get; set; }
     public CurrentAccount? CurrentAccount { get; set; }
+
     public virtual ICollection<Movement> Movements { get; set; } = new List<Movement>();
+    public virtual ICollection<Transfer> Transfers { get; set; } = new List<Transfer>();
+    public ICollection<TransferAccount> TransferAccounts { get; set; } = new List<TransferAccount>();
 }

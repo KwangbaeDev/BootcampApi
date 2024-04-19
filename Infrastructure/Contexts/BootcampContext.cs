@@ -45,6 +45,10 @@ public partial class BootcampContext : DbContext
 
     public virtual DbSet<ApplicationForm> ApplicationForms { get; set; }
 
+    public virtual DbSet<Transfer> Transfers { get; set; }
+
+    public virtual DbSet<TransferAccount> TransferAccounts { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfiguration(new AccountConfiguration());
@@ -74,6 +78,10 @@ public partial class BootcampContext : DbContext
         modelBuilder.ApplyConfiguration(new ProductConfiguration());
 
         modelBuilder.ApplyConfiguration(new ApplicationFormConfiguration());
+
+        modelBuilder.ApplyConfiguration(new TransferConfiguration());
+
+        modelBuilder.ApplyConfiguration(new TransferAccountConfiguration());
 
 
         OnModelCreatingPartial(modelBuilder);
