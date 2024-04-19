@@ -5,6 +5,7 @@ using Core.Models;
 using Core.Requests.ApplicationFormModels;
 using Infrastructure.Migrations;
 using Mapster;
+using Core.Requests.ProductModels;
 
 namespace Infrastructure.Mappings;
 
@@ -14,36 +15,41 @@ public class ApplicationFormMappingConfiguration : IRegister
     {
         //Del Creation object hacia la entidad
         config.NewConfig<CreateApplicationFormModel, ApplicationForm>()
-            .Map(x => x.Name, src => src.Name)
-            .Map(x => x.Lastname, src => src.Lastname)
-            .Map(x => x.DocumentNumber, src => src.DocumentNumber)
-            .Map(x => x.Address, src => src.Address)
-            .Map(x => x.Mail, src => src.Mail)
-            .Map(x => x.Phone, src => src.Phone)
-            .Map(x => x.Descripcion, src => src.Descripcion)
-            .Map(x => x.ApplicationDate, src => src.ApplicationDate)
-            .Map(x => x.RequestStatus, src => (RequestStatus)src.RequestStatus)
-            .Map(x => x.CustomerId, src => src.CustomerId)
-            .Map(x => x.CurrencyId, src => src.CurrencyId)
-            .Map(x => x.Product, src => src.Product);
+            .Map(dest => dest.Descripcion, src => src.Descripcion)
+            .Map(dest => dest.ApplicationDate, src => src.ApplicationDate)
+            .Map(dest => dest.RequestStatus, src => src.RequestStatus)
+            .Map(dest => dest.CustomerId, src => src.CustomerId)
+            .Map(dest => dest.CurrencyId, src => src.CurrencyId);
+        //.Map(dest => dest.Product, src => src.Product);
+
+
+        config.NewConfig<CreateProductModel, Product>()
+            .Map(dest => dest.ProductType, src => src.ProductType);
+
+
 
 
         //Entidad hacia el DTO
         config.NewConfig<ApplicationForm, ApplicationFormDTO>()
-            .Map(x => x.Id, src => src.Id)
-            .Map(x => x.Name, src => src.Name)
-            .Map(x => x.Lastname, src => src.Lastname)
-            .Map(x => x.DocumentNumber, src => src.DocumentNumber)
-            .Map(x => x.Address, src => src.Address)
-            .Map(x => x.Mail, src => src.Mail)
-            .Map(x => x.Phone, src => src.Phone)
-            .Map(x => x.Descripcion, src => src.Descripcion)
-            .Map(x => x.ApplicationDate, src => src.ApplicationDate)
-            .Map(x => x.ApprovalDate, src => src.ApprovalDate)
-            .Map(x => x.RejectionDate, src => src.RejectionDate)
-            .Map(x => x.RequestStatus, src => (RequestStatus)src.RequestStatus)
-            .Map(x => x.Customer, src => src.Customer)
-            .Map(x => x.Currency, src => src.Currency)
-            .Map(x => x.Product, src => src.Product);
+            .Map(dest => dest.Id, src => src.Id)
+            .Map(dest => dest.Name, src => src.Customer.Name) // Ejemplo de mapeo de una propiedad de navegación
+            .Map(dest => dest.Lastname, src => src.Customer.Lastname) // Otro ejemplo de mapeo de una propiedad de navegación
+            .Map(dest => dest.DocumentNumber, src => src.Customer.DocumentNumber) // Otro ejemplo de mapeo de una propiedad de navegación
+            .Map(dest => dest.Address, src => src.Customer.Address)
+            .Map(dest => dest.Mail, src => src.Customer.Mail)
+            .Map(dest => dest.Phone, src => src.Customer.Phone)
+            .Map(dest => dest.Descripcion, src => src.Descripcion)
+            .Map(dest => dest.ApplicationDate, src => src.ApplicationDate)
+            .Map(dest => dest.ApprovalDate, src => src.ApprovalDate)
+            .Map(dest => dest.RejectionDate, src => src.RejectionDate)
+            .Map(dest => dest.RequestStatus, src => src.RequestStatus)
+            .Map(dest => dest.Customer, src => src.Customer)
+            .Map(dest => dest.Currency, src => src.Currency)
+            .Map(dest => dest.Product, src => src.Product);
+
+
+        config.NewConfig<Product, ProductDTO>()
+            .Map(dest => dest.Id, src => src.Id)
+            .Map(dest => dest.ProductType, src => src.ProductType.ToString());
     }
 }

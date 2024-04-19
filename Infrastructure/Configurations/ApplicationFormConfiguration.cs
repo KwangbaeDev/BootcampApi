@@ -12,30 +12,6 @@ public class ApplicationFormConfiguration : IEntityTypeConfiguration<Application
             .HasKey(af => af.Id);
 
         entity
-            .Property(af => af.Name)
-            .IsRequired();
-
-        entity
-            .Property(af => af.Lastname)
-            .IsRequired();
-
-        entity
-            .Property(af => af.DocumentNumber)
-            .IsRequired();
-
-        entity
-            .Property(af => af.Address)
-            .IsRequired();
-
-        entity
-            .Property(af => af.Mail)
-            .IsRequired();
-
-        entity
-            .Property(af => af.Phone)
-            .IsRequired();
-
-        entity
             .Property(af => af.Descripcion)
             .IsRequired();
 

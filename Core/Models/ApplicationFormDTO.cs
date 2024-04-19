@@ -13,7 +13,7 @@ public class ApplicationFormDTO
     public string? Mail { get; set; }
     public string? Phone { get; set; }
     public string? Descripcion { get; set; }
-    public DateTime ApplicationDate { get; set; }
+    public DateTime ApplicationDate { get; set; } = DateTime.Now;
     public DateTime? ApprovalDate { get; set; }
     public DateTime? RejectionDate { get; set; }
     public RequestStatus RequestStatus { get; set; } = RequestStatus.Pending;
