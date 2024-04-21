@@ -32,12 +32,12 @@ public class ApplicationFormMappingConfiguration : IRegister
         //Entidad hacia el DTO
         config.NewConfig<ApplicationForm, ApplicationFormDTO>()
             .Map(dest => dest.Id, src => src.Id)
-            .Map(dest => dest.Name, src => src.Customer.Name) // Ejemplo de mapeo de una propiedad de navegación
-            .Map(dest => dest.Lastname, src => src.Customer.Lastname) // Otro ejemplo de mapeo de una propiedad de navegación
-            .Map(dest => dest.DocumentNumber, src => src.Customer.DocumentNumber) // Otro ejemplo de mapeo de una propiedad de navegación
-            .Map(dest => dest.Address, src => src.Customer.Address)
-            .Map(dest => dest.Mail, src => src.Customer.Mail)
-            .Map(dest => dest.Phone, src => src.Customer.Phone)
+            .Map(dest => dest.Name, src => src.Customer.Name) // Mapeo de una propiedad de navegación
+            .Map(dest => dest.Lastname, src => src.Customer.Lastname) // Mapeo de una propiedad de navegación
+            .Map(dest => dest.DocumentNumber, src => src.Customer.DocumentNumber) //Mapeo de una propiedad de navegación
+            .Map(dest => dest.Address, src => src.Customer.Address)//Mapeo de una propiedad de navegación
+            .Map(dest => dest.Mail, src => src.Customer.Mail)//Mapeo de una propiedad de navegación
+            .Map(dest => dest.Phone, src => src.Customer.Phone)//Mapeo de una propiedad de navegación
             .Map(dest => dest.Descripcion, src => src.Descripcion)
             .Map(dest => dest.ApplicationDate, src => src.ApplicationDate)
             .Map(dest => dest.ApprovalDate, src => src.ApprovalDate)

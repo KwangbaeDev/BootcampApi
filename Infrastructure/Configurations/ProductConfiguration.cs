@@ -16,9 +16,11 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
             .Property(p => p.ProductType)
             .IsRequired();
 
+
+
         entity
-            .HasOne(product => product.ApplicationForm)
+            .HasMany(product => product.ApplicationForms)
             .WithOne(applicationForm => applicationForm.Product)
-            .HasForeignKey<Product>(product => product.ApplicationFormId);
+            .HasForeignKey(applicationForm => applicationForm.ProductId);
     }
 }

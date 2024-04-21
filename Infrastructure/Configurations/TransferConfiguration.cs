@@ -9,38 +9,38 @@ public class TransferConfiguration : IEntityTypeConfiguration<Transfer>
     public void Configure(EntityTypeBuilder<Transfer> entity)
     {
         entity
-            .HasKey(af => af.Id);
+            .HasKey(t => t.Id);
 
         entity
-            .Property(af => af.DestinationBank)
+            .Property(t => t.DestinationBank)
             .IsRequired();
 
         entity
-            .Property(af => af.AccountNumber)
+            .Property(t => t.AccountNumber)
             .IsRequired();
 
         entity
-            .Property(af => af.DocumentNumber)
+            .Property(t => t.DocumentNumber)
             .IsRequired();
 
-        entity
-            .Property(af => af.Amount)
-            .IsRequired();
-
-        entity
-            .Property(af => af.DateOfOperation)
-            .IsRequired();
 
 
         entity
             .HasOne(transfer => transfer.SourceAccount)
             .WithMany(soureAccount => soureAccount.Transfers)
-            .HasForeignKey(transfer => transfer.SourceAccountId);
+            .HasForeignKey(transfer => transfer.SourceAccountId)
+            .IsRequired(true);
 
+        //entity
+        //    .HasOne(transfer => transfer.TargetAccount)
+        //    .WithMany(targetAccount => targetAccount.Transfers)
+        //    .HasForeignKey(transfer => transfer.TargetAccountId)
+        //    .IsRequired(false);
         entity
-            .HasOne(transfer => transfer.TargetAccount)
+            .HasOne<Account>()
             .WithMany(targetAccount => targetAccount.Transfers)
-            .HasForeignKey(transfer => transfer.TargetAccountId);
+            .HasForeignKey(transfer => transfer.TargetAccountId)
+            .IsRequired(false);
 
         entity
             .HasOne(transfer => transfer.Currency)
@@ -48,9 +48,9 @@ public class TransferConfiguration : IEntityTypeConfiguration<Transfer>
             .HasForeignKey(transfer => transfer.CurrencyId);
 
         entity
-            .HasMany(transfer => transfer.TransferAccounts)
-            .WithOne(transferAccount => transferAccount.Transfer)
-            .HasForeignKey(transferAccount => transferAccount.TransferId);
+            .HasMany(transfer => transfer.MovementAccounts)
+            .WithOne(movementAccout => movementAccout.Transfer)
+            .HasForeignKey(movementAccount => movementAccount.TransferId);
 
     }
 }

@@ -47,7 +47,7 @@ public partial class BootcampContext : DbContext
 
     public virtual DbSet<Transfer> Transfers { get; set; }
 
-    public virtual DbSet<TransferAccount> TransferAccounts { get; set; }
+    public virtual DbSet<MovementAccount> MovementAccounts { get; set; }
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -81,7 +81,7 @@ public partial class BootcampContext : DbContext
 
         modelBuilder.ApplyConfiguration(new TransferConfiguration());
 
-        modelBuilder.ApplyConfiguration(new TransferAccountConfiguration());
+        modelBuilder.ApplyConfiguration(new MovementAccountConfiguration());
 
 
         OnModelCreatingPartial(modelBuilder);

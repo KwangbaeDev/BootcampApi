@@ -15,5 +15,6 @@ public class ApplicationForm
     public Customer Customer { get; set; } = null!;
     public int CurrencyId { get; set; }
     public Currency Currency { get; set; } = null!;
+    public int ProductId { get; set; }
     public Product Product { get; set; } = null!;
 }

@@ -40,9 +40,14 @@ public class ApplicationFormConfiguration : IEntityTypeConfiguration<Application
             .WithMany(currency => currency.ApplicationForms)
             .HasForeignKey(applicationForm => applicationForm.CurrencyId);
 
+        //entity
+        //    .HasOne(applicationForm => applicationForm.Product)
+        //    .WithOne(product => product.ApplicationForm)
+        //    .HasForeignKey<Product>(product => product.ApplicationFormId);
+
         entity
             .HasOne(applicationForm => applicationForm.Product)
-            .WithOne(product => product.ApplicationForm)
-            .HasForeignKey<Product>(product => product.ApplicationFormId);
+            .WithMany(product => product.ApplicationForms)
+            .HasForeignKey(applicationForm => applicationForm.ProductId);
     }
 }
