@@ -3,6 +3,7 @@ using System;
 using Infrastructure.Contexts;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Infrastructure.Migrations
 {
     [DbContext(typeof(BootcampContext))]
-    partial class BootcampContextModelSnapshot : ModelSnapshot
+    [Migration("20240421210234_MovementCorrectMigration")]
+    partial class MovementCorrectMigration
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -512,10 +515,10 @@ namespace Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int>("DestinationAccountId")
+                    b.Property<int?>("DestinationAccountId")
                         .HasColumnType("integer");
 
-                    b.Property<int>("MovementId")
+                    b.Property<int?>("MovementId")
                         .HasColumnType("integer");
 
                     b.Property<int>("OriginAccountId")
@@ -664,15 +667,11 @@ namespace Infrastructure.Migrations
                 {
                     b.HasOne("Core.Entities.Account", null)
                         .WithMany("Transfers")
-                        .HasForeignKey("DestinationAccountId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("DestinationAccountId");
 
                     b.HasOne("Core.Entities.Movement", "Movement")
                         .WithMany()
-                        .HasForeignKey("MovementId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .HasForeignKey("MovementId");
 
                     b.HasOne("Core.Entities.Account", "OriginAccount")
                         .WithMany()

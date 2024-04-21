@@ -11,25 +11,12 @@ public class TransferConfiguration : IEntityTypeConfiguration<Transfer>
         entity
             .HasKey(t => t.Id);
 
-        entity
-            .Property(t => t.DestinationBank)
-            .IsRequired();
-
-        entity
-            .Property(t => t.AccountNumber)
-            .IsRequired();
-
-        entity
-            .Property(t => t.DocumentNumber)
-            .IsRequired();
-
 
 
         entity
-            .HasOne(transfer => transfer.SourceAccount)
+            .HasOne(transfer => transfer.OriginAccount)
             .WithMany(soureAccount => soureAccount.Transfers)
-            .HasForeignKey(transfer => transfer.SourceAccountId)
-            .IsRequired(true);
+            .HasForeignKey(transfer => transfer.OriginAccountId);
 
         //entity
         //    .HasOne(transfer => transfer.TargetAccount)
@@ -39,18 +26,7 @@ public class TransferConfiguration : IEntityTypeConfiguration<Transfer>
         entity
             .HasOne<Account>()
             .WithMany(targetAccount => targetAccount.Transfers)
-            .HasForeignKey(transfer => transfer.TargetAccountId)
-            .IsRequired(false);
-
-        entity
-            .HasOne(transfer => transfer.Currency)
-            .WithMany(currency => currency.Transfers)
-            .HasForeignKey(transfer => transfer.CurrencyId);
-
-        entity
-            .HasMany(transfer => transfer.MovementAccounts)
-            .WithOne(movementAccout => movementAccout.Transfer)
-            .HasForeignKey(movementAccount => movementAccount.TransferId);
+            .HasForeignKey(transfer => transfer.DestinationAccountId);
 
     }
 }

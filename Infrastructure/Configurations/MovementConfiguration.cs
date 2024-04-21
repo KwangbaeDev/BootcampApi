@@ -12,17 +12,21 @@ public class MovementConfiguration : IEntityTypeConfiguration<Movement>
             .HasName("Movement_pkey");
 
         entity
-            .Property(e => e.Destination)
+            .Property(m => m.Destination)
             .HasMaxLength(150)
             .IsRequired();
 
         entity
-            .Property(e => e.Amount)
+            .Property(m => m.Amount)
             .HasPrecision(20, 5);
 
         entity
-            .Property(e => e.TransferredDateTime)
+            .Property(m => m.TransferredDateTime)
             .HasColumnType("timestamp without time zone");
+
+        entity
+            .Property(m => m.MovementType)
+            .IsRequired();
 
 
 
@@ -30,10 +34,5 @@ public class MovementConfiguration : IEntityTypeConfiguration<Movement>
             .HasOne(movement => movement.Account)
             .WithMany(account => account.Movements)
             .HasForeignKey(movement => movement.AccountId);
-
-        entity
-            .HasMany(movement => movement.MovementAccounts)
-            .WithOne(movementAccout => movementAccout.Movement)
-            .HasForeignKey(movementAccount => movementAccount.MovementId);
     }
 }

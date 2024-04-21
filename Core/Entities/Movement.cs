@@ -9,8 +9,8 @@ public class Movement
     public decimal Amount { get; set; }
     public DateTime? TransferredDateTime { get; set; }
     public TransferStatus TransferStatus { get; set; } = TransferStatus.Pending;
+    public MovementType MovementType { get; set; }
 
     public int AccountId { get; set; }
     public Account Account { get; set; } = null!;
-    public ICollection<MovementAccount> MovementAccounts { get; set; } = new List<MovementAccount>();
 }

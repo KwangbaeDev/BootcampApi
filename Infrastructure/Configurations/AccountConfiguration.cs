@@ -50,19 +50,13 @@ public class AccountConfiguration : IEntityTypeConfiguration<Account>
 
         entity
             .HasMany(account => account.Transfers)
-            .WithOne(transfer => transfer.SourceAccount)
-            .HasForeignKey(transfer => transfer.SourceAccountId)
-            .IsRequired(true);
+            .WithOne(transfer => transfer.OriginAccount)
+            .HasForeignKey(transfer => transfer.OriginAccountId);
 
         //entity
         //    .HasMany(account => account.Transfers)
         //    .WithOne(transfer => transfer.TargetAccount)
         //    .HasForeignKey(transfer => transfer.TargetAccountId)
         //    .IsRequired(false);
-
-        entity
-            .HasMany(account => account.MovementAccounts)
-            .WithOne(movementAccout => movementAccout.Account)
-            .HasForeignKey(movementAccout => movementAccout.AccountId);
     }
 }

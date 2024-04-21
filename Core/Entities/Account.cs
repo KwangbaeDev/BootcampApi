@@ -22,5 +22,4 @@ public class Account
 
     public virtual ICollection<Movement> Movements { get; set; } = new List<Movement>();
     public virtual ICollection<Transfer> Transfers { get; set; } = new List<Transfer>();
-    public ICollection<MovementAccount> MovementAccounts { get; set; } = new List<MovementAccount>();
 }
