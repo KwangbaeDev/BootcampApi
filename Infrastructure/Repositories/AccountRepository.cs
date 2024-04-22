@@ -21,18 +21,18 @@ public class AccountRepository : IAccountRepository
 
     public async Task<AccountDTO> Add(CreateAccountModel model)
     {
-        /*A modo de ejemplo*/
-        #region PRUEBA
-        var currency = new Currency()
-        {
-            Name = "Dolares Americanos",
-            BuyValue = 10,
-            SellValue = 20,
-        };
-        _context.Currencies.Add(currency);
+        ///*A modo de ejemplo*/
+        //#region PRUEBA
+        //var currency = new Currency()
+        //{
+        //    Name = "Dolares Americanos",
+        //    BuyValue = 10,
+        //    SellValue = 20,
+        //};
+        //_context.Currencies.Add(currency);
 
-        //throw new Exception("Algo malo pasó");
-        #endregion
+        ////throw new Exception("Algo malo pasó");
+        //#endregion
 
         var account = model.Adapt<Account>();
 

@@ -20,7 +20,6 @@ public class ApplicationFormMappingConfiguration : IRegister
             .Map(dest => dest.RequestStatus, src => src.RequestStatus)
             .Map(dest => dest.CustomerId, src => src.CustomerId)
             .Map(dest => dest.CurrencyId, src => src.CurrencyId);
-        //.Map(dest => dest.Product, src => src.Product);
 
 
         config.NewConfig<CreateProductModel, Product>()
