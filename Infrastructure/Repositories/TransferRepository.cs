@@ -6,6 +6,7 @@ using Core.Requests.TransferModels;
 using Infrastructure.Contexts;
 using Mapster;
 using Microsoft.EntityFrameworkCore;
+using System.Net.Http.Headers;
 
 namespace Infrastructure.Repositories;
 
@@ -118,4 +119,11 @@ public class TransferRepository : ITransferRepository
 
         return createTransfer.Adapt<TransferDTO>();
     }
+
+    //probar implementar despues
+    //public async bool CheckingAccount(Account checkedaccount)
+    //{
+
+
+    //}
 }

@@ -13,4 +13,6 @@ public class Movement
 
     public int AccountId { get; set; }
     public Account Account { get; set; } = null!;
+
+    public virtual ICollection<PaymentService> PaymentServices { get; set; } = new List<PaymentService>();
 }

@@ -47,6 +47,8 @@ public partial class BootcampContext : DbContext
 
     public virtual DbSet<Transfer> Transfers { get; set; }
 
+    public virtual DbSet<PaymentService> PaymentServices { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfiguration(new AccountConfiguration());
@@ -78,6 +80,8 @@ public partial class BootcampContext : DbContext
         modelBuilder.ApplyConfiguration(new ApplicationFormConfiguration());
 
         modelBuilder.ApplyConfiguration(new TransferConfiguration());
+
+        modelBuilder.ApplyConfiguration(new PaymentServiceConfiguration());
 
 
         OnModelCreatingPartial(modelBuilder);
