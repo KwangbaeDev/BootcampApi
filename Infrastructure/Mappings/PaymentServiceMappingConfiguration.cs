@@ -31,7 +31,7 @@ public class PaymentServiceMappingConfiguration : IRegister
             .Map(dest => dest.DocumentNumber, src => src.Movement.Account.Customer.DocumentNumber)
             .Map(dest => dest.Amount, src => src.Movement.Amount)
             .Map(dest => dest.Description, src => src.Description)
-            .Map(dest => dest.AccountId, src => src.Movement.AccountId)
-            .Map(dest => dest.Account, src => src.Movement.Adapt<AccountDTO>());
+            .Map(dest => dest.MovementId, src => src.MovementId)
+            .Map(dest => dest.Movement, src => src.Movement.Adapt<MovementDTO>());
     }
 }

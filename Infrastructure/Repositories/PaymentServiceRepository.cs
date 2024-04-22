@@ -23,23 +23,24 @@ public class PaymentServiceRepository : IPaymentServiceRepository
         var paymentService = model.Adapt<PaymentService>();
         paymentService.Movement = model.Adapt<Movement>();
 
-        var accountId = await _context.Accounts
-                                      .Include(a => a.Movements)
+        var account = await _context.Accounts
                                       .Include(a => a.Currency)
                                       .Include(a => a.Customer)
+                                      .ThenInclude(c => c.Bank)
                                       .Include(a => a.CurrentAccount)
                                       .FirstOrDefaultAsync(a => a.Id == model.AccountId);
 
-        if (accountId == null)
+        if (account == null)
         {
             throw new Exception("Account ID doesn't exist.");
         }
 
-        accountId.Balance = accountId.Balance - model.Amount;
-        _context.Accounts.Update(accountId);
+        account.Balance = account.Balance - model.Amount;
+        _context.Accounts.Update(account);
 
         var newMovementId = _context.Movements.Count() == 0 ? 1 : _context.Movements.Max(c => c.Id) + 1;
         paymentService.Movement.Id = newMovementId;
+        paymentService.Movement.Destination = account.Number;
 
         _context.Movements.Add(paymentService.Movement);
 
@@ -50,10 +51,8 @@ public class PaymentServiceRepository : IPaymentServiceRepository
 
         var createPaymentService = await _context.PaymentServices
                                            .Include(ps => ps.Movement)
-                                           .ThenInclude(m => m.Account)
-                                           .ThenInclude(a => a.Customer)
-                                           .ThenInclude(c => c.Bank)
                                            .FirstOrDefaultAsync(t => t.Id == paymentService.Id);
+        createPaymentService!.Movement.Account = account;
 
         return createPaymentService.Adapt<PaymentServiceDTO>();
     }
