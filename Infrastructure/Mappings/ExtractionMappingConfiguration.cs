@@ -17,17 +17,40 @@ public class ExtractionMappingConfiguration : IRegister
 
 
         //Del Creation object hacia la entidad
-        config.NewConfig<CreateExtractionModel, Movement>()
+        //config.NewConfig<CreateExtractionModel, Movement>()
+        //    .Map(dest => dest.Amount, src => src.Amount)
+        //    .Map(dest => dest.TransferredDateTime, src => DateTime.Now)
+        //    .Map(dest => dest.MovementType, src => MovementType.Extraction)
+        //    .Map(dest => dest.AccountId, src => src.AccountId);
+
+
+
+        //Entidad hacia el DTO
+        //config.NewConfig<Extraction, ExtractionDTO>()
+        //    .Map(dest => dest.Id, src => src.Id)
+        //    .Map(dest => dest.Movement, src => src.Movement.Adapt<MovementDTO>());
+
+        //Del Creation object hacia la entidad
+        config.NewConfig<CreateExtractionModel, Extraction>()
+            .Map(dest => dest.AccountId, src => src.AccountId)
+            .Map(dest => dest.BankId, src => src.BankID)
             .Map(dest => dest.Amount, src => src.Amount)
-            .Map(dest => dest.TransferredDateTime, src => DateTime.Now)
-            .Map(dest => dest.MovementType, src => MovementType.Extraction)
-            .Map(dest => dest.AccountId, src => src.AccountId);
+            .Map(dest => dest.ExtractionDateTime, src => DateTime.Now)
+            .Map(dest => dest.Description, src => src.Description);
+
+
+
+
 
 
 
         //Entidad hacia el DTO
         config.NewConfig<Extraction, ExtractionDTO>()
             .Map(dest => dest.Id, src => src.Id)
-            .Map(dest => dest.Movement, src => src.Movement.Adapt<MovementDTO>());
+            .Map(dest => dest.Amount, src => src.Amount)
+            .Map(dest => dest.ExtractionDateTime, src => DateTime.Now)
+            .Map(dest => dest.Description, src => src.Description)
+            .Map(dest => dest.Account, src => src.Account)
+            .Map(dest => dest.Bank, src => src.Bank);
     }
 }

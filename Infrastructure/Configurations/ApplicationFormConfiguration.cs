@@ -30,6 +30,8 @@ public class ApplicationFormConfiguration : IEntityTypeConfiguration<Application
             .IsRequired();
 
 
+
+
         entity
             .HasOne(applicationForm => applicationForm.Customer)
             .WithMany(customer => customer.ApplicationForms)
@@ -39,11 +41,6 @@ public class ApplicationFormConfiguration : IEntityTypeConfiguration<Application
             .HasOne(applicationForm => applicationForm.Currency)
             .WithMany(currency => currency.ApplicationForms)
             .HasForeignKey(applicationForm => applicationForm.CurrencyId);
-
-        //entity
-        //    .HasOne(applicationForm => applicationForm.Product)
-        //    .WithOne(product => product.ApplicationForm)
-        //    .HasForeignKey<Product>(product => product.ApplicationFormId);
 
         entity
             .HasOne(applicationForm => applicationForm.Product)
