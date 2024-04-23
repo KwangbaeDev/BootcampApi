@@ -39,5 +39,10 @@ public class MovementConfiguration : IEntityTypeConfiguration<Movement>
             .HasMany(movement => movement.PaymentServices)
             .WithOne(paymentService => paymentService.Movement)
             .HasForeignKey(paymentService => paymentService.MovementId);
+
+        entity
+            .HasMany(movement => movement.Deposits)
+            .WithOne(deposit => deposit.Movement)
+            .HasForeignKey(deposit => deposit.MovementId);
     }
 }

@@ -4,5 +4,6 @@ public enum MovementType
 {
     SentTransfer,
     ReceivedTransfer,
-    PaymentService
+    PaymentService,
+    Deposit
 }
