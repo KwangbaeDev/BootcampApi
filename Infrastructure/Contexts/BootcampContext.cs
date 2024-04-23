@@ -51,6 +51,8 @@ public partial class BootcampContext : DbContext
 
     public virtual DbSet<Deposit> Deposits { get; set; }
 
+    public virtual DbSet<Extraction> Extractions { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
         modelBuilder.ApplyConfiguration(new AccountConfiguration());
@@ -86,6 +88,8 @@ public partial class BootcampContext : DbContext
         modelBuilder.ApplyConfiguration(new PaymentServiceConfiguration());
 
         modelBuilder.ApplyConfiguration(new DepositConfiguration());
+
+        modelBuilder.ApplyConfiguration(new ExtractionConfiguration());
 
 
         OnModelCreatingPartial(modelBuilder);

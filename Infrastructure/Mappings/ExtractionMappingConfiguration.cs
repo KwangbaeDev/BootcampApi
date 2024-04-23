@@ -2,32 +2,31 @@
 using Core.Entities;
 using Core.Models;
 using Core.Requests.DepositModels;
+using Core.Requests.ExtractionModels;
 using Mapster;
 
 namespace Infrastructure.Mappings;
 
-public class DepositMappingConfiguration : IRegister
+public class ExtractionMappingConfiguration : IRegister
 {
     public void Register(TypeAdapterConfig config)
     {
         //Del Creation object hacia la entidad
-        //config.NewConfig<CreateDepositModel, Deposit>()
-
+        //config.NewConfig<CreateExtracionModel, Extraction>()
 
 
 
         //Del Creation object hacia la entidad
-        config.NewConfig<CreateDepositModel, Movement>()
+        config.NewConfig<CreateExtractionModel, Movement>()
             .Map(dest => dest.Amount, src => src.Amount)
             .Map(dest => dest.TransferredDateTime, src => DateTime.Now)
-            .Map(dest => dest.MovementType, src => MovementType.Deposit)
+            .Map(dest => dest.MovementType, src => MovementType.Extraction)
             .Map(dest => dest.AccountId, src => src.AccountId);
 
 
 
-
         //Entidad hacia el DTO
-        config.NewConfig<Deposit, DepositDTO>()
+        config.NewConfig<Extraction, ExtractionDTO>()
             .Map(dest => dest.Id, src => src.Id)
             .Map(dest => dest.Movement, src => src.Movement.Adapt<MovementDTO>());
     }

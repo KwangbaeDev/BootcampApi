@@ -1,27 +1,26 @@
 ﻿using Core.Entities;
 using Core.Interfaces.Repositories;
 using Core.Models;
-using Core.Requests.DepositModels;
+using Core.Requests.ExtractionModels;
 using Infrastructure.Contexts;
 using Mapster;
 using Microsoft.EntityFrameworkCore;
-using System.Security.Principal;
 
 namespace Infrastructure.Repositories;
 
-public class DepositRepository : IDepositRepository
+public class ExtractionRepository : IExtractionRepository
 {
     private readonly BootcampContext _context;
 
-    public DepositRepository(BootcampContext context)
+    public ExtractionRepository(BootcampContext context)
     {
         _context = context;
     }
 
-    public async Task<DepositDTO> Depositing(CreateDepositModel model)
+    public async Task<ExtractionDTO> Extracting(CreateExtractionModel model)
     {
-        var deposit = new Deposit();
-        deposit.Movement = model.Adapt<Movement>();
+        var extraction = new Extraction();
+        extraction.Movement = model.Adapt<Movement>();
 
         var account = await _context.Accounts
                                       .Include(a => a.Currency)
@@ -40,25 +39,25 @@ public class DepositRepository : IDepositRepository
             throw new Exception("The operation exceeds the operational limit.");
         }
 
-        account.Balance = account.Balance + model.Amount;
+        account.Balance = account.Balance - model.Amount;
         _context.Accounts.Update(account);
 
         var newMovementId = _context.Movements.Count() == 0 ? 1 : _context.Movements.Max(c => c.Id) + 1;
-        deposit.Movement.Id = newMovementId;
-        deposit.Movement.Destination = account.Number;
+        extraction.Movement.Id = newMovementId;
+        extraction.Movement.Destination = account.Number;
 
-        _context.Movements.Add(deposit.Movement);
+        _context.Movements.Add(extraction.Movement);
 
-        deposit.MovementId = newMovementId;
-        _context.Deposits.Add(deposit);
+        extraction.MovementId = newMovementId;
+        _context.Extractions.Add(extraction);
 
         await _context.SaveChangesAsync();
 
-        var createDeposit = await _context.Deposits
-                                           .Include(p => p.Movement)
-                                           .FirstOrDefaultAsync(p => p.Id == deposit.Id);
-        createDeposit!.Movement.Account = account;
+        var createExtraction = await _context.Extractions
+                                           .Include(e => e.Movement)
+                                           .FirstOrDefaultAsync(e => e.Id == extraction.Id);
+        createExtraction!.Movement.Account = account;
 
-        return createDeposit.Adapt<DepositDTO>();
+        return createExtraction.Adapt<ExtractionDTO>();
     }
 }

@@ -16,6 +16,6 @@ public class Movement
 
 
     public virtual ICollection<PaymentService> PaymentServices { get; set; } = new List<PaymentService>();
-
     public virtual ICollection<Deposit> Deposits { get; set; } = new List<Deposit>();
+    public virtual ICollection<Extraction> Extractions { get; set; } = new List<Extraction>();
 }
