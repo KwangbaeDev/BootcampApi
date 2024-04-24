@@ -8,6 +8,4 @@ public class PaymentService
     public DateTime PaymentServiceDateTime { get; set; }
     public int AccountId { get; set; }
     public Account Account { get; set; } = null!;
-    //public int MovementId { get; set; }
-    //public Movement Movement { get; set; } = null!;
 }

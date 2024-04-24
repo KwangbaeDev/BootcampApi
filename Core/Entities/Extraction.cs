@@ -9,6 +9,4 @@ public class Extraction
     public Account Account { get; set; } = null!;
     public int BankId { get; set; }
     public Bank Bank { get; set; } = null!;
-    //public int MovementId { get; set; }
-    //public Movement Movement { get; set; } = null!;
 }
