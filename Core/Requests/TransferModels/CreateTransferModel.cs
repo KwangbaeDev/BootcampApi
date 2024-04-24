@@ -11,4 +11,5 @@ public class CreateTransferModel
     public string DocumentNumber {  get; set; } = string.Empty;
     public int CurrencyId { get; set; }
     public decimal Amount { get; set; }
+    public string Concept { get; set; } = string.Empty;
 }

@@ -13,15 +13,30 @@ public class PaymentServiceConfiguration : IEntityTypeConfiguration<PaymentServi
 
 
         entity
-            .Property(ps => ps.Description)
+            .Property(ps => ps.Amount)
+            .IsRequired();
+
+        entity
+            .Property(ps => ps.Concept)
+            .IsRequired();
+
+        entity
+            .Property(ps => ps.PaymentServiceDateTime)
+            .HasColumnType("timestamp without time zone")
             .IsRequired();
 
 
 
         entity
-            .HasOne(paymentService => paymentService.Movement)
-            .WithMany(movement => movement.PaymentServices)
-            .HasForeignKey(paymentService => paymentService.MovementId);
+            .HasOne(paymentService => paymentService.Account)
+            .WithMany(account => account.PaymentServices)
+            .HasForeignKey(paymentService => paymentService.AccountId);
+
+
+        //entity
+        //    .HasOne(paymentService => paymentService.Movement)
+        //    .WithMany(movement => movement.PaymentServices)
+        //    .HasForeignKey(paymentService => paymentService.MovementId);
 
 
     }

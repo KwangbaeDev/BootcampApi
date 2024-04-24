@@ -3,7 +3,11 @@
 public class PaymentService
 {
     public int Id { get; set; }
-    public string Description { get; set; } = string.Empty;
-    public int MovementId { get; set; }
-    public Movement Movement { get; set; } = null!;
+    public decimal Amount { get; set; }
+    public string Concept { get; set; } = string.Empty;
+    public DateTime PaymentServiceDateTime { get; set; }
+    public int AccountId { get; set; }
+    public Account Account { get; set; } = null!;
+    //public int MovementId { get; set; }
+    //public Movement Movement { get; set; } = null!;
 }

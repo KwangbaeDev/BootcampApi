@@ -22,7 +22,7 @@ public class TransferRepository : ITransferRepository
     public async Task<TransferDTO> Transferred(CreateTransferModel model)
     {
         var transfer = model.Adapt<Transfer>();
-        transfer.Movement = model.Adapt<Movement>();
+        //transfer.Movement = model.Adapt<Movement>();
 
         var originAccount = await _context.Accounts
                                           .Include(a => a.Customer)
@@ -93,28 +93,54 @@ public class TransferRepository : ITransferRepository
             throw new Exception("The operation exceeds the operational limit.");
         }
 
+        var totalAmountOperations = _context.Transfers
+                                            .Join
+                                            (
+                                                _context.Deposits,
+                                                t => t.OriginAccountId,
+                                                d => d.AccountId,
+                                                (t, d) => new { t, d }
+                                            )
+                                            .Join
+                                            (
+                                                _context.Extractions,
+                                                td => td.d.AccountId,
+                                                e => e.AccountId,
+                                                (td, e) => new { td, e}
+                                            )
+                                            .Where(tde => tde.td.t.OriginAccountId == originAccount.Id &&
+                                            tde.td.t.TransferredDateTime.Month == DateTime.Now.Month &&
+                                            tde.td.d.DepositDateTime.Month == DateTime.Now.Month &&
+                                            tde.e.ExtractionDateTime.Month == DateTime.Now.Month)
+                                            .Sum(tde => tde.td.t.Amount + tde.td.d.Amount + tde.e.Amount);
+
+        if ((model.Amount + totalAmountOperations) > originAccount.CurrentAccount!.OperationalLimit)
+        {
+            throw new Exception("Exceeded the operational limit.");
+        }
+
         originAccount.Balance = originAccount.Balance - model.Amount;
         _context.Accounts.Update(originAccount);
 
         destinationAccount.Balance = destinationAccount.Balance + model.Amount;
         _context.Accounts.Update(destinationAccount);
 
-        var newMovementId = _context.Movements.Count() == 0 ? 1 : _context.Movements.Max(c => c.Id) + 1;
-        transfer.Movement.Id = newMovementId;
+        //var newMovementId = _context.Movements.Count() == 0 ? 1 : _context.Movements.Max(c => c.Id) + 1;
+        //transfer.Movement.Id = newMovementId;
 
-        _context.Movements.Add(transfer.Movement);
+        //_context.Movements.Add(transfer.Movement);
 
         transfer.DestinationAccountId = destinationAccount.Id;
-        transfer.MovementId = newMovementId;
+        //transfer.MovementId = newMovementId;
         _context.Transfers.Add(transfer);
 
         await _context.SaveChangesAsync();
 
         var createTransfer = await _context.Transfers
-                                           .Include(t => t.Movement)
+                                           //.Include(t => t.Movement)
                                            .FirstOrDefaultAsync(t => t.Id == transfer.Id);
-        createTransfer!.Movement.Account = originAccount;
-        createTransfer!.OriginAccount = destinationAccount;
+        //createTransfer.DestinationAccount = destinationAccount;
+        //createTransfer!.OriginAccount = destinationAccount;
 
 
         return createTransfer.Adapt<TransferDTO>();

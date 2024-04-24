@@ -20,8 +20,8 @@ public class DepositRepository : IDepositRepository
 
     public async Task<DepositDTO> Depositing(CreateDepositModel model)
     {
-        var deposit = new Deposit();
-        deposit.Movement = model.Adapt<Movement>();
+        var deposit = model.Adapt<Deposit>();
+        //deposit.Movement = model.Adapt<Movement>();
 
         var account = await _context.Accounts
                                       .Include(a => a.Currency)
@@ -43,21 +43,21 @@ public class DepositRepository : IDepositRepository
         account.Balance = account.Balance + model.Amount;
         _context.Accounts.Update(account);
 
-        var newMovementId = _context.Movements.Count() == 0 ? 1 : _context.Movements.Max(c => c.Id) + 1;
-        deposit.Movement.Id = newMovementId;
-        deposit.Movement.Destination = account.Number;
+        //var newMovementId = _context.Movements.Count() == 0 ? 1 : _context.Movements.Max(c => c.Id) + 1;
+        //deposit.Movement.Id = newMovementId;
+        //deposit.Movement.Destination = account.Number;
 
-        _context.Movements.Add(deposit.Movement);
+        //_context.Movements.Add(deposit.Movement);
 
-        deposit.MovementId = newMovementId;
+        //deposit.MovementId = newMovementId;
         _context.Deposits.Add(deposit);
 
         await _context.SaveChangesAsync();
 
         var createDeposit = await _context.Deposits
-                                           .Include(p => p.Movement)
+                                           //.Include(p => p.Movement)
                                            .FirstOrDefaultAsync(p => p.Id == deposit.Id);
-        createDeposit!.Movement.Account = account;
+        //createDeposit!.Movement.Account = account;
 
         return createDeposit.Adapt<DepositDTO>();
     }

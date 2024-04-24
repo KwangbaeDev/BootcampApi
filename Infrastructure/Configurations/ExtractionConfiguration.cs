@@ -13,7 +13,6 @@ public class ExtractionConfiguration : IEntityTypeConfiguration<Extraction>
 
         entity
             .Property(e => e.Amount)
-            //.HasPrecision(20, 5)
             .IsRequired();
 
         entity
@@ -21,12 +20,18 @@ public class ExtractionConfiguration : IEntityTypeConfiguration<Extraction>
             .HasColumnType("timestamp without time zone")
             .IsRequired();
 
+
+
+
         entity
-            .Property(e => e.Description)
-            .IsRequired();
+            .HasOne(extraction => extraction.Account)
+            .WithMany(account => account.Extractions)
+            .HasForeignKey(extraction => extraction.AccountId);
 
-        
-
+        entity
+            .HasOne(extraction => extraction.Bank)
+            .WithMany(bank => bank.Extractions)
+            .HasForeignKey(extraction => extraction.BankId);
 
 
 

@@ -10,5 +10,7 @@ public class Bank
 
 
     public virtual ICollection<Customer> Customers { get; set; } = new List<Customer>();
+    public virtual ICollection<Transfer> Transfers { get; set; } = new List<Transfer>();
+    public virtual ICollection<Deposit> Deposits { get; set; } = new List<Deposit>();
     public virtual ICollection<Extraction> Extractions { get; set; } = new List<Extraction>();
 }

@@ -54,6 +54,16 @@ public class AccountConfiguration : IEntityTypeConfiguration<Account>
             .HasForeignKey(transfer => transfer.OriginAccountId);
 
         entity
+            .HasMany(account => account.PaymentServices)
+            .WithOne(paymentService => paymentService.Account)
+            .HasForeignKey(paymentService => paymentService.AccountId);
+
+        entity
+            .HasMany(account => account.Deposits)
+            .WithOne(deposit => deposit.Account)
+            .HasForeignKey(deposit => deposit.AccountId);
+
+        entity
             .HasMany(account => account.Extractions)
             .WithOne(extraction => extraction.Account)
             .HasForeignKey(extraction => extraction.AccountId);

@@ -11,11 +11,24 @@ public class TransferConfiguration : IEntityTypeConfiguration<Transfer>
         entity
             .HasKey(t => t.Id);
 
+        entity
+            .Property(e => e.Amount)
+            .IsRequired();
+
+        entity
+            .Property(e => e.TransferredDateTime)
+            .HasColumnType("timestamp without time zone")
+            .IsRequired();
+
+        entity
+            .Property(e => e.Concept)
+            .IsRequired();
+
 
 
         entity
             .HasOne(transfer => transfer.OriginAccount)
-            .WithMany(soureAccount => soureAccount.Transfers)
+            .WithMany(originAccount => originAccount.Transfers)
             .HasForeignKey(transfer => transfer.OriginAccountId);
 
         //entity
@@ -25,8 +38,20 @@ public class TransferConfiguration : IEntityTypeConfiguration<Transfer>
         //    .IsRequired(false);
         entity
             .HasOne<Account>()
-            .WithMany(targetAccount => targetAccount.Transfers)
+            .WithMany(destinationAccount => destinationAccount.Transfers)
             .HasForeignKey(transfer => transfer.DestinationAccountId);
+
+        entity
+            .HasOne(transfer => transfer.Bank)
+            .WithMany(bank => bank.Transfers)
+            .HasForeignKey(transfer => transfer.DestinationBankId);
+
+        entity
+            .HasOne(transfer => transfer.Currency)
+            .WithMany(currency => currency.Transfers)
+            .HasForeignKey(transfer => transfer.CurrencyId);
+
+
 
     }
 }

@@ -37,7 +37,12 @@ public class CurrencyConfiguration : IEntityTypeConfiguration<Currency>
         entity
             .HasMany(currency => currency.ApplicationForms)
             .WithOne(applicationForm => applicationForm.Currency)
-            .HasForeignKey(currency => currency.CurrencyId);
+            .HasForeignKey(applicationForm => applicationForm.CurrencyId);
+
+        entity
+            .HasMany(currency => currency.Transfers)
+            .WithOne(transfer => transfer.Currency)
+            .HasForeignKey(transfer => transfer.CurrencyId);
 
         //entity
         //    .HasMany(currency => currency.Transfers)

@@ -3,7 +3,6 @@
 public class CreateExtractionModel
 {
     public int AccountId { get; set; }
-    public int BankID { get; set; }
+    public int BankId { get; set; }
     public decimal Amount { get; set; }
-    public string Description { get; set; } = string.Empty;
 }

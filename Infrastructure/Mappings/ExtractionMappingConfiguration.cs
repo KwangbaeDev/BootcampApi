@@ -33,14 +33,9 @@ public class ExtractionMappingConfiguration : IRegister
         //Del Creation object hacia la entidad
         config.NewConfig<CreateExtractionModel, Extraction>()
             .Map(dest => dest.AccountId, src => src.AccountId)
-            .Map(dest => dest.BankId, src => src.BankID)
+            .Map(dest => dest.BankId, src => src.BankId)
             .Map(dest => dest.Amount, src => src.Amount)
-            .Map(dest => dest.ExtractionDateTime, src => DateTime.Now)
-            .Map(dest => dest.Description, src => src.Description);
-
-
-
-
+            .Map(dest => dest.ExtractionDateTime, src => DateTime.Now);
 
 
 
@@ -49,7 +44,6 @@ public class ExtractionMappingConfiguration : IRegister
             .Map(dest => dest.Id, src => src.Id)
             .Map(dest => dest.Amount, src => src.Amount)
             .Map(dest => dest.ExtractionDateTime, src => DateTime.Now)
-            .Map(dest => dest.Description, src => src.Description)
             .Map(dest => dest.Account, src => src.Account)
             .Map(dest => dest.Bank, src => src.Bank);
     }

@@ -42,6 +42,16 @@ public class BankConfiguration : IEntityTypeConfiguration<Bank>
             .HasForeignKey(customer => customer.BankId);
 
         entity
+            .HasMany(bank => bank.Transfers)
+            .WithOne(transfer => transfer.Bank)
+            .HasForeignKey(transfer => transfer.DestinationBankId);
+
+        entity
+            .HasMany(bank => bank.Deposits)
+            .WithOne(deposit => deposit.Bank)
+            .HasForeignKey(deposit => deposit.BankId);
+
+        entity
             .HasMany(bank => bank.Extractions)
             .WithOne(extraction => extraction.Bank)
             .HasForeignKey(extraction => extraction.BankId);
