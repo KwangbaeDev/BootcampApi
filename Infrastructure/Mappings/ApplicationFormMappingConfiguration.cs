@@ -16,7 +16,7 @@ public class ApplicationFormMappingConfiguration : IRegister
         //Del Creation object hacia la entidad
         config.NewConfig<CreateApplicationFormModel, ApplicationForm>()
             .Map(dest => dest.Descripcion, src => src.Descripcion)
-            .Map(dest => dest.ApplicationDate, src => src.ApplicationDate)
+            .Map(dest => dest.ApplicationDate, src => DateTime.Now)
             .Map(dest => dest.RequestStatus, src => src.RequestStatus)
             .Map(dest => dest.CustomerId, src => src.CustomerId)
             .Map(dest => dest.CurrencyId, src => src.CurrencyId);
@@ -38,7 +38,7 @@ public class ApplicationFormMappingConfiguration : IRegister
             .Map(dest => dest.Mail, src => src.Customer.Mail)//Mapeo de una propiedad de navegación
             .Map(dest => dest.Phone, src => src.Customer.Phone)//Mapeo de una propiedad de navegación
             .Map(dest => dest.Descripcion, src => src.Descripcion)
-            .Map(dest => dest.ApplicationDate, src => src.ApplicationDate)
+            .Map(dest => dest.ApplicationDate, src => DateTime.Now)
             .Map(dest => dest.ApprovalDate, src => src.ApprovalDate)
             .Map(dest => dest.RejectionDate, src => src.RejectionDate)
             .Map(dest => dest.RequestStatus, src => src.RequestStatus)

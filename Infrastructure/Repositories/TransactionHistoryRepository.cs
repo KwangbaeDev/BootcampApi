@@ -1,4 +1,5 @@
-﻿using Core.Interfaces.Repositories;
+﻿using Core.Constants;
+using Core.Interfaces.Repositories;
 using Core.Models;
 using Core.Requests.TransactionHistoryModels;
 using Infrastructure.Contexts;
@@ -20,26 +21,88 @@ public class TransactionHistoryRepository : ITransactionHistoryRepository
 
     public async Task<List<TransactionHistoryDTO>> GetFiltered(FilterTransactionHistoryModel filter)
     {
-        var query = _context.Accounts
-                            .Include(a => a.Transfers)
-                            .Include(a => a.PaymentServices)
-                            .Include(a => a.Deposits)
-                            .Include(a => a.Extractions)
-                            .AsQueryable();
+        var transfers = _context.Transfers
+                                .Where(t => filter.Concept == TransactionHistoryConcept.All ||
+                                filter.Concept == TransactionHistoryConcept.Transfers)
+                                .ToList();
 
+        var paymentServices = _context.PaymentServices
+                                      .Where(ps => filter.Concept == TransactionHistoryConcept.All ||
+                                      filter.Concept == TransactionHistoryConcept.PaymentsService)
+                                      .ToList();
 
-        if (filter.AccountNumber is not null)
-            query = query.Where(x =>
-                x.Number == filter.AccountNumber);
+        var deposits = _context.Deposits
+                               .Where(d => filter.Concept == TransactionHistoryConcept.All ||
+                               filter.Concept == TransactionHistoryConcept.Deposits)
+                               .ToList();
 
+        var extractions = _context.Extractions
+                                  .Where(e => filter.Concept == TransactionHistoryConcept.All ||
+                                  filter.Concept == TransactionHistoryConcept.Extractions)
+                                  .ToList();
 
+        List<TransactionHistoryDTO> transactions = new List<TransactionHistoryDTO>();
 
-        
+        transfers.ForEach(t => {
+            transactions.Add(new TransactionHistoryDTO()
+            {
+                Id = t.Id,
+                Description = "Transfer",
+                Amount = t.Amount,
+                TransactionDateTime = t.TransferredDateTime,
+                Concept = t.Concept,
+                CurrencyId = t.CurrencyId,
+                AccountId = t.OriginAccountId
+            });
+        });
 
+        paymentServices.ForEach(ps => {
+            transactions.Add(new TransactionHistoryDTO()
+            {
+                Id = ps.Id,
+                Description = "Payment Service",
+                Amount = ps.Amount,
+                TransactionDateTime = ps.PaymentServiceDateTime,
+                Concept = ps.Concept,
+                CurrencyId = null,
+                AccountId = ps.AccountId
+            });
+        });
 
+        deposits.ForEach(d => {
+            transactions.Add(new TransactionHistoryDTO()
+            {
+                Id = d.Id,
+                Description = "Deposit",
+                Amount = d.Amount,
+                TransactionDateTime = d.DepositDateTime,
+                Concept = string.Empty,
+                CurrencyId = null,
+                AccountId = d.AccountId
+            });
+        });
 
-        var result = await query.ToListAsync();
+        extractions.ForEach(e => {
+            transactions.Add(new TransactionHistoryDTO()
+            {
+                Id = e.Id,
+                Description = "Extraction",
+                Amount = e.Amount,
+                TransactionDateTime = e.ExtractionDateTime,
+                Concept = string.Empty,
+                CurrencyId = null,
+                AccountId = e.AccountId
+            });
+        });
 
-        return result.Adapt<List<TransactionHistoryDTO>>();
+        var result = transactions
+                        .Where(t => t.AccountId == filter.AccountId &&
+                        (filter.Month == null && filter.Year == null ||
+                        t.TransactionDateTime.Month == filter.Month && t.TransactionDateTime.Year == filter.Year) &&
+                        (filter.DateFrom == null && filter.DateTo == null ||
+                        t.TransactionDateTime >= filter.DateFrom && t.TransactionDateTime <= filter.DateTo))
+                        .ToList();
+
+        return result;
     }
 }

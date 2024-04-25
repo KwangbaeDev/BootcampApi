@@ -18,4 +18,9 @@ public class ApplicationFormService : IApplicationFormService
     {
         return await _applicationRepository.CreateApplicationForm(model);
     }
+
+    public async Task<ApplicationFormDTO> Update(UpdateApplicationFormModel model)
+    {
+        return await _applicationRepository.Update(model);
+    }
 }

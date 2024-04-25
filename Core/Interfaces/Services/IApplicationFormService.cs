@@ -6,4 +6,5 @@ namespace Core.Interfaces.Services;
 public interface IApplicationFormService
 {
     Task<ApplicationFormDTO> CreateApplicationForm(CreateApplicationFormModel model);
+    Task<ApplicationFormDTO> Update(UpdateApplicationFormModel model);
 }

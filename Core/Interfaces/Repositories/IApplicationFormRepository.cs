@@ -6,4 +6,5 @@ namespace Core.Interfaces.Repositories;
 public interface IApplicationFormRepository
 {
     Task<ApplicationFormDTO> CreateApplicationForm(CreateApplicationFormModel model);
+    Task<ApplicationFormDTO> Update(UpdateApplicationFormModel model);
 }

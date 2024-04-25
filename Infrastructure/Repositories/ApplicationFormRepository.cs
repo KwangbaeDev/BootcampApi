@@ -1,4 +1,5 @@
-﻿using Core.Entities;
+﻿using Core.Constants;
+using Core.Entities;
 using Core.Interfaces.Repositories;
 using Core.Models;
 using Core.Requests.ApplicationFormModels;
@@ -44,7 +45,6 @@ public class ApplicationFormRepository : IApplicationFormRepository
             newCustomer.Id = newCustomerId;
 
             _context.Customers.Add(newCustomer);
-            //await _context.SaveChangesAsync();
 
             applicationForm.CustomerId = newCustomer.Id;
         }
@@ -60,5 +60,25 @@ public class ApplicationFormRepository : IApplicationFormRepository
             .FirstOrDefaultAsync(af => af.Id == applicationForm.Id);
 
         return createApplicationForm.Adapt<ApplicationFormDTO>();
+    }
+
+    public async Task<ApplicationFormDTO> Update(UpdateApplicationFormModel model)
+    {
+        var applicationForm = await _context.ApplicationForms.FindAsync(model.Id);
+
+        if (applicationForm is null)
+        {
+            throw new Exception("Account was not found");
+        }
+
+        model.Adapt(applicationForm);
+
+        _context.ApplicationForms.Update(applicationForm);
+
+        await _context.SaveChangesAsync();
+
+        var applicationFormDTO = applicationForm.Adapt<ApplicationFormDTO>();
+
+        return applicationFormDTO;
     }
 }

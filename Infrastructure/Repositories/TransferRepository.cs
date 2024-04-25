@@ -92,39 +92,19 @@ public class TransferRepository : ITransferRepository
             throw new Exception("The operation exceeds the operational limit.");
         }
 
-        //var totalAmountOperations = _context.Transfers
-        //                                    .Join
-        //                                    (
-        //                                        _context.Deposits,
-        //                                        t => t.OriginAccountId,
-        //                                        d => d.AccountId,
-        //                                        (t, d) => new { t, d }
-        //                                    )
-        //                                    .Join
-        //                                    (
-        //                                        _context.Extractions,
-        //                                        td => td.d.AccountId,
-        //                                        e => e.AccountId,
-        //                                        (td, e) => new { td, e}
-        //                                    )
-        //                                    .Where(tde => tde.td.t.OriginAccountId == originAccount.Id &&
-        //                                    tde.td.t.TransferredDateTime.Month == DateTime.Now.Month &&
-        //                                    tde.td.d.DepositDateTime.Month == DateTime.Now.Month &&
-        //                                    tde.e.ExtractionDateTime.Month == DateTime.Now.Month)
-        //                                    .Sum(tde => tde.td.t.Amount + tde.td.d.Amount + tde.e.Amount);
         var totalAmountOperationsTransfers = _context.Transfers
                                                  .Where(t => t.OriginAccountId == originAccount.Id &&
-                                                 t.TransferredDateTime.Month == DateTime.Now.Month -1)
+                                                 t.TransferredDateTime.Month == DateTime.Now.Month)
                                                  .Sum(t => t.Amount);
 
         var totalAmountOperationsDeposits = _context.Deposits
                                                  .Where(d => d.AccountId == originAccount.Id &&
-                                                 d.DepositDateTime.Month == DateTime.Now.Month -1)
+                                                 d.DepositDateTime.Month == DateTime.Now.Month)
                                                  .Sum(d => d.Amount);
 
         var totalAmountOperationsExtractions = _context.Extractions
                                                  .Where(e => e.AccountId == originAccount.Id &&
-                                                 e.ExtractionDateTime.Month == DateTime.Now.Month -1)
+                                                 e.ExtractionDateTime.Month == DateTime.Now.Month)
                                                  .Sum(e => e.Amount);
 
         var totalAmountOperations = totalAmountOperationsTransfers + totalAmountOperationsDeposits + totalAmountOperationsExtractions;

@@ -20,5 +20,13 @@ namespace WebApi.Controllers
         {
             return Ok(await _applicationFormService.CreateApplicationForm(request));
         }
+
+
+
+        [HttpPut]
+        public async Task<IActionResult> UpdateApplicationForm([FromBody] UpdateApplicationFormModel request)
+        {
+            return Ok(await _applicationFormService.Update(request));
+        }
     }
 }
