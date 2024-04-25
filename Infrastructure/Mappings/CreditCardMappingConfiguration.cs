@@ -38,7 +38,6 @@ public class CreditCardMappingConfiguration : IRegister
             .Map(x => x.AvailableCredit, src => src.AvailableCredit)
             .Map(x => x.CurrentDebt, src => src.CurrentDebt)
             .Map(x => x.InterestRate, src => src.InterestRate)
-            //.Map(x => x.RestrictedCreditCard, src => $"xxxx-xxxx-xxxx-{src.CardNumber.Substring(src.CardNumber.Length - 4)}")
             .Map(x => x.RestrictedCreditCard, src => $"xxxx-xxxx-xxxx-{src.CardNumber.Substring(src.CardNumber.Length - 4)}")
             .Map(x => x.Customer, src => src.Customer)
             .Map(x => x.Currency, src => src.Currency);

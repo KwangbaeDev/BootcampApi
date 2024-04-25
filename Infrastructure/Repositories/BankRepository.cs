@@ -22,7 +22,6 @@ public class BankRepository : IBankRepository
     {
         var bankToCreate = model.Adapt<Bank>();
 
-
         _context.Banks.Add(bankToCreate);
 
         await _context.SaveChangesAsync();

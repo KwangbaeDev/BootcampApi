@@ -21,7 +21,6 @@ public class DepositRepository : IDepositRepository
     public async Task<DepositDTO> Depositing(CreateDepositModel model)
     {
         var deposit = model.Adapt<Deposit>();
-        //deposit.Movement = model.Adapt<Movement>();
 
         var account = await _context.Accounts
                                       .Include(a => a.Currency)
@@ -40,24 +39,37 @@ public class DepositRepository : IDepositRepository
             throw new Exception("The operation exceeds the operational limit.");
         }
 
+        var totalAmountOperationsTransfers = _context.Transfers
+                                                 .Where(t => t.OriginAccountId == account.Id &&
+                                                 t.TransferredDateTime.Month == DateTime.Now.Month)
+                                                 .Sum(t => t.Amount);
+
+        var totalAmountOperationsDeposits = _context.Deposits
+                                                 .Where(d => d.AccountId == account.Id &&
+                                                 d.DepositDateTime.Month == DateTime.Now.Month)
+                                                 .Sum(d => d.Amount);
+
+        var totalAmountOperationsExtractions = _context.Extractions
+                                                 .Where(e => e.AccountId == account.Id &&
+                                                 e.ExtractionDateTime.Month == DateTime.Now.Month)
+                                                 .Sum(e => e.Amount);
+
+        var totalAmountOperations = totalAmountOperationsTransfers + totalAmountOperationsDeposits + totalAmountOperationsExtractions;
+
+        if ((model.Amount + totalAmountOperations) > account.CurrentAccount!.OperationalLimit)
+        {
+            throw new Exception("Exceeded the operational limit.");
+        }
+
         account.Balance = account.Balance + model.Amount;
         _context.Accounts.Update(account);
 
-        //var newMovementId = _context.Movements.Count() == 0 ? 1 : _context.Movements.Max(c => c.Id) + 1;
-        //deposit.Movement.Id = newMovementId;
-        //deposit.Movement.Destination = account.Number;
-
-        //_context.Movements.Add(deposit.Movement);
-
-        //deposit.MovementId = newMovementId;
         _context.Deposits.Add(deposit);
 
         await _context.SaveChangesAsync();
 
         var createDeposit = await _context.Deposits
-                                           //.Include(p => p.Movement)
                                            .FirstOrDefaultAsync(p => p.Id == deposit.Id);
-        //createDeposit!.Movement.Account = account;
 
         return createDeposit.Adapt<DepositDTO>();
     }

@@ -38,6 +38,28 @@ public class ExtractionRepository : IExtractionRepository
             throw new Exception("The operation exceeds the operational limit.");
         }
 
+        var totalAmountOperationsTransfers = _context.Transfers
+                                                 .Where(t => t.OriginAccountId == account.Id &&
+                                                 t.TransferredDateTime.Month == DateTime.Now.Month)
+                                                 .Sum(t => t.Amount);
+
+        var totalAmountOperationsDeposits = _context.Deposits
+                                                 .Where(d => d.AccountId == account.Id &&
+                                                 d.DepositDateTime.Month == DateTime.Now.Month)
+                                                 .Sum(d => d.Amount);
+
+        var totalAmountOperationsExtractions = _context.Extractions
+                                                 .Where(e => e.AccountId == account.Id &&
+                                                 e.ExtractionDateTime.Month == DateTime.Now.Month)
+                                                 .Sum(e => e.Amount);
+
+        var totalAmountOperations = totalAmountOperationsTransfers + totalAmountOperationsDeposits + totalAmountOperationsExtractions;
+
+        if ((model.Amount + totalAmountOperations) > account.CurrentAccount!.OperationalLimit)
+        {
+            throw new Exception("Exceeded the operational limit.");
+        }
+
         account.Balance = account.Balance - model.Amount;
         _context.Accounts.Update(account);
 

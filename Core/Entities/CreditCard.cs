@@ -15,8 +15,9 @@ public class CreditCard
     public decimal AvailableCredit { get; set; }
     public decimal CurrentDebt { get; set; }
     public decimal InterestRate { get; set; }
+
     public int CustomerId { get; set; }
-    public int CurrencyId { get; set; }
     public virtual Customer Customer { get; set; } = null!;
+    public int CurrencyId { get; set; }
     public virtual Currency Currency { get; set; } = null!;
 }

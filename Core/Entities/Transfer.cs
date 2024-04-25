@@ -6,6 +6,7 @@
         public decimal Amount { get; set; }
         public DateTime TransferredDateTime { get; set; }
         public string Concept {  get; set; } = string.Empty;
+
         public int OriginAccountId { get; set; }
         public Account OriginAccount { get; set; } = null!;
         public int DestinationAccountId { get; set; }

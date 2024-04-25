@@ -16,8 +16,8 @@ public class ApplicationFormMappingConfiguration : IRegister
         //Del Creation object hacia la entidad
         config.NewConfig<CreateApplicationFormModel, ApplicationForm>()
             .Map(dest => dest.Descripcion, src => src.Descripcion)
-            .Map(dest => dest.ApplicationDate, src => DateTime.Now)
-            .Map(dest => dest.RequestStatus, src => src.RequestStatus)
+            //.Map(dest => dest.ApplicationDate, src => DateTime.Now)
+            //.Map(dest => dest.RequestStatus, src => src.RequestStatus)
             .Map(dest => dest.CustomerId, src => src.CustomerId)
             .Map(dest => dest.CurrencyId, src => src.CurrencyId);
 

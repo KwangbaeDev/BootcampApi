@@ -10,7 +10,7 @@ public class Promotion
     public DateTime? Start { get; set; }
     public DateTime? End { get; set; }
     public int Discount { get; set; }
-
     public IsDeleteStatus IsDeleted { get; set; } = IsDeleteStatus.False;
+
     public ICollection<PromotionEnterprise> PromotionsEnterprises { get; set; } = new List<PromotionEnterprise>();
 }

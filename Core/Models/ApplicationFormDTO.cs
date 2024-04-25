@@ -14,8 +14,8 @@ public class ApplicationFormDTO
     public string? Phone { get; set; }
     public string? Descripcion { get; set; }
     public DateTime ApplicationDate { get; set; } = DateTime.Now;
-    public DateTime? ApprovalDate { get; set; }
-    public DateTime? RejectionDate { get; set; }
+    public DateTime? ApprovalDate { get; set; } /*= DateTime.Now;*/
+    public DateTime? RejectionDate { get; set; } /*= DateTime.Now;*/
     public RequestStatus RequestStatus { get; set; } = RequestStatus.Pending;
 
     public CustomerDTO Customer { get; set; } = null!;

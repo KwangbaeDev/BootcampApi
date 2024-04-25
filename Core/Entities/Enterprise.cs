@@ -10,5 +10,6 @@ public class Enterprise
     public string Phone { get; set; } = string.Empty;
     public string Email { get; set; } = string.Empty;
     public IsDeleteStatus IsDeleted { get; set; } = IsDeleteStatus.False;
+
     public ICollection<PromotionEnterprise> PromotionsEnterprises { get; set; } = new List<PromotionEnterprise>();
 }

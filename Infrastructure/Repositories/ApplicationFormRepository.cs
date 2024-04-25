@@ -7,6 +7,7 @@ using Core.Requests.CustomerModels;
 using Infrastructure.Contexts;
 using Mapster;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Hosting.Internal;
 
 namespace Infrastructure.Repositories;
 
@@ -49,6 +50,13 @@ public class ApplicationFormRepository : IApplicationFormRepository
             applicationForm.CustomerId = newCustomer.Id;
         }
 
+        //if (applicationForm.ApplicationDate != applicationForm.ApplicationDate)
+        //{
+
+        //}
+        applicationForm.ApprovalDate = null;
+        applicationForm.RejectionDate = null;
+
         _context.ApplicationForms.Add(applicationForm);
 
         await _context.SaveChangesAsync();
@@ -69,6 +77,17 @@ public class ApplicationFormRepository : IApplicationFormRepository
         if (applicationForm is null)
         {
             throw new Exception("Account was not found");
+        }
+
+        if (applicationForm.RequestStatus == RequestStatus.Approved)
+        {
+            applicationForm.RejectionDate = null;
+            //applicationForm.ApprovalDate = DateTime.Now;
+        }
+        else if (applicationForm.RequestStatus == RequestStatus.Rejected)
+        {
+            applicationForm.ApprovalDate = applicationForm.ApprovalDate;
+            //applicationForm.RejectionDate = DateTime.Now;
         }
 
         model.Adapt(applicationForm);

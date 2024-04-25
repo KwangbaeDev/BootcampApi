@@ -16,9 +16,6 @@ public class CreateApplicationFormModel
     public int CurrencyId { get; set; }
     public CreateProductModel? Product { get; set; }
     public string? Descripcion { get; set; }
-    public DateTime ApplicationDate { get; set; } = DateTime.Now;
-    public RequestStatus RequestStatus { get; set; } = RequestStatus.Pending;
-
-    
-
+    //public DateTime ApplicationDate { get; set; } = DateTime.Now;
+    //public RequestStatus RequestStatus { get; set; } = RequestStatus.Pending;
 }
