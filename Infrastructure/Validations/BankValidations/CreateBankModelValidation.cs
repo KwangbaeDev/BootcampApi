@@ -2,7 +2,7 @@
 using FluentValidation;
 using System.ComponentModel.DataAnnotations;
 
-namespace Infrastructure.Validations;
+namespace Infrastructure.Validations.BankValidations;
 
 public class CreateBankModelValidation : AbstractValidator<CreateBankModel>
 {

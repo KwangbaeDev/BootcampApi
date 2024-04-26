@@ -12,18 +12,21 @@ public class ApplicationFormConfiguration : IEntityTypeConfiguration<Application
             .HasKey(af => af.Id);
 
         entity
-            .Property(af => af.Descripcion)
+            .Property(af => af.Description)
             .IsRequired();
 
         entity
             .Property(af => af.ApplicationDate)
+            .HasColumnType("timestamp without time zone")
             .IsRequired();
 
         entity
-            .Property(af => af.ApprovalDate);
+            .Property(af => af.ApprovalDate)
+            .HasColumnType("timestamp without time zone");
 
         entity
-            .Property(af => af.RejectionDate);
+            .Property(af => af.RejectionDate)
+            .HasColumnType("timestamp without time zone");
 
         entity
             .Property(af => af.RequestStatus)

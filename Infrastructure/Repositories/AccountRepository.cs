@@ -21,20 +21,20 @@ public class AccountRepository : IAccountRepository
 
     public async Task<AccountDTO> Add(CreateAccountModel model)
     {
-        ///*A modo de ejemplo*/
-        //#region PRUEBA
-        //var currency = new Currency()
-        //{
-        //    Name = "Dolares Americanos",
-        //    BuyValue = 10,
-        //    SellValue = 20,
-        //};
-        //_context.Currencies.Add(currency);
-
-        ////throw new Exception("Algo malo pasó");
-        //#endregion
 
         var account = model.Adapt<Account>();
+
+        var currency = await _context.Currencies.FirstOrDefaultAsync(a => a.Id == model.CurrencyId);
+        if (currency == null)
+        {
+            throw new Exception("Non-existent currency.");
+        }
+
+        var customer = await _context.Customers.FirstOrDefaultAsync(a => a.Id == model.CustomerId);
+        if (customer == null)
+        {
+            throw new Exception("Non-existent customer.");
+        }
 
         if (account.Type == AccountType.Saving)
         {

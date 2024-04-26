@@ -21,7 +21,6 @@ public class PaymentServiceRepository : IPaymentServiceRepository
     public async Task<PaymentServiceDTO> ServicePayment(CreatePaymentServiceModel model)
     {
         var paymentService = model.Adapt<PaymentService>();
-        //paymentService.Movement = model.Adapt<Movement>();
 
         var account = await _context.Accounts
                                       .Include(a => a.Currency)
@@ -35,24 +34,23 @@ public class PaymentServiceRepository : IPaymentServiceRepository
             throw new Exception("Account ID doesn't exist.");
         }
 
+        var service = await _context.Services
+                                      .FirstOrDefaultAsync(a => a.Id == model.ServiceId);
+
+        if (service == null)
+        {
+            throw new Exception("Service ID doesn't exist.");
+        }
+
         account.Balance = account.Balance - model.Amount;
         _context.Accounts.Update(account);
 
-        //var newMovementId = _context.Movements.Count() == 0 ? 1 : _context.Movements.Max(c => c.Id) + 1;
-        //paymentService.Movement.Id = newMovementId;
-        //paymentService.Movement.Destination = account.Number;
-
-        //_context.Movements.Add(paymentService.Movement);
-
-        //paymentService.MovementId = newMovementId;
         _context.PaymentServices.Add(paymentService);
 
         await _context.SaveChangesAsync();
 
         var createPaymentService = await _context.PaymentServices
-                                           //.Include(ps => ps.Movement)
                                            .FirstOrDefaultAsync(t => t.Id == paymentService.Id);
-        //createPaymentService!.Movement.Account = account;
 
         return createPaymentService.Adapt<PaymentServiceDTO>();
     }

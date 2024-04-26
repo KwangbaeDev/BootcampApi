@@ -16,6 +16,7 @@ namespace WebApi.Controllers
 
 
         [HttpPost]
+        [Authorize(Roles = "Client")]
         public async Task<IActionResult> CreateApplicationForm([FromBody] CreateApplicationFormModel request)
         {
             return Ok(await _applicationFormService.CreateApplicationForm(request));
@@ -24,6 +25,7 @@ namespace WebApi.Controllers
 
 
         [HttpPut]
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> UpdateApplicationForm([FromBody] UpdateApplicationFormModel request)
         {
             return Ok(await _applicationFormService.Update(request));

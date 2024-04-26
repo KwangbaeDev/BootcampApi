@@ -47,6 +47,8 @@ public partial class BootcampContext : DbContext
 
     public virtual DbSet<PaymentService> PaymentServices { get; set; }
 
+    public virtual DbSet<Service> Services { get; set; }
+
     public virtual DbSet<Deposit> Deposits { get; set; }
 
     public virtual DbSet<Extraction> Extractions { get; set; }
@@ -78,6 +80,8 @@ public partial class BootcampContext : DbContext
         modelBuilder.ApplyConfiguration(new ProductConfiguration());
 
         modelBuilder.ApplyConfiguration(new ApplicationFormConfiguration());
+
+        modelBuilder.ApplyConfiguration(new ServiceConfiguration());
 
         modelBuilder.ApplyConfiguration(new TransferConfiguration());
 

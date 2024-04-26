@@ -6,4 +6,5 @@ public class CreatePaymentServiceModel
     public decimal Amount { get; set; }
     public string Concept { get; set; } =string.Empty;
     public int AccountId { get; set; }
+    public int ServiceId { get; set; }
 }

@@ -33,10 +33,10 @@ public class PaymentServiceConfiguration : IEntityTypeConfiguration<PaymentServi
             .HasForeignKey(paymentService => paymentService.AccountId);
 
 
-        //entity
-        //    .HasOne(paymentService => paymentService.Movement)
-        //    .WithMany(movement => movement.PaymentServices)
-        //    .HasForeignKey(paymentService => paymentService.MovementId);
+        entity
+            .HasOne(paymentService => paymentService.Service)
+            .WithMany(service => service.PaymentServices)
+            .HasForeignKey(paymentService => paymentService.ServiceId);
 
 
     }

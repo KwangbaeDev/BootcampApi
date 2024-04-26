@@ -50,13 +50,6 @@ public class ApplicationFormRepository : IApplicationFormRepository
             applicationForm.CustomerId = newCustomer.Id;
         }
 
-        //if (applicationForm.ApplicationDate != applicationForm.ApplicationDate)
-        //{
-
-        //}
-        applicationForm.ApprovalDate = null;
-        applicationForm.RejectionDate = null;
-
         _context.ApplicationForms.Add(applicationForm);
 
         await _context.SaveChangesAsync();
@@ -72,32 +65,34 @@ public class ApplicationFormRepository : IApplicationFormRepository
 
     public async Task<ApplicationFormDTO> Update(UpdateApplicationFormModel model)
     {
-        var applicationForm = await _context.ApplicationForms.FindAsync(model.Id);
+        var applicationForm = await _context.ApplicationForms
+                                            .Include(af => af.Customer)
+                                            .Include(af => af.Currency)
+                                            .Include(af => af.Product)
+                                            .FirstOrDefaultAsync(af => af.Id == model.Id);
 
         if (applicationForm is null)
         {
             throw new Exception("Account was not found");
         }
 
-        if (applicationForm.RequestStatus == RequestStatus.Approved)
+        if (applicationForm.RequestStatus != RequestStatus.Pending)
         {
-            applicationForm.RejectionDate = null;
-            //applicationForm.ApprovalDate = DateTime.Now;
-        }
-        else if (applicationForm.RequestStatus == RequestStatus.Rejected)
-        {
-            applicationForm.ApprovalDate = applicationForm.ApprovalDate;
-            //applicationForm.RejectionDate = DateTime.Now;
+            throw new Exception($"The form has already been {(applicationForm.RequestStatus == RequestStatus.Approved 
+                                ? "approved" 
+                                : "rejected")}");
         }
 
-        model.Adapt(applicationForm);
+        applicationForm.ApprovalDate = model.RequestStatus == RequestStatus.Approved ? DateTime.Now : null;
+
+        applicationForm.RejectionDate = model.RequestStatus == RequestStatus.Rejected ? DateTime.Now : null;
+
+        applicationForm.RequestStatus = model.RequestStatus;
 
         _context.ApplicationForms.Update(applicationForm);
 
         await _context.SaveChangesAsync();
 
-        var applicationFormDTO = applicationForm.Adapt<ApplicationFormDTO>();
-
-        return applicationFormDTO;
+        return applicationForm.Adapt<ApplicationFormDTO>(); ;
     }
 }

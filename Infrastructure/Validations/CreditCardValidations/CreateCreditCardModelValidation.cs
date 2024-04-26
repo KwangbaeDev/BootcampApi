@@ -2,7 +2,7 @@
 using Core.Requests.CreditCardModels;
 using FluentValidation;
 
-namespace Infrastructure.Validations;
+namespace Infrastructure.Validations.CreditCardValidations;
 
 public class CreateCreditCardModelValidation : AbstractValidator<CreateCreditCardModel>
 {

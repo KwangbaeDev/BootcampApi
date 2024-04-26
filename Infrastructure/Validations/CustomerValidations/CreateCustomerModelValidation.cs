@@ -18,13 +18,6 @@ namespace Infrastructure.Validations
                 .WithMessage("The CustomerStatus provided is not valid.");
 
 
-            //RuleFor(x => x.BankId
-            //    .NotNull()
-            //    .WithMessage("Bank is required.");
-
-            //RuleFor(x => x.BankId)
-            //    .Must(BeValidBank)
-            //    .WithMessage("Bank not found.");
         }
 
         private bool BeValidCustomerStatus(int arg)
@@ -32,10 +25,6 @@ namespace Infrastructure.Validations
             return Enum.IsDefined(typeof(CustomerStatus), arg);
         }
 
-        //private bool BeValidBank(int bankId)
-        //{
-        //    return bankId
-        //}
 
 
     }

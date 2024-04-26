@@ -19,7 +19,7 @@ public class JwtProvider : IJwtProvider
 
     public string Generate(IEnumerable<string> roles)
     {
-        //var userRoles = new List<string> { "Admin"/*, "Seguridad"*/ };
+        var userRoles = new List<string> { "Client", "Admin" };
 
         var claims = new List<Claim>
         {

@@ -1,6 +1,7 @@
 ﻿using Core.Interfaces.Services;
 using Core.Requests.TransferModels;
 using Infrastructure.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace WebApi.Controllers
@@ -16,6 +17,7 @@ namespace WebApi.Controllers
 
 
         [HttpPost]
+        [Authorize(Roles = "Client")]
         public async Task<IActionResult> MakeTransfer([FromBody] CreateTransferModel request)
         {
             return Ok(await _transferService.Transferred(request));

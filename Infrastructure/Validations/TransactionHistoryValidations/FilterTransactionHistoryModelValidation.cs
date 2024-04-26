@@ -1,7 +1,7 @@
 ﻿using Core.Requests.TransactionHistoryModels;
 using FluentValidation;
 
-namespace Infrastructure.Validations;
+namespace Infrastructure.Validations.TransactionHistoryValidations;
 
 public class FilterTransactionHistoryModelValidation : AbstractValidator<FilterTransactionHistoryModel>
 {

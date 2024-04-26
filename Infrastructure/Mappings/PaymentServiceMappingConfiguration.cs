@@ -14,7 +14,9 @@ public class PaymentServiceMappingConfiguration : IRegister
         config.NewConfig<CreatePaymentServiceModel, PaymentService>()
             .Map(dest => dest.Amount, src => src.Amount)
             .Map(dest => dest.Concept, src => src.Concept)
-            .Map(dest => dest.AccountId, src => src.AccountId);
+            .Map(dest => dest.PaymentServiceDateTime, src => DateTime.Now)
+            .Map(dest => dest.AccountId, src => src.AccountId)
+            .Map(dest => dest.ServiceId, src => src.ServiceId);
 
 
         //Entidad hacia el DTO
@@ -23,7 +25,8 @@ public class PaymentServiceMappingConfiguration : IRegister
             .Map(dest => dest.DocumentNumber, src => src.Account.Customer.DocumentNumber)
             .Map(dest => dest.Amount, src => src.Amount)
             .Map(dest => dest.Concept, src => src.Concept)
-            .Map(dest => dest.PaymentServiceDateTime, src => DateTime.Now)
-            .Map(dest => dest.Account, src => src.Account);
+            .Map(dest => dest.PaymentServiceDateTime, src => src.PaymentServiceDateTime)
+            .Map(dest => dest.Account, src => src.Account)
+            .Map(dest => dest.Service, src => src.Service);
     }
 }

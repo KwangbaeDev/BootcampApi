@@ -13,7 +13,7 @@ public class ProductConfiguration : IEntityTypeConfiguration<Product>
             .HasKey(p => p.Id);
 
         entity
-            .Property(p => p.ProductType)
+            .Property(p => p.Name)
             .IsRequired();
 
 

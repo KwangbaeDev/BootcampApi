@@ -34,6 +34,14 @@ public class DepositRepository : IDepositRepository
             throw new Exception("Account ID doesn't exist.");
         }
 
+        var bank = await _context.Banks
+                                      .FirstOrDefaultAsync(a => a.Id == model.BankId);
+
+        if (bank == null)
+        {
+            throw new Exception("Bank ID doesn't exist.");
+        }
+
         if (account.CurrentAccount != null && model.Amount > account.CurrentAccount.OperationalLimit)
         {
             throw new Exception("The operation exceeds the operational limit.");

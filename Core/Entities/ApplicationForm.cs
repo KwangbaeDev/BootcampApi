@@ -5,7 +5,7 @@ namespace Core.Entities;
 public class ApplicationForm
 {
     public int Id { get; set; }
-    public string? Descripcion { get; set; }
+    public string? Description { get; set; }
     public DateTime ApplicationDate { get; set; }
     public DateTime? ApprovalDate { get; set; }
     public DateTime? RejectionDate { get; set; }

@@ -48,6 +48,12 @@ public class TransferRepository : ITransferRepository
             throw new Exception("Non-existent destination account.");
         }
 
+        var currency = await _context.Currencies.FirstOrDefaultAsync(a => a.Id == model.CurrencyId);
+        if (currency == null)
+        {
+            throw new Exception("Non-existent currency.");
+        }
+
         if (model.TransferType == TransferType.AnotherBank)
         {
             if (destinationAccount.Customer.BankId != model.DenstinationBankId)
@@ -109,28 +115,6 @@ public class TransferRepository : ITransferRepository
                                                  .Sum(e => e.Amount);
 
         var totalAmountOperations = totalAmountOperationsTransfers + totalAmountOperationsDeposits + totalAmountOperationsExtractions;
-
-        if ((model.Amount + totalAmountOperations) > originAccount.CurrentAccount!.OperationalLimit)
-        {
-            throw new Exception("Exceeded the operational limit.");
-        }
-
-        totalAmountOperationsTransfers = _context.Transfers
-                                              .Where(t => t.OriginAccountId == originAccount.Id &&
-                                              t.TransferredDateTime.Month == DateTime.Now.Month)
-                                              .Sum(t => t.Amount);
-
-        totalAmountOperationsDeposits = _context.Deposits
-                                              .Where(d => d.AccountId == originAccount.Id &&
-                                              d.DepositDateTime.Month == DateTime.Now.Month)
-                                              .Sum(d => d.Amount);
-
-        totalAmountOperationsExtractions = _context.Extractions
-                                                 .Where(e => e.AccountId == originAccount.Id &&
-                                                 e.ExtractionDateTime.Month == DateTime.Now.Month)
-                                                 .Sum(e => e.Amount);
-
-        totalAmountOperations = totalAmountOperationsTransfers + totalAmountOperationsDeposits + totalAmountOperationsExtractions;
 
         if ((model.Amount + totalAmountOperations) > originAccount.CurrentAccount!.OperationalLimit)
         {

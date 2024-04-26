@@ -11,6 +11,6 @@ public class PaymentServiceDTO
     public DateTime PaymentServiceDateTime { get; set; }
     public int AccountId { get; set; }
     public AccountDTO Account { get; set; } = null!;
-    //public int MovementId { get; set; }
-    //public MovementDTO Movement { get; set; } = null!;
+    public int ServiceId { get; set; }
+    public ServiceDTO Service { get; set; } = null!;
 }

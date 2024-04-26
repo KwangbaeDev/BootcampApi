@@ -23,7 +23,7 @@ public class DepositMappingConfiguration : IRegister
         config.NewConfig<Deposit, DepositDTO>()
             .Map(dest => dest.Id, src => src.Id)
             .Map(dest => dest.Amount, src => src.Amount)
-            .Map(dest => dest.DepositDateTime, src => DateTime.Now)
+            .Map(dest => dest.DepositDateTime, src => src.DepositDateTime)
             .Map(dest => dest.Account, src => src.Account)
             .Map(dest => dest.Bank, src => src.Bank);
 
