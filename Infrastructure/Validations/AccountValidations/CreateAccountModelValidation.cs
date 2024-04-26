@@ -11,10 +11,14 @@ public class CreateAccountModelValidation : AbstractValidator<CreateAccountModel
     public CreateAccountModelValidation()
     {
         RuleFor(x => x.Holder)
+            .NotNull()
+            .WithMessage("Name cannot be null")
             .NotEmpty()
             .WithMessage("Holder is required");
 
         RuleFor(x => x.Number)
+            .NotNull()
+            .WithMessage("Name cannot be null")
             .NotEmpty()
             .WithMessage("Number is required");
 
@@ -23,10 +27,14 @@ public class CreateAccountModelValidation : AbstractValidator<CreateAccountModel
             .Must(x => validValues.Contains(x)).WithMessage("Type should only have the values ​​'0 --> Saving' | '1 --> Current'.");
 
         RuleFor(x => x.CurrencyId)
+            .NotNull()
+            .WithMessage("Name cannot be null")
             .NotEmpty()
             .WithMessage("CurrencyId is required");
 
         RuleFor(x => x.CustomerId)
+            .NotNull()
+            .WithMessage("Name cannot be null")
             .NotEmpty()
             .WithMessage("CustomerId is required");
 

@@ -13,7 +13,6 @@ public class DepositConfiguration : IEntityTypeConfiguration<Deposit>
 
         entity
             .Property(e => e.Amount)
-            //.HasPrecision(20, 5)
             .IsRequired();
 
         entity
@@ -32,11 +31,5 @@ public class DepositConfiguration : IEntityTypeConfiguration<Deposit>
             .HasOne(deposit => deposit.Bank)
             .WithMany(bank => bank.Deposits)
             .HasForeignKey(deposit => deposit.BankId);
-
-
-        //entity
-        //    .HasOne(deposit => deposit.Movement)
-        //    .WithMany(movement => movement.Deposits)
-        //    .HasForeignKey(deposit => deposit.MovementId);
     }
 }

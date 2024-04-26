@@ -41,6 +41,11 @@ public class ExtractionRepository : IExtractionRepository
             throw new Exception("Bank ID doesn't exist.");
         }
 
+        if (model.Amount > account.Balance)
+        {
+            throw new Exception("The Extraction amount must not be greater than the current account balance.");
+        }
+
         if (account.CurrentAccount != null && model.Amount > account.CurrentAccount.OperationalLimit)
         {
             throw new Exception("The operation exceeds the operational limit.");

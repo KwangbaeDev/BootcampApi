@@ -16,14 +16,14 @@ public class AccountController : BaseApiController
 
 
     [HttpPost]
-    //[Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Client")]
     public async Task<IActionResult> Create([FromBody] CreateAccountModel request)
     {
         return Ok(await _accountService.Add(request));
     }
 
     [HttpGet("filtered")]
-    //[Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Client")]
     public async Task<IActionResult> GetFiltered([FromQuery] FilterAccountModel filter)
     {
         var account = await _accountService.GetFiltered(filter);
@@ -31,7 +31,7 @@ public class AccountController : BaseApiController
     }
 
     [HttpGet("{id}")]
-    //[Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Client")]
     public async Task<IActionResult> GetById([FromRoute] int id)
     {
         var account = await _accountService.GetById(id);
@@ -39,7 +39,7 @@ public class AccountController : BaseApiController
     }
 
     [HttpGet("all")]
-    //[Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Client")]
     public async Task<IActionResult> GetAll()
     {
         var account = await _accountService.GettAll();
@@ -47,14 +47,14 @@ public class AccountController : BaseApiController
     }
 
     [HttpPut]
-    //[Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Client")]
     public async Task<IActionResult> Update([FromBody] UpdateAccountModel request)
     {
         return Ok(await _accountService.Update(request));
     }
 
     [HttpDelete("{id}")]
-    //[Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Delete([FromRoute] int id)
     {
         return Ok(await _accountService.Delete(id));

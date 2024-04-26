@@ -99,26 +99,48 @@ public class TransferRepository : ITransferRepository
             throw new Exception("The operation exceeds the operational limit.");
         }
 
-        var totalAmountOperationsTransfers = _context.Transfers
-                                                 .Where(t => t.OriginAccountId == originAccount.Id &&
+        var totalAmountOperationsOATransfers = _context.Transfers
+                                                            .Where(t => t.OriginAccountId == originAccount.Id &&
+                                                            t.TransferredDateTime.Month == DateTime.Now.Month)
+                                                            .Sum(t => t.Amount);
+
+        var totalAmountOperationsOADeposits = _context.Deposits
+                                                             .Where(d => d.AccountId == originAccount.Id &&
+                                                             d.DepositDateTime.Month == DateTime.Now.Month)
+                                                             .Sum(d => d.Amount);
+
+        var totalAmountOperationsOAExtractions = _context.Extractions
+                                                              .Where(e => e.AccountId == originAccount.Id &&
+                                                              e.ExtractionDateTime.Month == DateTime.Now.Month)
+                                                              .Sum(e => e.Amount);
+
+        var totalAmountOperationsOA = totalAmountOperationsOATransfers + totalAmountOperationsOADeposits + totalAmountOperationsOAExtractions;
+
+        if ((model.Amount + totalAmountOperationsOA) > originAccount.CurrentAccount!.OperationalLimit)
+        {
+            throw new Exception("OriginAccount exceeded the operational limit.");
+        }
+
+       var totalAmountOperationsDATransfers = _context.Transfers
+                                                 .Where(t => t.OriginAccountId == destinationAccount.Id &&
                                                  t.TransferredDateTime.Month == DateTime.Now.Month)
                                                  .Sum(t => t.Amount);
 
-        var totalAmountOperationsDeposits = _context.Deposits
-                                                 .Where(d => d.AccountId == originAccount.Id &&
+       var totalAmountOperationsDADeposits = _context.Deposits
+                                                 .Where(d => d.AccountId == destinationAccount.Id &&
                                                  d.DepositDateTime.Month == DateTime.Now.Month)
                                                  .Sum(d => d.Amount);
 
-        var totalAmountOperationsExtractions = _context.Extractions
-                                                 .Where(e => e.AccountId == originAccount.Id &&
+       var totalAmountOperationsDAExtractions = _context.Extractions
+                                                 .Where(e => e.AccountId == destinationAccount.Id &&
                                                  e.ExtractionDateTime.Month == DateTime.Now.Month)
                                                  .Sum(e => e.Amount);
 
-        var totalAmountOperations = totalAmountOperationsTransfers + totalAmountOperationsDeposits + totalAmountOperationsExtractions;
+       var totalAmountOperationsDA = totalAmountOperationsDATransfers + totalAmountOperationsDADeposits + totalAmountOperationsDAExtractions;
 
-        if ((model.Amount + totalAmountOperations) > originAccount.CurrentAccount!.OperationalLimit)
+        if ((model.Amount + totalAmountOperationsDA) > destinationAccount.CurrentAccount!.OperationalLimit)
         {
-            throw new Exception("Exceeded the operational limit.");
+            throw new Exception("DestinationAccount exceeded the operational limit.");
         }
 
         originAccount.Balance = originAccount.Balance - model.Amount;

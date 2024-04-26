@@ -18,14 +18,14 @@ public class BankController : BaseApiController
     }
 
     [HttpPost]
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Client")]
     public async Task<IActionResult> Create([FromBody] CreateBankModel request)
     {
         return Ok(await _service.Add(request));
     }
 
     [HttpGet("{id}")]
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Client")]
     public async Task<IActionResult> GetById([FromRoute] int id)
     {
         var bank = await _service.GetById(id);
@@ -33,7 +33,7 @@ public class BankController : BaseApiController
     }
 
     [HttpPut]
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Client")]
     public async Task<IActionResult> Update([FromBody] UpdateBankModel request)
     {
         return Ok(await _service.Update(request));
@@ -47,7 +47,7 @@ public class BankController : BaseApiController
     }
 
     [HttpGet("all")]
-    [Authorize(Roles = "Admin")]
+    [Authorize(Roles = "Client")]
     public async Task<IActionResult> GetAll()
     {
         var banks = await _service.GetAll();
