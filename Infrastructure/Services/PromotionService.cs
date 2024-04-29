@@ -14,30 +14,41 @@ public class PromotionService : IPromotionService
         _promotionRepository = promotionRepository;
     }
 
+
     public async Task<PromotionDTO> Add(CreatePromotionModel model)
     {
         return await _promotionRepository.Add(model);
     }
+
+
 
     public async Task<bool> Delete(int id)
     {
         return await _promotionRepository.Delete(id);
     }
 
+
+
     public async Task<PromotionDTO> GetById(int id)
     {
         return await _promotionRepository.GetById(id);
     }
+
+
 
     public async Task<List<PromotionDTO>> GetFiltered(FilterPromotionModel filter)
     {
         return await _promotionRepository.GetFiltered(filter);
     }
 
+
+
     public async Task<List<PromotionDTO>> GettAll()
     {
         return await _promotionRepository.GettAll();
     }
+
+
 
     public async Task<PromotionDTO> Update(UpdatePromotionModel model)
     {

@@ -12,11 +12,11 @@ public class DepositConfiguration : IEntityTypeConfiguration<Deposit>
             .HasKey(d => d.Id);
 
         entity
-            .Property(e => e.Amount)
+            .Property(d => d.Amount)
             .IsRequired();
 
         entity
-            .Property(e => e.DepositDateTime)
+            .Property(d => d.DepositDateTime)
             .HasColumnType("timestamp without time zone")
             .IsRequired();
 

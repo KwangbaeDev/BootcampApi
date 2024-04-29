@@ -14,12 +14,15 @@ public class CurrencyController : BaseApiController
         _currencyService = currencyService;
     }
 
+
     [HttpPost]
     [Authorize(Roles = "Client")]
     public async Task<IActionResult> Create([FromBody] CreateCurrencyModel request)
     {
         return Ok(await _currencyService.Add(request));
     }
+
+
 
     [HttpGet("filtered")]
     [Authorize(Roles = "Client")]
@@ -29,6 +32,8 @@ public class CurrencyController : BaseApiController
         return Ok(currency);
     }
 
+
+
     [HttpGet("all")]
     [Authorize(Roles = "Client")]
     public async Task<IActionResult> GetAll()
@@ -36,6 +41,8 @@ public class CurrencyController : BaseApiController
         var currency = await _currencyService.GetAll();
         return Ok(currency);
     }
+
+
 
     [HttpGet("{id}")]
     [Authorize(Roles = "Client")]
@@ -45,12 +52,16 @@ public class CurrencyController : BaseApiController
         return Ok(currency);
     }
 
+
+
     [HttpPut]
     [Authorize(Roles = "Client")]
     public async Task<IActionResult> Update([FromBody] UpdateCurrencyModel request)
     {
         return Ok(await _currencyService.Update(request));
     }
+
+
 
     [HttpDelete("{id}")]
     [Authorize(Roles = "Admin")]

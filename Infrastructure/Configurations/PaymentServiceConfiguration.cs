@@ -37,7 +37,5 @@ public class PaymentServiceConfiguration : IEntityTypeConfiguration<PaymentServi
             .HasOne(paymentService => paymentService.Service)
             .WithMany(service => service.PaymentServices)
             .HasForeignKey(paymentService => paymentService.ServiceId);
-
-
     }
 }

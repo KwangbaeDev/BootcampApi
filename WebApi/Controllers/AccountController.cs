@@ -22,6 +22,9 @@ public class AccountController : BaseApiController
         return Ok(await _accountService.Add(request));
     }
 
+
+
+
     [HttpGet("filtered")]
     [Authorize(Roles = "Client")]
     public async Task<IActionResult> GetFiltered([FromQuery] FilterAccountModel filter)
@@ -29,6 +32,9 @@ public class AccountController : BaseApiController
         var account = await _accountService.GetFiltered(filter);
         return Ok(account);
     }
+
+
+
 
     [HttpGet("{id}")]
     [Authorize(Roles = "Client")]
@@ -38,6 +44,8 @@ public class AccountController : BaseApiController
         return Ok(account);
     }
 
+
+
     [HttpGet("all")]
     [Authorize(Roles = "Client")]
     public async Task<IActionResult> GetAll()
@@ -46,12 +54,16 @@ public class AccountController : BaseApiController
         return Ok(account);
     }
 
+
+
     [HttpPut]
     [Authorize(Roles = "Client")]
     public async Task<IActionResult> Update([FromBody] UpdateAccountModel request)
     {
         return Ok(await _accountService.Update(request));
     }
+
+
 
     [HttpDelete("{id}")]
     [Authorize(Roles = "Admin")]

@@ -16,6 +16,8 @@ public class EnterpriseMappingConfiguration : IRegister
             .Map(x => x.Phone, src => src.Phone)
             .Map(x => x.Email, src => src.Email);
 
+
+
         //Entidad hacia el DTO
         config.NewConfig<Enterprise, EnterpriseDTO>()
             .Map(x => x.Id, src => src.Id)

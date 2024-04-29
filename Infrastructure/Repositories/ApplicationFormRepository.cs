@@ -1,5 +1,6 @@
 ﻿using Core.Constants;
 using Core.Entities;
+using Core.Exceptions;
 using Core.Interfaces.Repositories;
 using Core.Models;
 using Core.Requests.ApplicationFormModels;
@@ -20,13 +21,13 @@ public class ApplicationFormRepository : IApplicationFormRepository
         _context = context;
     }
 
+
     public async Task<ApplicationFormDTO> CreateApplicationForm(CreateApplicationFormModel model)
     {
         var applicationForm = model.Adapt<ApplicationForm>();
 
         var existingCustomer = await _context.Customers
                                              .FirstOrDefaultAsync(c => c.DocumentNumber == model.DocumentNumber);
-
         if (existingCustomer != null)
         {
             applicationForm.Customer = existingCustomer;
@@ -35,10 +36,11 @@ public class ApplicationFormRepository : IApplicationFormRepository
         {
             var newCustomer = model.Adapt<Customer>();
 
-            var bankDefault = await _context.Banks.FirstOrDefaultAsync(b => b.Name == "Banco Continental");
+            var bankDefault = await _context.Banks
+                                            .FirstOrDefaultAsync(b => b.Name == "Banco Continental");
             if (bankDefault == null) 
             {
-                throw new Exception("There is no default bank");
+                throw new NotFoundException("There is no default bank");
             }
             newCustomer.BankId = bankDefault.Id;
 
@@ -55,13 +57,14 @@ public class ApplicationFormRepository : IApplicationFormRepository
         await _context.SaveChangesAsync();
 
         var createApplicationForm = await _context.ApplicationForms
-            .Include(af => af.Customer)
-            .Include(af => af.Currency)
-            .Include(af => af.Product)
-            .FirstOrDefaultAsync(af => af.Id == applicationForm.Id);
-
+                                                  .Include(af => af.Customer)
+                                                  .Include(af => af.Currency)
+                                                  .Include(af => af.Product)
+                                                  .FirstOrDefaultAsync(af => af.Id == applicationForm.Id);
         return createApplicationForm.Adapt<ApplicationFormDTO>();
     }
+
+
 
     public async Task<ApplicationFormDTO> Update(UpdateApplicationFormModel model)
     {
@@ -70,23 +73,20 @@ public class ApplicationFormRepository : IApplicationFormRepository
                                             .Include(af => af.Currency)
                                             .Include(af => af.Product)
                                             .FirstOrDefaultAsync(af => af.Id == model.Id);
-
-        if (applicationForm is null)
+        if (applicationForm == null)
         {
-            throw new Exception("Account was not found");
+            throw new NotFoundException($"ApplicationForm with id: {model.Id} doest not exist");
         }
 
         if (applicationForm.RequestStatus != RequestStatus.Pending)
         {
-            throw new Exception($"The form has already been {(applicationForm.RequestStatus == RequestStatus.Approved 
+            throw new NotFoundException($"The form has already been {(applicationForm.RequestStatus == RequestStatus.Approved 
                                 ? "approved" 
                                 : "rejected")}");
         }
 
         applicationForm.ApprovalDate = model.RequestStatus == RequestStatus.Approved ? DateTime.Now : null;
-
         applicationForm.RejectionDate = model.RequestStatus == RequestStatus.Rejected ? DateTime.Now : null;
-
         applicationForm.RequestStatus = model.RequestStatus;
 
         _context.ApplicationForms.Update(applicationForm);

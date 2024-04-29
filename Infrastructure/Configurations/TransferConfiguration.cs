@@ -12,16 +12,16 @@ public class TransferConfiguration : IEntityTypeConfiguration<Transfer>
             .HasKey(t => t.Id);
 
         entity
-            .Property(e => e.Amount)
+            .Property(t => t.Amount)
             .IsRequired();
 
         entity
-            .Property(e => e.TransferredDateTime)
+            .Property(t => t.TransferredDateTime)
             .HasColumnType("timestamp without time zone")
             .IsRequired();
 
         entity
-            .Property(e => e.Concept)
+            .Property(t => t.Concept)
             .IsRequired();
 
 
@@ -31,11 +31,6 @@ public class TransferConfiguration : IEntityTypeConfiguration<Transfer>
             .WithMany(originAccount => originAccount.Transfers)
             .HasForeignKey(transfer => transfer.OriginAccountId);
 
-        //entity
-        //    .HasOne(transfer => transfer.TargetAccount)
-        //    .WithMany(targetAccount => targetAccount.Transfers)
-        //    .HasForeignKey(transfer => transfer.TargetAccountId)
-        //    .IsRequired(false);
         entity
             .HasOne<Account>()
             .WithMany(destinationAccount => destinationAccount.Transfers)

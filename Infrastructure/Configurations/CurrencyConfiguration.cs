@@ -12,19 +12,19 @@ public class CurrencyConfiguration : IEntityTypeConfiguration<Currency>
             .ToTable("Currencies");
 
         entity
-            .HasKey(e => e.Id)
+            .HasKey(c => c.Id)
             .HasName("Currency_pkey");
 
         entity
-            .Property(e => e.Name)
+            .Property(c => c.Name)
             .HasMaxLength(50);
 
         entity
-            .Property(e => e.BuyValue)
+            .Property(c => c.BuyValue)
             .HasColumnType("numeric(20,5)");
 
         entity
-            .Property(e => e.SellValue)
+            .Property(c => c.SellValue)
             .HasColumnType("numeric(20,5)");
 
 
@@ -43,10 +43,5 @@ public class CurrencyConfiguration : IEntityTypeConfiguration<Currency>
             .HasMany(currency => currency.Transfers)
             .WithOne(transfer => transfer.Currency)
             .HasForeignKey(transfer => transfer.CurrencyId);
-
-        //entity
-        //    .HasMany(currency => currency.Transfers)
-        //    .WithOne(transfer => transfer.Currency)
-        //    .HasForeignKey(transfer => transfer.CurrencyId);
     }
 }

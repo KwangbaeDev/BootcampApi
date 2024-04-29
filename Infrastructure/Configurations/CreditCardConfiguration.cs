@@ -9,43 +9,43 @@ public class CreditCardConfiguration : IEntityTypeConfiguration<CreditCard>
     public void Configure(EntityTypeBuilder<CreditCard> entity)
     {
         entity
-            .HasKey(e => e.Id)
+            .HasKey(cc => cc.Id)
             .HasName("CreditCard_pkey");
 
         entity
-            .Property(e => e.Designation)
+            .Property(cc => cc.Designation)
             .HasMaxLength(128).IsRequired();
 
         entity
-            .Property(e => e.IssueDate)
+            .Property(cc => cc.IssueDate)
             .HasColumnType("timestamp without time zone");
 
         entity
-            .Property(e => e.ExpirationDate)
+            .Property(cc => cc.ExpirationDate)
             .HasColumnType("timestamp without time zone");
 
         entity
-            .Property(e => e.CardNumber)
+            .Property(cc => cc.CardNumber)
             .HasMaxLength(150).IsRequired();
 
         entity
-            .Property(e => e.CVV)
+            .Property(cc => cc.CVV)
             .HasMaxLength(128).IsRequired();
 
         entity
-            .Property(e => e.CreditLimit)
+            .Property(cc => cc.CreditLimit)
             .HasPrecision(20,5).IsRequired();
 
         entity
-            .Property(e => e.AvailableCredit)
+            .Property(cc => cc.AvailableCredit)
             .HasPrecision(20,5).IsRequired();
 
         entity
-            .Property(e => e.CurrentDebt)
+            .Property(cc => cc.CurrentDebt)
             .HasPrecision(20,5).IsRequired();
 
         entity
-            .Property(e => e.InterestRate)
+            .Property(cc => cc.InterestRate)
             .HasPrecision(20,5).IsRequired();
 
 

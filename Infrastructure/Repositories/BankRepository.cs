@@ -18,6 +18,7 @@ public class BankRepository : IBankRepository
         _context = context;
     }
 
+
     public async Task<BankDTO> Add(CreateBankModel model)
     {
         var bankToCreate = model.Adapt<Bank>();
@@ -27,58 +28,63 @@ public class BankRepository : IBankRepository
         await _context.SaveChangesAsync();
 
         var bankDTO = bankToCreate.Adapt<BankDTO>();
-
         return bankDTO;
     }
+
+
 
     public async Task<bool> Delete(int id)
     {
         var bank = await _context.Banks.FindAsync(id);
-
-        //if (bank is null) throw new Exception("Bank not found");
-        if (bank is null) throw new NotFoundException($"Bank with id: {id} doest not exist");
+        if (bank == null)
+        {
+            throw new NotFoundException($"Bank with id: {id} doest not exist");
+        }
 
         _context.Banks.Remove(bank);
 
         var result = await _context.SaveChangesAsync();
-
         return result > 0;
     }
+
+
 
     public async Task<List<BankDTO>> GetAll()
     {
         var banks = await _context.Banks.ToListAsync();
 
         var banksDTO = banks.Adapt<List<BankDTO>>();
-
         return banksDTO;
     }
 
     public async Task<BankDTO> GetById(int id)
     {
-        //throw new Exception("No se pudo conectar a la base de datos");
-
         var bank = await _context.Banks.FindAsync(id);
-
-        if (bank is null) throw new NotFoundException($"Bank with id: {id} doest not exist");
+        if (bank == null)
+        {
+            throw new NotFoundException($"Bank with id: {id} doest not exist");
+        }
 
         var bankDTO = bank.Adapt<BankDTO>();
-
         return bankDTO;
     }
 
+
+
     public async Task<bool> NameIsAlreadyTaken(string name)
     {
-
         return await _context.Banks.AnyAsync(bank => bank.Name == name);
     }
+
+
 
     public async Task<BankDTO> Update(UpdateBankModel model)
     {
         var bank = await _context.Banks.FindAsync(model.Id);
-
-        if (bank is null) throw new Exception("Bank was not found");
-        //if (bank is null) throw new NotFoundException($"Bank with id: {id} doest not exist");
+        if (bank == null)
+        {
+            throw new NotFoundException($"Bank with id: {model.Id} doest not exist");
+        }
 
         model.Adapt(bank);
 
@@ -87,7 +93,6 @@ public class BankRepository : IBankRepository
         await _context.SaveChangesAsync();
 
         var bankDTO = bank.Adapt<BankDTO>();
-
         return bankDTO;
     }
 }

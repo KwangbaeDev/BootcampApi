@@ -17,7 +17,4 @@ public class CreateCreditCardModel
     public decimal InterestRate { get; set; }
     public int CustomerId { get; set; }
     public int CurrencyId { get; set; }
-    //public string RestrictedCreditCard { get; set; } = string.Empty;
-    //public CustomerDTO Customer { get; set; } = null!;
-    //public CurrencyDTO Currency { get; set; } = null!;
 }

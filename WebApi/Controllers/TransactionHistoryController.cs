@@ -15,7 +15,6 @@ public class TransactionHistoryController : BaseApiController
     }
 
 
-
     [HttpGet("filtered")]
     [Authorize(Roles = "Client")]
     public async Task<IActionResult> GetFiltered([FromQuery] FilterTransactionHistoryModel filter)

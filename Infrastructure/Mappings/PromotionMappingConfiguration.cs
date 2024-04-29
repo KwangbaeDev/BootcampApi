@@ -17,6 +17,7 @@ public class PromotionMappingConfiguration : IRegister
             .Map(x => x.Discount, src => src.Discount);
 
 
+
         //Entidad hacia el DTO
         config.NewConfig<Promotion, PromotionDTO>()
             .Map(x => x.Id, src => src.Id)

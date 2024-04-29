@@ -8,33 +8,38 @@ public class CustomerConfiguration : IEntityTypeConfiguration<Customer>
     public void Configure(EntityTypeBuilder<Customer> entity)
     {
         entity
-            .HasKey(e => e.Id)
+            .HasKey(c => c.Id)
             .HasName("Customer_pkey");
 
         entity
-            .Property(e => e.Name)
+            .Property(c => c.Name)
             .HasMaxLength(300).IsRequired();
 
         entity
-            .Property(e => e.Lastname)
+            .Property(c => c.Lastname)
             .HasMaxLength(300);
 
         entity
-            .Property(e => e.DocumentNumber)
+            .Property(c => c.DocumentNumber)
             .HasMaxLength(150)
             .IsRequired();
 
         entity
-            .Property(e => e.Address)
+            .Property(c => c.Address)
             .HasMaxLength(400);
 
         entity
-            .Property(e => e.Mail)
+            .Property(c => c.Mail)
             .HasMaxLength(100);
 
         entity
-            .Property(e => e.Phone)
+            .Property(c => c.Phone)
             .HasMaxLength(150);
+
+        entity
+            .Property(c => c.Birth)
+            .HasColumnType("timestamp without time zone");
+
 
 
         entity
@@ -51,10 +56,5 @@ public class CustomerConfiguration : IEntityTypeConfiguration<Customer>
             .HasMany(customer => customer.ApplicationForms)
             .WithOne(applicationForm => applicationForm.Customer)
             .HasForeignKey(applicationForn => applicationForn.CustomerId);
-
-        //entity
-        //    .HasMany(customer => customer.Credits)
-        //    .WithOne(credit => credit.Customer)
-        //    .HasForeignKey(customer => customer.CustomerId);
     }
 }

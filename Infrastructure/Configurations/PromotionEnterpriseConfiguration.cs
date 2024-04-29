@@ -14,16 +14,18 @@ public class PromotionEnterpriseConfiguration : IEntityTypeConfiguration<Promoti
         //    .HasIndex(e => new { e.PromotionId, e.EnterpriseId })
         //    .IsUnique();
 
-        entity.HasKey(e => new { e.PromotionId, e.EnterpriseId });
+        entity.HasKey(pe => new { pe.PromotionId, pe.EnterpriseId });
+
+
 
         entity
-            .HasOne(e => e.Promotion)
-            .WithMany(e => e.PromotionsEnterprises)
-            .HasForeignKey(e => e.PromotionId);
+            .HasOne(promotionEnterprise => promotionEnterprise.Promotion)
+            .WithMany(promotion => promotion.PromotionsEnterprises)
+            .HasForeignKey(promotionEnterprise => promotionEnterprise.PromotionId);
 
         entity
-            .HasOne(e => e.Enterprise)
-            .WithMany(e => e.PromotionsEnterprises)
-            .HasForeignKey(e => e.EnterpriseId);
+            .HasOne(promotionEnterprise => promotionEnterprise.Enterprise)
+            .WithMany(enterprise => enterprise.PromotionsEnterprises)
+            .HasForeignKey(promotionEnterprise => promotionEnterprise.EnterpriseId);
     }
 }

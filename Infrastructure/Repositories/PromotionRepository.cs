@@ -21,10 +21,10 @@ public class PromotionRepository : IPromotionRepository
         _context = context;
     }
 
+
     public async Task<PromotionDTO> Add(CreatePromotionModel model)
     {
         var promotion = model.Adapt<Promotion>();
-
 
         foreach (int enterpriseId in model.RelatedEnterpriseIds)
         {
@@ -37,7 +37,6 @@ public class PromotionRepository : IPromotionRepository
         }
 
         _context.Promotions.Add(promotion);
-
         await _context.SaveChangesAsync();
 
         var createdPromotion = await _context.Promotions
@@ -45,27 +44,28 @@ public class PromotionRepository : IPromotionRepository
                                              .ThenInclude(x => x.Enterprise)
                                              .FirstOrDefaultAsync(x => x.Id == promotion.Id);
 
-
         var promotionDTO = promotion.Adapt<PromotionDTO>();
-
         return promotionDTO;
     }
 
+
+
     public async Task<bool> Delete(int id)
     {
-        var promotion = await _context.Promotions.FindAsync(id);
-
-        if (promotion is null || promotion.IsDeleted == IsDeleteStatus.True)
+        var promotion = await _context.Promotions
+                                      .FindAsync(id);
+        if (promotion == null || promotion.IsDeleted == IsDeleteStatus.True)
         {
-            throw new Exception("Promotion not found.");
+            throw new NotFoundException($"Promotion with id: {id} doest not exist");
         }
 
         promotion.IsDeleted = IsDeleteStatus.True;
 
         var result = await _context.SaveChangesAsync();
-
         return result > 0;
     }
+
+
 
     public async Task<PromotionDTO> GetById(int id)
     {
@@ -73,84 +73,87 @@ public class PromotionRepository : IPromotionRepository
                                       .Include(x => x.PromotionsEnterprises)
                                       .ThenInclude(x => x.Enterprise)
                                       .FirstOrDefaultAsync(x => x.Id == id); 
-
-        if (promotion is null || promotion.IsDeleted == IsDeleteStatus.True)
+        if (promotion == null || promotion.IsDeleted == IsDeleteStatus.True)
         {
-            throw new Exception("Promotion not found");
+            throw new NotFoundException($"Promotion with id: {id} doest not exist");
         }
 
         var promotionDTO = promotion.Adapt<PromotionDTO>();
-
         return promotionDTO;
     }
+
+
 
     public async Task<List<PromotionDTO>> GetFiltered(FilterPromotionModel filter)
     {
         var query = _context.Promotions
-                         .Include(x => x.PromotionsEnterprises)
-                         .ThenInclude(x => x.Enterprise)
-                         .AsQueryable();
+                            .Include(x => x.PromotionsEnterprises)
+                            .ThenInclude(x => x.Enterprise)
+                            .AsQueryable();
 
         if (filter.Name is not null)
         {
             query = query.Where(x =>
-                x.Name == filter.Name);
+                                x.Name == filter.Name);
         }
 
         if (filter.PromotionTimeFrom is not null)
         {
             query = query.Where(x =>
-                x.Start != null &&
-                x.Start.Value.Year >= filter.PromotionTimeFrom);
+                                x.Start != null &&
+                                x.Start.Value.Year >= filter.PromotionTimeFrom);
         }
 
         if (filter.PromotionTimeTo is not null)
         {
             query = query.Where(x =>
-                x.End != null &&
-                x.End.Value.Year <= filter.PromotionTimeTo);
+                                x.End != null &&
+                                x.End.Value.Year <= filter.PromotionTimeTo);
         }
 
         if (filter.Discount is not null)
         {
             query = query.Where(x =>
-                x.Discount == filter.Discount);
+                                x.Discount == filter.Discount);
         }
 
         var result = await query.ToListAsync();
+
         var promotionDTO = result.Adapt<List<PromotionDTO>>();
         return promotionDTO;
     }
 
+
+
     public async Task<List<PromotionDTO>> GettAll()
     {
         var promotions = await _context.Promotions
-                                            .Where(x => x.IsDeleted != IsDeleteStatus.True)
-                                            .Include(x => x.PromotionsEnterprises)
-                                            .ThenInclude(x => x.Enterprise)
-                                            .ToListAsync();
+                                       .Where(x => x.IsDeleted != IsDeleteStatus.True)
+                                       .Include(x => x.PromotionsEnterprises)
+                                       .ThenInclude(x => x.Enterprise)
+                                       .ToListAsync();
 
         var promotionDTOs = promotions.Select(x => x.Adapt<PromotionDTO>()).ToList();
-
         return promotionDTOs;
     }
+
+
 
     public async Task<PromotionDTO> Update(UpdatePromotionModel model)
     {
         var query = _context.Promotions
-                         .Include(a => a.PromotionsEnterprises)
-                         .ThenInclude(a => a.Enterprise)
-                         .AsQueryable();
+                            .Include(a => a.PromotionsEnterprises)
+                            .ThenInclude(a => a.Enterprise)
+                            .AsQueryable();
 
         var result = await query.ToListAsync();
 
         var promotion = await _context.Promotions
-        .Include(x => x.PromotionsEnterprises)
-        .FirstOrDefaultAsync(x => x.Id == model.Id);
-
+                                      .Include(x => x.PromotionsEnterprises)
+                                      .FirstOrDefaultAsync(x => x.Id == model.Id);
         if (promotion == null || promotion.IsDeleted == IsDeleteStatus.True)
         {
-            throw new NotFoundException("Promotion not found");
+            throw new NotFoundException($"Promotion with id: {model.Id} doest not exist");
         }
 
         model.Adapt(promotion);
@@ -168,6 +171,7 @@ public class PromotionRepository : IPromotionRepository
         }
 
         await _context.SaveChangesAsync();
+
         var promotionDTO = promotion.Adapt<PromotionDTO>();
         return promotionDTO;
     }

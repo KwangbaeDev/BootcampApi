@@ -19,6 +19,7 @@ public class TransactionHistoryRepository : ITransactionHistoryRepository
         _context = context;
     }
 
+
     public async Task<List<TransactionHistoryDTO>> GetFiltered(FilterTransactionHistoryModel filter)
     {
         var transfers = _context.Transfers
@@ -102,7 +103,6 @@ public class TransactionHistoryRepository : ITransactionHistoryRepository
                         (filter.DateFrom == null && filter.DateTo == null ||
                         t.TransactionDateTime >= filter.DateFrom && t.TransactionDateTime <= filter.DateTo))
                         .ToList();
-
         return result;
     }
 }

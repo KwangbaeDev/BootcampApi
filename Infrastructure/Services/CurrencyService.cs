@@ -14,30 +14,41 @@ public class CurrencyService : ICurrencyService
         _repository = repository;
     }
 
+
     public async Task<CurrencyDTO> Add(CreateCurrencyModel model)
     {
         return await _repository.Add(model);
     }
+
+
 
     public async Task<bool> Delete(int id)
     {
         return await _repository.Delete(id);
     }
 
+
+
     public async Task<List<CurrencyDTO>> GetAll()
     {
         return await _repository.GetAll();
     }
+
+
 
     public async Task<CurrencyDTO> GetById(int id)
     {
         return await _repository.GetById(id);
     }
 
+
+
     public async Task<List<CurrencyDTO>> GetFiltered(FilterCurrencysModel filter)
     {
         return await _repository.GetFiltered(filter);
     }
+
+
 
     public async Task<CurrencyDTO> Update(UpdateCurrencyModel model)
     {

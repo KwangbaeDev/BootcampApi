@@ -15,6 +15,7 @@ public class PromotionEnterpriseRepository : IPromotionEnterpriseRepository
         _context = context;
     }
 
+
     public async Task<PromotionEnterpriseDTO> AsignarPromocionAEmpresa(int promotionId, int enterpriseId)
     {
         var promotionEnterprise = new PromotionEnterprise

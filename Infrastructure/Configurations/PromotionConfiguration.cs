@@ -23,9 +23,11 @@ public class PromotionConfiguration : IEntityTypeConfiguration<Promotion>
             .Property(p => p.Discount)
             .IsRequired();
 
+
+
         entity
-            .HasMany(p => p.PromotionsEnterprises)
-            .WithOne(pe => pe.Promotion)
-            .HasForeignKey(pe => pe.PromotionId);
+            .HasMany(promotion => promotion.PromotionsEnterprises)
+            .WithOne(promotionEnterprise => promotionEnterprise.Promotion)
+            .HasForeignKey(promotionEnterprise => promotionEnterprise.PromotionId);
     }
 }

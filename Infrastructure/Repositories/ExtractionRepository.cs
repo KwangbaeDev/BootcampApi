@@ -1,4 +1,5 @@
 ﻿using Core.Entities;
+using Core.Exceptions;
 using Core.Interfaces.Repositories;
 using Core.Models;
 using Core.Requests.ExtractionModels;
@@ -17,38 +18,37 @@ public class ExtractionRepository : IExtractionRepository
         _context = context;
     }
 
+
     public async Task<ExtractionDTO> Extracting(CreateExtractionModel model)
     {
         var extraction = model.Adapt<Extraction>();
 
         var account = await _context.Accounts
-                                      .Include(a => a.Currency)
-                                      .Include(a => a.Customer)
-                                      .ThenInclude(c => c.Bank)
-                                      .Include(a => a.CurrentAccount)
-                                      .FirstOrDefaultAsync(a => a.Id == model.AccountId);
-
+                                    .Include(a => a.Currency)
+                                    .Include(a => a.Customer)
+                                    .ThenInclude(c => c.Bank)
+                                    .Include(a => a.CurrentAccount)
+                                    .FirstOrDefaultAsync(a => a.Id == model.AccountId);
         if (account == null)
         {
-            throw new Exception("Account ID doesn't exist.");
+            throw new NotFoundException($"Account with id: {model.AccountId} doest not exist");
         }
 
         var bank = await _context.Banks
-                                      .FirstOrDefaultAsync(a => a.Id == model.BankId);
-
+                                 .FirstOrDefaultAsync(a => a.Id == model.BankId);
         if (bank == null)
         {
-            throw new Exception("Bank ID doesn't exist.");
+            throw new NotFoundException($"Bank with id: {model.BankId} doest not exist");
         }
 
         if (model.Amount > account.Balance)
         {
-            throw new Exception("The Extraction amount must not be greater than the current account balance.");
+            throw new NotFoundException("The Extraction amount must not be greater than the current account balance.");
         }
 
         if (account.CurrentAccount != null && model.Amount > account.CurrentAccount.OperationalLimit)
         {
-            throw new Exception("The operation exceeds the operational limit.");
+            throw new NotFoundException("The operation exceeds the operational limit.");
         }
 
         var totalAmountOperationsTransfers = _context.Transfers
@@ -70,7 +70,7 @@ public class ExtractionRepository : IExtractionRepository
 
         if ((model.Amount + totalAmountOperations) > account.CurrentAccount!.OperationalLimit)
         {
-            throw new Exception("Exceeded the operational limit.");
+            throw new NotFoundException("Exceeded the operational limit.");
         }
 
         account.Balance = account.Balance - model.Amount;
@@ -82,7 +82,6 @@ public class ExtractionRepository : IExtractionRepository
 
         var createExtraction = await _context.Extractions
                                            .FirstOrDefaultAsync(e => e.Id == extraction.Id);
-
         return createExtraction.Adapt<ExtractionDTO>();
     }
 }

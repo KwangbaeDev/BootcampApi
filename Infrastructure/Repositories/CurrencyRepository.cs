@@ -1,4 +1,5 @@
 ﻿using Core.Entities;
+using Core.Exceptions;
 using Core.Interfaces.Repositories;
 using Core.Models;
 using Core.Requests.CurrencyModels;
@@ -17,6 +18,7 @@ public class CurrencyRepository : ICurrencyRepository
         _context = context;
     }
 
+
     public async Task<CurrencyDTO> Add(CreateCurrencyModel model)
     {
         var currencyToCreate = model.Adapt<Currency>();
@@ -26,62 +28,78 @@ public class CurrencyRepository : ICurrencyRepository
         await _context.SaveChangesAsync();
 
         var currencyDTO = currencyToCreate.Adapt<CurrencyDTO>();
-
         return currencyDTO;
     }
 
+
+
     public async Task<bool> Delete(int id)
     {
-        var currency = await _context.Currencies.FindAsync(id);
+        var currency = await _context.Currencies
+                                     .FindAsync(id);
 
-        if (currency is null) throw new Exception("Currency not found.");
+        if (currency == null)
+        {
+            throw new NotFoundException($"Currency with id: {id} doest not exist");
+        }
 
         _context.Currencies.Remove(currency);
 
         var result = await _context.SaveChangesAsync();
-
         return result > 0;
     }
 
+
+
     public async Task<List<CurrencyDTO>> GetAll()
     {
-        var currency = await _context.Currencies.ToListAsync();
+        var currency = await _context.Currencies
+                                     .ToListAsync();
 
         var currencyDTO = currency.Adapt<List<CurrencyDTO>>();
-
         return currencyDTO;
     }
+
+
 
     public async Task<CurrencyDTO> GetById(int id)
     {
-        var currency = await _context.Currencies.FindAsync(id);
-
-        if (currency is null) throw new Exception("Currency not found");
+        var currency = await _context.Currencies
+                                     .FindAsync(id);
+        if (currency == null)
+        {
+            throw new NotFoundException($"Currency with id: {id} doest not exist");
+        }
 
         var currencyDTO = currency.Adapt<CurrencyDTO>();
-
         return currencyDTO;
     }
+
+
 
     public async Task<List<CurrencyDTO>> GetFiltered(FilterCurrencysModel filter)
     {
         var query = _context.Currencies
-            .AsQueryable();
+                            .AsQueryable();
 
         if (filter.Name is not null)
             query = query.Where(x => 
-                x.Name == filter.Name);
+                                x.Name == filter.Name);
 
         var result = await query.ToListAsync();
-
         return result.Adapt<List<CurrencyDTO>>();
     }
 
+
+
     public async Task<CurrencyDTO> Update(UpdateCurrencyModel model)
     {
-        var currency = await _context.Currencies.FindAsync(model.Id);
-
-        if (currency is null) throw new Exception("Currency was not found");
+        var currency = await _context.Currencies
+                                     .FindAsync(model.Id);
+        if (currency == null)
+        {
+            throw new NotFoundException($"Currency with id: {model.Id} doest not exist");
+        }
 
         model.Adapt(currency);
 
@@ -90,7 +108,6 @@ public class CurrencyRepository : ICurrencyRepository
         await _context.SaveChangesAsync();
 
         var currencyDTO = currency.Adapt<CurrencyDTO>();
-
         return currencyDTO;
     }
 }

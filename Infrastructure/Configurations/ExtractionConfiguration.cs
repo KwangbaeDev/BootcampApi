@@ -22,7 +22,6 @@ public class ExtractionConfiguration : IEntityTypeConfiguration<Extraction>
 
 
 
-
         entity
             .HasOne(extraction => extraction.Account)
             .WithMany(account => account.Extractions)
@@ -32,12 +31,5 @@ public class ExtractionConfiguration : IEntityTypeConfiguration<Extraction>
             .HasOne(extraction => extraction.Bank)
             .WithMany(bank => bank.Extractions)
             .HasForeignKey(extraction => extraction.BankId);
-
-
-
-        //entity
-        //    .HasOne(extraction => extraction.Movement)
-        //    .WithMany(movement => movement.Extractions)
-        //    .HasForeignKey(extraction => extraction.MovementId);
     }
 }

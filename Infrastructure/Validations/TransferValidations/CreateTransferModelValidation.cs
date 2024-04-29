@@ -17,7 +17,7 @@ public class CreateTransferModelValidation : AbstractValidator<CreateTransferMod
             .Must(x => validValues.Contains(x)).WithMessage("It should only have the values ​​'0 --> SameBank' | '1 --> AnotherBank'.");
 
         RuleFor(x => x.DenstinationBankId)
-            .NotEmpty()
+            .NotEmpty().When(x => x.TransferType == TransferType.AnotherBank)
             .WithMessage("DenstinationBankId is required");
 
         RuleFor(x => x.AccountNumber)
@@ -29,11 +29,15 @@ public class CreateTransferModelValidation : AbstractValidator<CreateTransferMod
             .WithMessage("DocumentNumber is required");
 
         RuleFor(x => x.CurrencyId)
-            .NotEmpty()
+            .NotEmpty().When(x => x.TransferType == TransferType.AnotherBank)
             .WithMessage("CurrencyId is required");
 
         RuleFor(x => x.Amount)
             .NotEmpty()
-            .WithMessage("Amount is required");
+            .WithMessage("Amount is required.")
+            .GreaterThan(-1)
+            .WithMessage("The transfer amount cannot be negative.")
+            .PrecisionScale(8, 0, false)
+            .WithMessage("The amount cannot have '.'");
     }
 }

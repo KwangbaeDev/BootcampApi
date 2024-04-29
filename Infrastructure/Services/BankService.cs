@@ -15,10 +15,10 @@ public class BankService : IBankService
         _bankRepository = bankRepository;
     }
 
+
     public async Task<BankDTO> Add(CreateBankModel model)
     {
         bool nameIsInUse = await _bankRepository.NameIsAlreadyTaken(model.Name);
-
         if (nameIsInUse)
         {
             throw new BusinessLogicException($"The name {model.Name} is already in use");
@@ -27,20 +27,28 @@ public class BankService : IBankService
         return await _bankRepository.Add(model);
     }
 
+
+
     public async Task<bool> Delete(int id)
     {
         return await _bankRepository.Delete(id);
     }
+
+
 
     public async Task<List<BankDTO>> GetAll()
     {
         return await _bankRepository.GetAll();
     }
 
+
+
     public async Task<BankDTO> GetById(int id)
     {
         return await _bankRepository.GetById(id);
     }
+
+
 
     public async Task<BankDTO> Update(UpdateBankModel model)
     {

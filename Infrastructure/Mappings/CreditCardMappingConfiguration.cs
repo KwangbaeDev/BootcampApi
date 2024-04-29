@@ -10,6 +10,7 @@ public class CreditCardMappingConfiguration : IRegister
 {
     public void Register(TypeAdapterConfig config)
     {
+        //Del Creation object hacia la entidad
         config.NewConfig<CreateCreditCardModel, CreditCard>()
             .Map(x => x.Designation, src => src.Designation)
             .Map(x => x.IssueDate, src => src.IssueDate)
@@ -26,6 +27,7 @@ public class CreditCardMappingConfiguration : IRegister
 
 
 
+        //Entidad hacia el DTO
         config.NewConfig<CreditCard, CreditCardDTO>()
             .Map(x => x.Id, src => src.Id)
             .Map(x => x.Designation, src => src.Designation)

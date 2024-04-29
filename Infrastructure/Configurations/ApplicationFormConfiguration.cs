@@ -34,7 +34,6 @@ public class ApplicationFormConfiguration : IEntityTypeConfiguration<Application
 
 
 
-
         entity
             .HasOne(applicationForm => applicationForm.Customer)
             .WithMany(customer => customer.ApplicationForms)

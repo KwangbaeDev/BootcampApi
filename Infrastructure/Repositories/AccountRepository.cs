@@ -1,5 +1,6 @@
 ﻿using Core.Constants;
 using Core.Entities;
+using Core.Exceptions;
 using Core.Interfaces.Repositories;
 using Core.Models;
 using Core.Requests.AccountModels;
@@ -19,21 +20,23 @@ public class AccountRepository : IAccountRepository
         _context = context;
     }
 
+
     public async Task<AccountDTO> Add(CreateAccountModel model)
     {
-
         var account = model.Adapt<Account>();
 
-        var currency = await _context.Currencies.FirstOrDefaultAsync(a => a.Id == model.CurrencyId);
+        var currency = await _context.Currencies
+                                     .FirstOrDefaultAsync(c =>c.Id == model.CurrencyId);
         if (currency == null)
         {
-            throw new Exception("Non-existent currency.");
+            throw new NotFoundException($"Currency with id: {model.CurrencyId} doest not exist");
         }
 
-        var customer = await _context.Customers.FirstOrDefaultAsync(a => a.Id == model.CustomerId);
+        var customer = await _context.Customers
+                                     .FirstOrDefaultAsync(c =>c.Id == model.CustomerId);
         if (customer == null)
         {
-            throw new Exception("Non-existent customer.");
+            throw new NotFoundException($"Customer with id: {model.CustomerId} doest not exist");
         }
 
         if (account.Type == AccountType.Saving)
@@ -51,51 +54,51 @@ public class AccountRepository : IAccountRepository
         await _context.SaveChangesAsync();
 
         var createdAccount = await _context.Accounts
-            .Include(a => a.Currency)
-            .Include(a => a.Customer)
-            .Include(a => a.SavingAccount)
-            .Include(a => a.CurrentAccount)
-            .FirstOrDefaultAsync(a => a.Id == account.Id);
-
+                                            .Include(a => a.Currency)
+                                            .Include(a => a.Customer)
+                                            .Include(a => a.SavingAccount)
+                                            .Include(a => a.CurrentAccount)
+                                            .FirstOrDefaultAsync(a =>a.Id == account.Id);
         return createdAccount.Adapt<AccountDTO>();
     }
 
+
+
     public async Task<bool> Delete(int id)
     {
-        var account = await _context.Accounts.FindAsync(id);
-
-        if (account is null)
+        var account = await _context.Accounts
+                                    .FindAsync(id);
+        if (account == null)
         {
-            throw new Exception("Account not found");
+            throw new NotFoundException($"Account with id: {id} doest not exist");
         }
 
         account.IsDeleted = IsDeleteStatus.True;
 
         var result = await _context.SaveChangesAsync();
-
         return result > 0;
     }
+
+
 
     public async Task<AccountDTO> GetById(int id)
     {
         var account = await _context.Accounts
-            .Include(a => a.Currency)
-            .Include(a => a.Customer)
-            .Include(a => a.SavingAccount)
-            .Include(a => a.CurrentAccount)
-            .FirstOrDefaultAsync(x => x.Id == id);
-
-        /*var account = await _context.Accounts.FindAsync(id)*/;
-
-        if (account is null || account.IsDeleted == IsDeleteStatus.True)
+                                    .Include(a => a.Currency)
+                                    .Include(a => a.Customer)
+                                    .Include(a => a.SavingAccount)
+                                    .Include(a => a.CurrentAccount)
+                                    .FirstOrDefaultAsync(a =>a.Id == id);
+        if (account == null || account.IsDeleted == IsDeleteStatus.True)
         {
-            throw new Exception("Account not found");
+            throw new NotFoundException($"Account with id: {id} doest not exist");
         }
 
         var accountDTO = account.Adapt<AccountDTO>();
-
         return accountDTO;
     }
+
+
 
     public async Task<List<AccountDTO>> GetFiltered(FilterAccountModel filter)
     {
@@ -116,9 +119,10 @@ public class AccountRepository : IAccountRepository
                 x.Currency.Name == filter.Currency);
 
         var result = await querry.ToListAsync();
-
         return result.Adapt<List<AccountDTO>>();
     }
+
+
 
     public async Task<List<AccountDTO>> GettAll()
     {
@@ -127,17 +131,18 @@ public class AccountRepository : IAccountRepository
                                     .ToListAsync();
 
         var accountDTO = account.Adapt<List<AccountDTO>>();
-
         return accountDTO;
     }
 
+
+
     public async Task<AccountDTO> Update(UpdateAccountModel model)
     {
-        var account = await _context.Accounts.FindAsync(model.Id);
-
-        if (account is null || account.IsDeleted == IsDeleteStatus.True)
+        var account = await _context.Accounts
+                                    .FindAsync(model.Id);
+        if (account == null || account.IsDeleted == IsDeleteStatus.True)
         {
-            throw new Exception("Account was not found");
+            throw new NotFoundException($"Account with id: {model.Id} doest not exist");
         }
 
         model.Adapt(account);
@@ -147,7 +152,6 @@ public class AccountRepository : IAccountRepository
         await _context.SaveChangesAsync();
 
         var accountDTO = account.Adapt<AccountDTO>();
-
         return accountDTO;
     }
 }

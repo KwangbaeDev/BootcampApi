@@ -11,5 +11,6 @@ public class CustomerDTO
     public string? Phone { get; set; }
     public int CustomerStatus { get; set; } = 0;
     public DateTime? Birth { get; set; }
+
     public BankDTO Bank { get; set; } = null!;
 }

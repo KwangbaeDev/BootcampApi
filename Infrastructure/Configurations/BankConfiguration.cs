@@ -10,29 +10,28 @@ public class BankConfiguration : IEntityTypeConfiguration<Bank>
     public void Configure(EntityTypeBuilder<Bank> entity)
     {
         entity
-            .HasKey(e => e.Id)
+            .HasKey(b => b.Id)
             .HasName("Bank_pkey");
 
         entity
-            .Property(e => e.Name)
+            .Property(b => b.Name)
             .HasMaxLength(300)
             .IsRequired();
 
         entity
-            .Property(e => e.Phone)
+            .Property(b => b.Phone)
             .HasMaxLength(150)
             .IsRequired();
 
         entity
-            .Property(e => e.Mail)
+            .Property(b => b.Mail)
             .HasMaxLength(100)
             .IsRequired();
 
         entity
-            .Property(e => e.Address)
+            .Property(b => b.Address)
             .HasMaxLength(400)
             .IsRequired();
-
 
 
 

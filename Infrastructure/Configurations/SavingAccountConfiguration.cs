@@ -8,17 +8,18 @@ public class SavingAccountConfiguration : IEntityTypeConfiguration<SavingAccount
     public void Configure(EntityTypeBuilder<SavingAccount> entity)
     {
         entity
-            .HasKey(e => e.Id)
+            .HasKey(sa => sa.Id)
             .HasName("SavingAccount_pkey");
 
         entity
-            .Property(e => e.HolderName)
+            .Property(sa => sa.HolderName)
             .HasMaxLength(100);
+
 
 
         entity
             .HasOne(savingAccount => savingAccount.Account)
-            .WithOne(p => p.SavingAccount)
-            .HasForeignKey<SavingAccount>(d => d.AccountId);
+            .WithOne(account => account.SavingAccount)
+            .HasForeignKey<SavingAccount>(savingAccount => savingAccount.AccountId);
     }
 }

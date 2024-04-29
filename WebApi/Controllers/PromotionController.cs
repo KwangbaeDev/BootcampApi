@@ -14,12 +14,14 @@ namespace WebApi.Controllers
             _promotionService = promotionService;
         }
 
+
         [HttpPost]
         [Authorize(Roles = "Client")]
         public async Task<IActionResult> Create([FromBody] CreatePromotionModel request)
         {
             return Ok(await _promotionService.Add(request));
         }
+
 
 
         [HttpGet("filtered")]
@@ -31,6 +33,7 @@ namespace WebApi.Controllers
         }
 
 
+
         [HttpGet("{id}")]
         [Authorize(Roles = "Client")]
         public async Task<IActionResult> GetById([FromRoute] int id)
@@ -38,6 +41,7 @@ namespace WebApi.Controllers
             var promotion = await _promotionService.GetById(id);
             return Ok(promotion);
         }
+
 
 
         [HttpGet("all")]
@@ -49,12 +53,14 @@ namespace WebApi.Controllers
         }
 
 
+
         [HttpPut]
         [Authorize(Roles = "Client")]
         public async Task<IActionResult> Update([FromBody] UpdatePromotionModel request)
         {
             return Ok(await _promotionService.Update(request));
         }
+
 
 
         [HttpDelete("{id}")]

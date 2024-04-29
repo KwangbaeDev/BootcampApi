@@ -13,6 +13,7 @@ public class AuthController : BaseApiController
         _jwtProvider = jwtProvider;
     }
 
+
     [HttpGet("generate-token")]
     [AllowAnonymous]
     public IActionResult Generate([FromQuery] IEnumerable<string> roles)

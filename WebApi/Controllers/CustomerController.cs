@@ -14,6 +14,7 @@ public class CustomerController : BaseApiController
         _customerService = customerService;
     }
 
+
     [HttpGet("filtered")]
     [Authorize(Roles = "Client")]
     public async Task<IActionResult> GetFiltered([FromQuery] FilterCustomersModel filter)
@@ -22,12 +23,16 @@ public class CustomerController : BaseApiController
         return Ok(customers);
     }
 
+
+
     [HttpPost]
     [Authorize(Roles = "Client")]
     public async Task<IActionResult> Create([FromBody] CreateCustomerModel request)
     {
         return Ok(await _customerService.Add(request));
     }
+
+
 
     [HttpGet("{id}")]
     [Authorize(Roles = "Client")]
@@ -37,6 +42,8 @@ public class CustomerController : BaseApiController
         return Ok(customer);
     }
 
+
+
     [HttpGet("all")]
     [Authorize(Roles = "Client")]
     public async Task<IActionResult> GetAll()
@@ -45,12 +52,16 @@ public class CustomerController : BaseApiController
         return Ok(costumers);
     }
 
+
+
     [HttpPut]
     [Authorize(Roles = "Client")]
     public async Task<IActionResult> Update([FromBody] UpdateCustomerModel request)
     {
         return Ok(await _customerService.Update(request));
     }
+
+
 
     [HttpDelete("{id}")]
     [Authorize(Roles = "Admin")]

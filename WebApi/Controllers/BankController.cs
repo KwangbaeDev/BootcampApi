@@ -17,12 +17,15 @@ public class BankController : BaseApiController
         _service = service;
     }
 
+
     [HttpPost]
     [Authorize(Roles = "Client")]
     public async Task<IActionResult> Create([FromBody] CreateBankModel request)
     {
         return Ok(await _service.Add(request));
     }
+
+
 
     [HttpGet("{id}")]
     [Authorize(Roles = "Client")]
@@ -32,6 +35,8 @@ public class BankController : BaseApiController
         return Ok(bank);
     }
 
+
+
     [HttpPut]
     [Authorize(Roles = "Client")]
     public async Task<IActionResult> Update([FromBody] UpdateBankModel request)
@@ -39,12 +44,16 @@ public class BankController : BaseApiController
         return Ok(await _service.Update(request));
     }
 
+
+
     [HttpDelete("{id}")]
     [Authorize(Roles = "Admin")]
     public async Task<IActionResult> Delete([FromRoute] int id)
     {
         return Ok(await _service.Delete(id));
     }
+
+
 
     [HttpGet("all")]
     [Authorize(Roles = "Client")]

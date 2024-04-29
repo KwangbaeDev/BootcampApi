@@ -1,4 +1,5 @@
 ﻿using Core.Entities;
+using Core.Exceptions;
 using Core.Interfaces.Repositories;
 using Core.Models;
 using Core.Requests.DepositModels;
@@ -23,33 +24,31 @@ public class DepositRepository : IDepositRepository
         var deposit = model.Adapt<Deposit>();
 
         var account = await _context.Accounts
-                                      .Include(a => a.Currency)
-                                      .Include(a => a.Customer)
-                                      .ThenInclude(c => c.Bank)
-                                      .Include(a => a.CurrentAccount)
-                                      .FirstOrDefaultAsync(a => a.Id == model.AccountId);
-
+                                    .Include(a => a.Currency)
+                                    .Include(a => a.Customer)
+                                    .ThenInclude(c => c.Bank)
+                                    .Include(a => a.CurrentAccount)
+                                    .FirstOrDefaultAsync(a => a.Id == model.AccountId);
         if (account == null)
         {
-            throw new Exception("Account ID doesn't exist.");
+            throw new NotFoundException($"Account with id: {model.AccountId} doest not exist");
         }
 
         var bank = await _context.Banks
-                                      .FirstOrDefaultAsync(a => a.Id == model.BankId);
-
+                                      .FirstOrDefaultAsync(b => b.Id == model.BankId);
         if (bank == null)
         {
-            throw new Exception("Bank ID doesn't exist.");
+            throw new NotFoundException($"Bank with id: {model.BankId} doest not exist");
         }
 
         if (model.Amount > account.Balance)
         {
-            throw new Exception("The Deposit amount must not be greater than the current account balance.");
+            throw new NotFoundException("The Deposit amount must not be greater than the current account balance.");
         }
 
         if (account.CurrentAccount != null && model.Amount > account.CurrentAccount.OperationalLimit)
         {
-            throw new Exception("The operation exceeds the operational limit.");
+            throw new NotFoundException("The operation exceeds the operational limit.");
         }
 
         var totalAmountOperationsTransfers = _context.Transfers
@@ -71,7 +70,7 @@ public class DepositRepository : IDepositRepository
 
         if ((model.Amount + totalAmountOperations) > account.CurrentAccount!.OperationalLimit)
         {
-            throw new Exception("Exceeded the operational limit.");
+            throw new NotFoundException("Exceeded the operational limit.");
         }
 
         account.Balance = account.Balance + model.Amount;
@@ -82,8 +81,7 @@ public class DepositRepository : IDepositRepository
         await _context.SaveChangesAsync();
 
         var createDeposit = await _context.Deposits
-                                           .FirstOrDefaultAsync(p => p.Id == deposit.Id);
-
+                                           .FirstOrDefaultAsync(d => d.Id == deposit.Id);
         return createDeposit.Adapt<DepositDTO>();
     }
 }

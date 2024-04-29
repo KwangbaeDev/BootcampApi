@@ -8,20 +8,21 @@ public class CurrentAccountConfiguration : IEntityTypeConfiguration<CurrentAccou
     public void Configure(EntityTypeBuilder<CurrentAccount> entity)
     {
         entity
-            .HasKey(e => e.Id).
+            .HasKey(ca => ca.Id).
             HasName("CurrentAccount_pkey");
 
         entity
-            .Property(e => e.OperationalLimit)
+            .Property(ca => ca.OperationalLimit)
             .HasPrecision(20, 5);
 
         entity
-            .Property(e => e.MonthAverage)
+            .Property(ca => ca.MonthAverage)
             .HasPrecision(20, 5);
 
         entity
-            .Property(e => e.Interest)
+            .Property(ca => ca.Interest)
             .HasPrecision(10, 5);
+
 
 
         entity

@@ -13,6 +13,8 @@ public class ExtractionService : IExtractionService
         _extractionRepository = extractionRepository;
     }
 
+
+
     public async Task<ExtractionDTO> Extracting(CreateExtractionModel model)
     {
         return await _extractionRepository.Extracting(model);

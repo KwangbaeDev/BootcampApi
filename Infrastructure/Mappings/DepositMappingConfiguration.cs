@@ -26,12 +26,5 @@ public class DepositMappingConfiguration : IRegister
             .Map(dest => dest.DepositDateTime, src => src.DepositDateTime)
             .Map(dest => dest.Account, src => src.Account)
             .Map(dest => dest.Bank, src => src.Bank);
-
-
-
-
-
-
-
     }
 }

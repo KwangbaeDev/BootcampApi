@@ -14,12 +14,14 @@ namespace WebApi.Controllers
             _enterpriseService = enterpriseService;
         }
 
+
         [HttpPost]
         [Authorize(Roles = "Client")]
         public async Task<IActionResult> Create([FromBody] CreateEnterpriseModel request)
         {
             return Ok(await _enterpriseService.Add(request));
         }
+
 
 
         [HttpGet("{id}")]
@@ -31,6 +33,7 @@ namespace WebApi.Controllers
         }
 
 
+
         [HttpGet("all")]
         [Authorize(Roles = "Client")]
         public async Task<IActionResult> GetAll()
@@ -38,6 +41,7 @@ namespace WebApi.Controllers
             var enterprise = await _enterpriseService.GettAll();
             return Ok(enterprise);
         }
+
 
 
         [HttpPut]
@@ -48,12 +52,12 @@ namespace WebApi.Controllers
         }
 
 
+
         [HttpDelete("{id}")]
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
             return Ok(await _enterpriseService.Delete(id));
         }
-
     }
 }

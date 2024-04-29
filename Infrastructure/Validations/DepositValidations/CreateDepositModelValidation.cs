@@ -17,6 +17,10 @@ public class CreateDepositModelValidation : AbstractValidator<CreateDepositModel
 
         RuleFor(x => x.Amount)
             .NotEmpty()
-            .WithMessage("Amount is required.");
+            .WithMessage("Amount is required.")
+            .GreaterThan(-1)
+            .WithMessage("The deposit amount cannot be negative.")
+            .PrecisionScale(8, 0, false)
+            .WithMessage("The amount cannot have '.'");
     }
 }

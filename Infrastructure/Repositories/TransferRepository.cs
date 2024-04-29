@@ -1,5 +1,6 @@
 ﻿using Core.Constants;
 using Core.Entities;
+using Core.Exceptions;
 using Core.Interfaces.Repositories;
 using Core.Models;
 using Core.Requests.TransferModels;
@@ -19,6 +20,7 @@ public class TransferRepository : ITransferRepository
         _context = context;
     }
 
+
     public async Task<TransferDTO> Transferred(CreateTransferModel model)
     {
         var transfer = model.Adapt<Transfer>();
@@ -31,7 +33,7 @@ public class TransferRepository : ITransferRepository
                                           .FirstOrDefaultAsync(a => a.Id == model.OriginAccountId);
         if (originAccount == null) 
         {
-            throw new Exception("Non-existent origin account.");
+            throw new NotFoundException($"OriginAccount with id: {model.OriginAccountId} doest not exist");
         }
 
         var destinationAccount = await _context.Accounts
@@ -42,63 +44,62 @@ public class TransferRepository : ITransferRepository
                                               .FirstOrDefaultAsync(a => 
                                               a.Number == model.AccountNumber && 
                                               a.Customer.DocumentNumber == model.DocumentNumber);
-
         if (destinationAccount == null)
         {
-            throw new Exception("Non-existent destination account.");
-        }
-
-        var currency = await _context.Currencies.FirstOrDefaultAsync(a => a.Id == model.CurrencyId);
-        if (currency == null)
-        {
-            throw new Exception("Non-existent currency.");
+            throw new NotFoundException($"DestinationAccount with id: {destinationAccount} doest not exist");
         }
 
         if (model.TransferType == TransferType.AnotherBank)
         {
             if (destinationAccount.Customer.BankId != model.DenstinationBankId)
             {
-                throw new Exception("The destination bank does not exist.");
+                throw new NotFoundException("The destination bank does not exist.");
+            }
+
+            if (destinationAccount.Currency.Id != model.CurrencyId)
+            {
+                throw new NotFoundException($"Currency with id: {model.CurrencyId} doest not exist");
             }
         }
         else
         {
             if (destinationAccount.Customer.BankId != originAccount.Customer.BankId)
             {
-                throw new Exception("Bank accounts do not match.");
+                throw new NotFoundException("Bank accounts do not match.");
             }
         }
 
         if (originAccount.Type != destinationAccount.Type)
         {
-            throw new Exception("It has to be the same type of account.");
+            throw new NotFoundException("It has to be the same type of account.");
         }
 
         if (originAccount.CurrencyId != destinationAccount.CurrencyId)
         {
-            throw new Exception("It must be the same currency.");
+            throw new NotFoundException("It must be the same currency.");
         }
 
         if (model.Amount > originAccount.Balance)
         {
-            throw new Exception("The transfer amount must not be greater than the current account balance.");
+            throw new NotFoundException("The transfer amount must not be greater than the current account balance.");
         }
 
         if (originAccount.Status == AccountStatus.Inactive)
         {
-            throw new Exception("The origin account must be active.");
+            throw new NotFoundException("The origin account must be active.");
         }
 
         if (destinationAccount.Status == AccountStatus.Inactive)
         {
-            throw new Exception("The destination account must be active.");
+            throw new NotFoundException("The destination account must be active.");
         }
 
         if (originAccount.CurrentAccount != null && model.Amount > originAccount.CurrentAccount.OperationalLimit)
         {
-            throw new Exception("The operation exceeds the operational limit.");
+            throw new NotFoundException("The operation exceeds the operational limit.");
         }
 
+        //Valida el limite operacional de la cuenta de origen
         var totalAmountOperationsOATransfers = _context.Transfers
                                                             .Where(t => t.OriginAccountId == originAccount.Id &&
                                                             t.TransferredDateTime.Month == DateTime.Now.Month)
@@ -118,9 +119,10 @@ public class TransferRepository : ITransferRepository
 
         if ((model.Amount + totalAmountOperationsOA) > originAccount.CurrentAccount!.OperationalLimit)
         {
-            throw new Exception("OriginAccount exceeded the operational limit.");
+            throw new NotFoundException("OriginAccount exceeded the operational limit.");
         }
 
+       //Valida el limite operacional de la cuenta de destino
        var totalAmountOperationsDATransfers = _context.Transfers
                                                  .Where(t => t.OriginAccountId == destinationAccount.Id &&
                                                  t.TransferredDateTime.Month == DateTime.Now.Month)
@@ -140,7 +142,7 @@ public class TransferRepository : ITransferRepository
 
         if ((model.Amount + totalAmountOperationsDA) > destinationAccount.CurrentAccount!.OperationalLimit)
         {
-            throw new Exception("DestinationAccount exceeded the operational limit.");
+            throw new NotFoundException("DestinationAccount exceeded the operational limit.");
         }
 
         originAccount.Balance = originAccount.Balance - model.Amount;
@@ -150,13 +152,19 @@ public class TransferRepository : ITransferRepository
         _context.Accounts.Update(destinationAccount);
 
         transfer.DestinationAccountId = destinationAccount.Id;
+
+        if (model.TransferType == TransferType.SameBank)
+        {
+            transfer.CurrencyId = destinationAccount.CurrencyId;
+            transfer.DestinationBankId = destinationAccount.Customer.BankId;
+        }
+
         _context.Transfers.Add(transfer);
 
         await _context.SaveChangesAsync();
 
         var createTransfer = await _context.Transfers
                                            .FirstOrDefaultAsync(t => t.Id == transfer.Id);
-
         return createTransfer.Adapt<TransferDTO>();
     }
 }

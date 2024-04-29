@@ -14,6 +14,7 @@ public class TransactionHistoryService : ITransactionHistoryService
         _transactionHistoryRepository = transactionHistoryRepository;
     }
 
+
     public async Task<List<TransactionHistoryDTO>> GetFiltered(FilterTransactionHistoryModel filter)
     {
         return await _transactionHistoryRepository.GetFiltered(filter);

@@ -30,12 +30,14 @@ public class AccountMappingConfiguration : IRegister
             .Map(dest => dest.MonthAverage, src => src.MonthAverage)
             .Map(dest => dest.Interest, src => src.Interest);
 
+
+
         //Entidad hacia el DTO
         config.NewConfig<Account, AccountDTO>()
             .Map(x => x.Id, src => src.Id)
             .Map(x => x.Holder, src => src.Holder)
             .Map(x => x.Number, src => src.Number)
-            .Map(x => x.Type, src => (AccountStatus)src.Type)
+            .Map(x => x.Type, src => (AccountType)src.Type)
             .Map(x => x.Balance, src => src.Balance)
             .Map(x => x.Status, src => (AccountStatus)src.Status)
             .Map(x => x.Currency, src => src.Currency)

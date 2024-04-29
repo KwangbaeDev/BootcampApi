@@ -26,9 +26,11 @@ public class EnterpriseConfiguration : IEntityTypeConfiguration<Enterprise>
             .Property(e => e.Email)
             .IsRequired();
 
+
+
         entity
-            .HasMany(e => e.PromotionsEnterprises)
-            .WithOne(pe => pe.Enterprise)
-            .HasForeignKey(pe => pe.EnterpriseId);
+            .HasMany(enterprise => enterprise.PromotionsEnterprises)
+            .WithOne(promotionEnterprise => promotionEnterprise.Enterprise)
+            .HasForeignKey(promotionEnterprise => promotionEnterprise.EnterpriseId);
     }
 }

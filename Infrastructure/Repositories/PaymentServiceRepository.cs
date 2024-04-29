@@ -1,4 +1,5 @@
 ﻿using Core.Entities;
+using Core.Exceptions;
 using Core.Interfaces.Repositories;
 using Core.Models;
 using Core.Requests.PaymentServiceModels;
@@ -18,28 +19,27 @@ public class PaymentServiceRepository : IPaymentServiceRepository
         _context = context;
     }
 
+
     public async Task<PaymentServiceDTO> ServicePayment(CreatePaymentServiceModel model)
     {
         var paymentService = model.Adapt<PaymentService>();
 
         var account = await _context.Accounts
-                                      .Include(a => a.Currency)
-                                      .Include(a => a.Customer)
-                                      .ThenInclude(c => c.Bank)
-                                      .Include(a => a.CurrentAccount)
-                                      .FirstOrDefaultAsync(a => a.Id == model.AccountId);
-
+                                    .Include(a => a.Currency)
+                                    .Include(a => a.Customer)
+                                    .ThenInclude(c => c.Bank)
+                                    .Include(a => a.CurrentAccount)
+                                    .FirstOrDefaultAsync(a => a.Id == model.AccountId);
         if (account == null)
         {
-            throw new Exception("Account ID doesn't exist.");
+            throw new NotFoundException($"Account with id: {model.AccountId} doest not exist");
         }
 
         var service = await _context.Services
-                                      .FirstOrDefaultAsync(a => a.Id == model.ServiceId);
-
+                                    .FirstOrDefaultAsync(a => a.Id == model.ServiceId);
         if (service == null)
         {
-            throw new Exception("Service ID doesn't exist.");
+            throw new NotFoundException($"Service with id: {model.ServiceId} doest not exist");
         }
 
         account.Balance = account.Balance - model.Amount;
@@ -51,7 +51,6 @@ public class PaymentServiceRepository : IPaymentServiceRepository
 
         var createPaymentService = await _context.PaymentServices
                                            .FirstOrDefaultAsync(t => t.Id == paymentService.Id);
-
         return createPaymentService.Adapt<PaymentServiceDTO>();
     }
 }

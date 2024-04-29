@@ -15,30 +15,41 @@ public class CustomerService : ICustomerService
         _repository = repository;
     }
 
+
     public async Task<List<CustomerDTO>> GetFiltered(FilterCustomersModel filter)
     {
         return await _repository.GetFiltered(filter);
     }
+
+
 
     public async Task<CustomerDTO> Add(CreateCustomerModel model)
     {
         return await _repository.Add(model);
     }
 
+
+
     public async Task<CustomerDTO> GetById(int id)
     {
         return await _repository.GetById(id);
     }
+
+
 
     public async Task<List<CustomerDTO>> GetAll()
     {
         return await _repository.GetAll();
     }
 
+
+
     public async Task<CustomerDTO> Update(UpdateCustomerModel model)
     {
         return await _repository.Update(model);
     }
+
+
 
     public async Task<bool> Delete(int id)
     {

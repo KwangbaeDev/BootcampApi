@@ -10,16 +10,17 @@ public class ServiceConfiguration : IEntityTypeConfiguration<Service>
     public void Configure(EntityTypeBuilder<Service> entity)
     {
         entity
-            .HasKey(af => af.Id);
+            .HasKey(s => s.Id);
 
         entity
-            .Property(af => af.Name)
+            .Property(s => s.Name)
             .IsRequired();
+
 
 
         entity
             .HasMany(service => service.PaymentServices)
             .WithOne(paymentService => paymentService.Service)
-            .HasForeignKey(applicationForm => applicationForm.ServiceId);
+            .HasForeignKey(paymentService => paymentService.ServiceId);
     }
 }

@@ -5,8 +5,8 @@ namespace Core.Interfaces.Services;
 
 public interface IPromotionService
 {
-    Task<List<PromotionDTO>> GetFiltered(FilterPromotionModel filter);
     Task<PromotionDTO> Add(CreatePromotionModel model);
+    Task<List<PromotionDTO>> GetFiltered(FilterPromotionModel filter);
     Task<PromotionDTO> GetById(int id);
     Task<List<PromotionDTO>> GettAll();
     Task<PromotionDTO> Update(UpdatePromotionModel model);

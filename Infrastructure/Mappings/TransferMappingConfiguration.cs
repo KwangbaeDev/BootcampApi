@@ -19,16 +19,20 @@ public class TransferMappingConfiguration : IRegister
             .Map(dest => dest.TransferredDateTime, src => DateTime.Now)
             .Map(dest => dest.Concept, src => src.Concept);
 
+
+
         //Entidad hacia el DTO
         config.NewConfig<Transfer, TransferDTO>()
             .Map(dest => dest.Id, src => src.Id)
+            .Map(dest => dest.TransferType, src => 
+                src.OriginAccount.Customer.BankId == src.DestinationBankId 
+                ? TransferType.SameBank 
+                : TransferType.AnotherBank)
             .Map(dest => dest.Amount, src => src.Amount)
             .Map(dest => dest.TransferredDateTime, src => src.TransferredDateTime)
             .Map(dest => dest.Concept, src => src.Concept)
             .Map(dest => dest.OriginAccount, src => src.OriginAccount)
             .Map(dest => dest.Bank, src => src.Bank)
             .Map(dest => dest.Currency, src => src.Currency);
-
-
     }
 }

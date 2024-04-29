@@ -11,6 +11,7 @@ public class CustomerMappingConfiguration : IRegister
 {
     public void Register(TypeAdapterConfig config)
     {
+        //Del Creation object hacia la entidad
         config.NewConfig<CreateCustomerModel, Customer>()
             .Map(x => x.Name, src => src.Name)
             .Map(x => x.Lastname, src => src.Lastname)
@@ -22,6 +23,9 @@ public class CustomerMappingConfiguration : IRegister
             .Map(x => x.Birth, src => src.Birth)
             .Map(x => x.BankId, src => src.BankId);
 
+
+
+        //Entidad hacia el DTO
         config.NewConfig<Customer, CustomerDTO>()
             .Map(x => x.Id, src => src.Id)
             .Map(x => x.Name, src => src.Name)

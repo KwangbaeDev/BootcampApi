@@ -14,12 +14,15 @@ public class CreditCardController : BaseApiController
         _creditCardService = creditCardService;
     }
 
+
     [HttpPost]
     [Authorize(Roles = "Client")]
     public async Task<IActionResult> Create([FromBody] CreateCreditCardModel request)
     {
         return Ok(await _creditCardService.Add(request));
     }
+
+
 
     [HttpGet("filtered")]
     [Authorize(Roles = "Client")]
@@ -29,6 +32,8 @@ public class CreditCardController : BaseApiController
         return Ok(creditCrad);
     }
 
+
+
     [HttpGet("all")]
     [Authorize(Roles = "Client")]
     public async Task<IActionResult> GetAll()
@@ -36,6 +41,8 @@ public class CreditCardController : BaseApiController
         var creditCard = await _creditCardService.GetAll();
         return Ok(creditCard);
     }
+
+
 
     [HttpGet("{id}")]
     [Authorize(Roles = "Client")]
@@ -45,12 +52,16 @@ public class CreditCardController : BaseApiController
         return Ok(creditCard);
     }
 
+
+
     [HttpPut]
     [Authorize(Roles = "Client")]
     public async Task<IActionResult> Update([FromBody] UpdateCreditCardModel request)
     {
         return Ok(await _creditCardService.Update(request));
     }
+
+
 
     [HttpDelete("{id}")]
     [Authorize(Roles = "Admin")]
