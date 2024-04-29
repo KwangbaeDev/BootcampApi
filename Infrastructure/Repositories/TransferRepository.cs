@@ -124,7 +124,7 @@ public class TransferRepository : ITransferRepository
 
        //Valida el limite operacional de la cuenta de destino
        var totalAmountOperationsDATransfers = _context.Transfers
-                                                 .Where(t => t.OriginAccountId == destinationAccount.Id &&
+                                                 .Where(t => t.DestinationAccountId == destinationAccount.Id &&
                                                  t.TransferredDateTime.Month == DateTime.Now.Month)
                                                  .Sum(t => t.Amount);
 

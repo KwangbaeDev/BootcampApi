@@ -41,11 +41,6 @@ public class DepositRepository : IDepositRepository
             throw new NotFoundException($"Bank with id: {model.BankId} doest not exist");
         }
 
-        if (model.Amount > account.Balance)
-        {
-            throw new NotFoundException("The Deposit amount must not be greater than the current account balance.");
-        }
-
         if (account.CurrentAccount != null && model.Amount > account.CurrentAccount.OperationalLimit)
         {
             throw new NotFoundException("The operation exceeds the operational limit.");
