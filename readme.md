@@ -1,1332 +1,248 @@
-﻿<a name="br1"></a> 
+﻿**Sistema Bancario (Bootcamp)**
 
-**Sistema Bancario (Bootcamp)**
+**Autenticaciones:** 
 
-**Autenticaciones:**
+- Client: Se utilizan en todas los servicios menos en el servicio de aprobación de productos.
+- Admin: Se utiliza solamente en el servicio de aprobación de productos.
 
-\-
+1. **Registro de solicitud del producto**
 
-Client: Se utilizan en todas los servicios menos en el servicio de aprobación de
+En este endpoint tenemos 2 servicios, uno para la solicitud y otro para la aprobación de parte del banco.
 
-productos.
-
-\-
-
-Admin: Se utiliza solamente en el servicio de aprobación de productos.
-
-**1. Registro de solicitud del producto**
-
-En este endpoint tenemos 2 servicios, uno para la solicitud y otro para la aprobación de
-
-parte del banco.
-
-**1.1 Solicitud**
+`     `**1.1 Solicitud**
 
 POST http://localhost:5278/api/ApplicationForm
 
 La petición estará compuesta por un JSON con los siguientes elementos:
 
-**applicationForm**
-
-Información del formulario
-
-CreateApplicationFormModel
+|**applicationForm**|Información del formulario|CreateApplicationFormModel|
+| :- | :- | :- |
 
 Elemento CreateApplicationFormModel
 
-**Name**
-
-Nombre del cliente (Campo
-
-obligatorio)
-
-string
-
-string
-
-string
-
-**Lastname**
-
-Apellido del cliente (Campo
-
-obligatorio)
-
-**DocumentNumber**
-
-Número de documento del
-
-cliente (Campo obligatorio)
-
-**Address**
-
-**Mail**
-
-Dirección del cliente (opcional) string
-
-Dirección de correo del cliente string
-
-(opcional)
-
-**Phone**
-
-Teléfono del cliente (Campo
-
-obligatorio)
-
-string
-
-**CurrencyId**
-
-Id moneda (Campo obligatorio) int :
-
-\- 1 Guaranies
-
-\- 2 Dolares Americanos
-
-**ProductId**
-
-Id producto (Campo obligatorio) int:
-
-\- 1 Credito
-
-\- 2 Tarjeta de Crédito
-
-\- 3 Cuenta Corriente
-
-**Description**
-
-Descripción adecuado al tipo de string:
-
-de producto que se elija se espera que:
-
-
-
-<a name="br2"></a> 
-
-\- Crédito: Se establece el monto
-
-y el plazo de preferencia.
-
-\- Tarjeta de Crédito: Se
-
-especifique la marca.
-
-\- Cuenta Corriente: Se
-
-especifica el monto a depositar.
+|**Name**|Nombre del cliente (Campo obligatorio)|string|
+| :- | :- | :- |
+|**Lastname**|Apellido del cliente (Campo obligatorio)|string|
+|**DocumentNumber**|Número de documento del cliente (Campo obligatorio)|string|
+|**Address**|Dirección del cliente (opcional)|string|
+|**Mail**|Dirección de correo del cliente (opcional)|string|
+|**Phone**|Teléfono del cliente (Campo obligatorio)|string|
+|**CurrencyId**|Id moneda (Campo obligatorio) |<p>int :</p><p>- 1 Guaranies</p><p>- 2 Dolares Americanos</p>|
+|**ProductId**|Id producto (Campo obligatorio)|<p>int:</p><p>- 1 Credito<br>- 2 Tarjeta de Crédito<br>- 3 Cuenta Corriente</p>|
+|**Description**|Descripción adecuado al tipo de de producto que se elija |<p>string:</p><p>se espera que:</p><p>- Crédito: Se establece el monto y el plazo de preferencia.</p><p>- Tarjeta de Crédito: Se especifique la marca.</p><p>- Cuenta Corriente: Se especifica el monto a depositar.</p>|
 
 Ejemplo de petición:
 
-http://localhost:5278/api/ApplicationForm
-
-{
-
-"name": "Juan",
-
-"lastname": "Perez",
-
-"documentNumber": "1235674",
-
-"address": "Mcal. Lopez c/ Peru",
-
-"mail": "juan.perez@clt.com.py",
-
-"phone": "0992365789",
-
-"currencyId": 1,
-
-"productId": 3,
-
-"description": "Solicito cuenta corriente con un depósito de 5000000 Gs."
-
-}
+|<p>http://localhost:5278/api/ApplicationForm</p><p>{</p><p>`  `"name": "Juan",</p><p>`  `"lastname": "Perez",</p><p>`  `"documentNumber": "1235674",</p><p>`  `"address": "Mcal. Lopez c/ Peru",</p><p>`  `"mail": "juan.perez@clt.com.py",</p><p>`  `"phone": "0992365789",</p><p>`  `"currencyId": 1,</p><p>`  `"productId": 3,</p><p>`  `"description": "Solicito cuenta corriente con un depósito de 5000000 Gs."</p><p>}</p>|
+| :- |
 
 Ejemplo de respuesta:
 
-{
+|<p>{</p><p>`  `"id": 3,</p><p>`  `"name": "Juan",</p><p>`  `"lastname": "Perez",</p><p>`  `"documentNumber": "1235674",</p><p>`  `"address": "Mcal. Lopez c/ Peru",</p><p>`  `"mail": "juan.perez@clt.com.py",</p><p>`  `"phone": "0992365789",</p><p>`  `"desciption": "Solicito cuenta corriente con un depósito de 5000000 Gs.",</p><p>`  `"applicationDate": "2024-04-25T21:00:24.7170385-04:00",</p><p>`  `"approvalDate": null,</p><p>`  `"rejectionDate": null,</p><p>`  `"requestStatus": 0,</p><p>`  `"customer": {</p><p>`    `"id": 13,</p><p>`    `"name": "Juan",</p><p>`    `"lastname": "Perez",</p><p>`    `"documentNumber": "1235674",</p><p>`    `"address": "Mcal. Lopez c/ Peru",</p><p>`    `"mail": "juan.perez@clt.com.py",</p><p>`    `"phone": "0992365789",</p><p>`    `"customerStatus": 0,</p><p>`    `"birth": null,</p><p>`    `"bank": {</p><p>`      `"id": 6,</p><p>`      `"name": "Banco Continental",</p><p>`      `"phone": "0993-856-415",</p><p>`      `"mail": "bancocontinental@banconcontinental.com.py",</p><p>`      `"address": "mcal lopez c/fds"</p><p>`    `}</p><p>`  `},</p><p>`  `"currency": {</p><p>`    `"id": 1,</p><p>`    `"name": "Guaranies",</p><p>`    `"buyValue": 1,</p><p>`    `"sellValue": 1</p><p>`  `},</p><p>`  `"product": {</p><p>`    `"id": 3,</p><p>`    `"name": "Current Accoount"</p><p>`  `}</p><p>}</p>|
+| :- |
 
-"id": 3,
-
-"name": "Juan",
-
-"lastname": "Perez",
-
-"documentNumber": "1235674",
-
-"address": "Mcal. Lopez c/ Peru",
-
-"mail": "juan.perez@clt.com.py",
-
-"phone": "0992365789",
-
-"desciption": "Solicito cuenta corriente con un depósito de 5000000 Gs.",
-
-"applicationDate": "2024-04-25T21:00:24.7170385-04:00",
-
-"approvalDate": null,
-
-"rejectionDate": null,
-
-"requestStatus": 0,
-
-"customer": {
-
-"id": 13,
-
-"name": "Juan",
-
-"lastname": "Perez",
-
-"documentNumber": "1235674",
-
-"address": "Mcal. Lopez c/ Peru",
-
-"mail": "juan.perez@clt.com.py",
-
-"phone": "0992365789",
-
-"customerStatus": 0,
-
-"birth": null,
-
-"bank": {
-
-
-
-<a name="br3"></a> 
-
-"id": 6,
-
-"name": "Banco Continental",
-
-"phone": "0993-856-415",
-
-"mail": "bancocontinental@banconcontinental.com.py",
-
-"address": "mcal lopez c/fds"
-
-}
-
-},
-
-"currency": {
-
-"id": 1,
-
-"name": "Guaranies",
-
-"buyValue": 1,
-
-"sellValue": 1
-
-},
-
-"product": {
-
-"id": 3,
-
-"name": "Current Accoount"
-
-}
-
-}
-
-**2.2 Aprobacion**
+`	`**2.2 Aprobacion**
 
 PUT http://localhost:5278/api/ApplicationForm
 
 La petición estará compuesta por un JSON con los siguientes elementos:
 
-**applicationForm**
-
-Información del formulario
-
-UpdateApplicationFormModel
+|**applicationForm**|Información del formulario|UpdateApplicationFormModel|
+| :- | :- | :- |
 
 Elemento UpdateApplicationFormModel
 
-**Id**
-
-Id del formulario de solicitud
-
-(Campo Obligatorio)
-
-int
-
-**RequestStatus**
-
-Estado que indica la aprobación Int
-
-o el rechazo de la solicitud - 0 Pendiente (Valor no
-
-aceptado)
-
-\- 1 Aprobado
-
-\- 2 Rechazado
+|**Id**|Id del formulario de solicitud (Campo Obligatorio)|int|
+| :- | :- | :- |
+|**RequestStatus**|Estado que indica la aprobación o el rechazo de la solicitud |<p>Int</p><p>- 0 Pendiente (Valor no aceptado)</p><p>- 1 Aprobado</p><p>- 2 Rechazado</p>|
 
 Ejemplo de petición:
 
-http://localhost:5278/api/ApplicationForm
-
-{
-
-"id": 3,
-
-"requestStatus": 1
-
-}
+|<p>http://localhost:5278/api/ApplicationForm</p><p>{</p><p>`  `"id": 3,</p><p>`  `"requestStatus": 1</p><p>}</p>|
+| :- |
 
 
 
-<a name="br4"></a> 
+
+
 
 Ejemplo de respuesta:
 
-{
+|<p>{</p><p>`  `"id": 3,</p><p>`  `"name": "Juan",</p><p>`  `"lastname": "Perez",</p><p>`  `"documentNumber": "1235674",</p><p>`  `"address": "Mcal. Lopez c/ Peru",</p><p>`  `"mail": "juan.perez@clt.com.py",</p><p>`  `"phone": "0992365789",</p><p>`  `"desciption": "Solicito cuenta corriente con un depósito de 5000000 Gs.",</p><p>`  `"applicationDate": "2024-04-25T08:35:09.88",</p><p>`  `"approvalDate": "2024-04-25T23:15:14.5817579-04:00",</p><p>`  `"rejectionDate": null,</p><p>`  `"requestStatus": 1,</p><p>`  `"customer": {</p><p>`    `"id": 13,</p><p>`    `"name": "Juan",</p><p>`    `"lastname": "Perez",</p><p>`    `"documentNumber": "1235674",</p><p>`    `"address": "Mcal. Lopez c/ Peru",</p><p>`    `"mail": "juan.perez@clt.com.py",</p><p>`    `"phone": "0992365789",</p><p>`    `"customerStatus": 0,</p><p>`    `"birth": null,</p><p>`    `"bank": null</p><p>`  `},</p><p>`  `"currency": {</p><p>`    `"id": 1,</p><p>`    `"name": "Guaranies",</p><p>`    `"buyValue": 1,</p><p>`    `"sellValue": 1</p><p>`  `},</p><p>`  `"product": {</p><p>`    `"id": 3,</p><p>`    `"name": "Current Accoount"</p><p>`  `}</p><p>}</p>|
+| :- |
 
-"id": 3,
+1. **Transferencias entre cuentas**
 
-"name": "Juan",
+   En este endpoint tenemos un servicio para realizar transferencias entre una cuenta de origen y una cuenta de destino.
 
-"lastname": "Perez",
-
-"documentNumber": "1235674",
-
-"address": "Mcal. Lopez c/ Peru",
-
-"mail": "juan.perez@clt.com.py",
-
-"phone": "0992365789",
-
-"desciption": "Solicito cuenta corriente con un depósito de 5000000 Gs.",
-
-"applicationDate": "2024-04-25T08:35:09.88",
-
-"approvalDate": "2024-04-25T23:15:14.5817579-04:00",
-
-"rejectionDate": null,
-
-"requestStatus": 1,
-
-"customer": {
-
-"id": 13,
-
-"name": "Juan",
-
-"lastname": "Perez",
-
-"documentNumber": "1235674",
-
-"address": "Mcal. Lopez c/ Peru",
-
-"mail": "juan.perez@clt.com.py",
-
-"phone": "0992365789",
-
-"customerStatus": 0,
-
-"birth": null,
-
-"bank": null
-
-},
-
-"currency": {
-
-"id": 1,
-
-"name": "Guaranies",
-
-"buyValue": 1,
-
-"sellValue": 1
-
-},
-
-"product": {
-
-"id": 3,
-
-"name": "Current Accoount"
-
-}
-
-}
-
-**2. Transferencias entre cuentas**
-
-En este endpoint tenemos un servicio para realizar transferencias entre una
-
-cuenta de origen y una cuenta de destino.
-
-POST http://localhost:5278/api/Transfer
+   POST http://localhost:5278/api/Transfer
 
 
-
-<a name="br5"></a> 
 
 La petición estará compuesta por un JSON con los siguientes elementos
 
-**Transfer**
+|**Transfer**|Información del usuario|CreateTransferModel|
+| :- | :- | :- |
 
-Información del usuario
-
-CreateTransferModel
 
 Elemento CreateTransferModel
 
-**OriginAccountId**
+|**OriginAccountId**|Id de la cuenta que realiza la transferencia (Campo obligatorio).|int|
+| :- | :- | :- |
+|**TransferType**|Indica si la transferencia será a una cuenta del mismo banco o una entidad distinta (Campo obligatorio).|<p>Int</p><p>- 0 Mismo banco.</p><p>- 1 Otro banco.</p>|
+|**DenstinationBankId**|Id del banco de la cuenta de destino (Campo obligatorio solo si es una transferencia a otro banco).|Int |
+|**AccountNumber**|Número de cuenta de destino (Campo obligatorio).|string|
+|**DocumentNumber**|Número de documento de destino (Campo obligatorio).|string|
+|**CurrencyId**|Id de moneda (Campo obligatorio solo si es una transferencia a otro banco).|<p>` `int :</p><p>- 1 Guaranies</p><p>- 2 Dolares Americanos</p>|
+|**Amount**|Monto de la transferencia (Campo obligatorio, no puede ser negativo, no puede llevar decimales).|decimal|
+|**Concept**|Descripción de la transferencia (Opcional).|string|
 
-Id de la cuenta que realiza la
-
-transferencia (Campo
-
-obligatorio).
-
-int
-
-**TransferType**
-
-Indica si la transferencia será a Int
-
-\- 0 Mismo banco.
-
-una cuenta del mismo banco o
-
-una entidad distinta (Campo
-
-obligatorio).
-
-\- 1 Otro banco.
-
-**DenstinationBankId**
-
-Id del banco de la cuenta de
-
-destino (Obligatorio si es una
-
-transferencia a otro banco).
-
-Int
-
-**AccountNumber**
-
-**DocumentNumber**
-
-**CurrencyId**
-
-Número de cuenta de destino string
-
-(Campo obligatorio).
-
-Número de documento de
-
-destino (Campo obligatorio).
-
-string
-
-Id de moneda (Campo
-
-obligatorio).
-
-int :
-
-\- 1 Guaranies
-
-\- 2 Dolares Americanos
-
-**Amount**
-
-**Concept**
-
-Monto de la transferencia
-
-(Campo obligatorio).
-
-decimal
-
-Descripción de la transferencia string
-
-(Opcional).
 
 Ejemplo de petición:
 
-http://localhost:5278/api/Transfer
-
-{
-
-"originAccountId": 13,
-
-"transferType": 0,
-
-"denstinationBankId": 6,
-
-"accountNumber": "12345",
-
-"documentNumber": "56212212",
-
-"currencyId": 1,
-
-"amount": 200000,
-
-"concept": "Pago de salarios."
-
-}
+|<p>http://localhost:5278/api/Transfer</p><p>{</p><p>`  `"originAccountId": 13,</p><p>`  `"transferType": 0,</p><p>`  `"denstinationBankId": 6,</p><p>`  `"accountNumber": "12345",</p><p>`  `"documentNumber": "56212212",</p><p>`  `"currencyId": 1,</p><p>`  `"amount": 200000,</p><p>`  `"concept": "Pago de salarios."</p><p>}</p>|
+| :- |
 
 
 
-<a name="br6"></a> 
+
+
+
 
 Ejemplo de respuesta:
 
-{
+|<p>{</p><p>`  `"id": 9,</p><p>`  `"transferType": 0,</p><p>`  `"originAccountId": 13,</p><p>`  `"originAccount": {</p><p>`    `"id": 13,</p><p>`    `"holder": "JUAN PEREZ",</p><p>`    `"number": "123",</p><p>`    `"type": 1,</p><p>`    `"balance": 600000,</p><p>`    `"status": "Active",</p><p>`    `"currency": {</p><p>`      `"id": 1,</p><p>`      `"name": "Guaranies",</p><p>`      `"buyValue": 1,</p><p>`      `"sellValue": 1</p><p>`    `},</p><p>`    `"customer": {</p><p>`      `"id": 13,</p><p>`      `"name": "Juan",</p><p>`      `"lastname": "Perez",</p><p>`      `"documentNumber": "1235674",</p><p>`      `"address": "Mcal. Lopez c/ Peru",</p><p>`      `"mail": "juan.perez@clt.com.py",</p><p>`      `"phone": "0992365789",</p><p>`      `"customerStatus": 0,</p><p>`      `"birth": null,</p><p>`      `"bank": {</p><p>`        `"id": 6,</p><p>`        `"name": "Banco Continental",</p><p>`        `"phone": "0993-856-415",</p><p>`        `"mail": "bancocontinental@banconcontinental.com.py",</p><p>`        `"address": "mcal lopez c/fds"</p><p>`      `}</p><p>`    `},</p><p>`    `"savingAccount": null,</p><p>`    `"currentAccount": {</p><p>`      `"id": 9,</p><p>`      `"operationalLimit": 500000,</p><p>`      `"monthAverage": 1,</p><p>`      `"interest": 20000</p><p>`    `}</p><p>`  `},</p><p>`  `"destinationBankId": 6,</p><p>`  `"bank": {</p><p>`    `"id": 6,</p><p>`    `"name": "Banco Continental",</p><p>`    `"phone": "0993-856-415",</p><p>`    `"mail": "bancocontinental@banconcontinental.com.py",</p><p>`    `"address": "mcal lopez c/fds"</p><p>`  `},</p><p>`  `"currencyId": 1,</p><p>`  `"currency": {</p><p>`    `"id": 1,</p><p>`    `"name": "Guaranies",</p><p>`    `"buyValue": 1,</p><p>`    `"sellValue": 1</p><p>`  `},</p><p>`  `"amount": 200000,</p><p>`  `"transferredDateTime": "2024-04-26T00:56:49.2524737-04:00",</p><p>`  `"concept": "Pago de salarios.",</p><p>`  `"destinationAccountId": 10,</p><p>`  `"destinationAccount": null</p><p>}</p>|
+| :- |
 
-"id": 9,
 
-"transferType": 0,
+1. **Pago de Servicios**
 
-"originAccountId": 13,
+   En este endpoint tenemos un servicio para realizar pagos de diferentes servicios.
 
-"originAccount": {
-
-"id": 13,
-
-"holder": "JUAN PEREZ",
-
-"number": "123",
-
-"type": 1,
-
-"balance": 600000,
-
-"status": "Active",
-
-"currency": {
-
-"id": 1,
-
-"name": "Guaranies",
-
-"buyValue": 1,
-
-"sellValue": 1
-
-},
-
-"customer": {
-
-"id": 13,
-
-"name": "Juan",
-
-"lastname": "Perez",
-
-"documentNumber": "1235674",
-
-"address": "Mcal. Lopez c/ Peru",
-
-"mail": "juan.perez@clt.com.py",
-
-"phone": "0992365789",
-
-"customerStatus": 0,
-
-"birth": null,
-
-"bank": {
-
-"id": 6,
-
-"name": "Banco Continental",
-
-"phone": "0993-856-415",
-
-"mail": "bancocontinental@banconcontinental.com.py",
-
-"address": "mcal lopez c/fds"
-
-}
-
-},
-
-"savingAccount": null,
-
-"currentAccount": {
-
-"id": 9,
-
-"operationalLimit": 500000,
-
-"monthAverage": 1,
-
-"interest": 20000
-
-}
-
-},
-
-"destinationBankId": 6,
-
-"bank": {
-
-"id": 6,
-
-"name": "Banco Continental",
-
-"phone": "0993-856-415",
-
-
-
-<a name="br7"></a> 
-
-"mail": "bancocontinental@banconcontinental.com.py",
-
-"address": "mcal lopez c/fds"
-
-},
-
-"currencyId": 1,
-
-"currency": {
-
-"id": 1,
-
-"name": "Guaranies",
-
-"buyValue": 1,
-
-"sellValue": 1
-
-},
-
-"amount": 200000,
-
-"transferredDateTime": "2024-04-26T00:56:49.2524737-04:00",
-
-"concept": "Pago de salarios.",
-
-"destinationAccountId": 10,
-
-"destinationAccount": null
-
-}
-
-**3. Pago de Servicios**
-
-En este endpoint tenemos un servicio para realizar pagos de diferentes
-
-servicios.
-
-POST http://localhost:5278/api/PaymentService
+   POST http://localhost:5278/api/PaymentService
 
 La petición estará compuesta por un JSON con los siguientes elementos:
 
-**PaymentService**
-
-Información del usuario
-
-CreatePaymentServiceModel
+|**PaymentService**|Información del usuario|CreatePaymentServiceModel|
+| :- | :- | :- |
 
 Elemento CreatePaymentServiceModel
 
-**DocumentNumber**
-
-Número de documento (Campo string
-
-obligatorio).
-
-**Amount**
-
-Monto del pago (Campo
-
-obligatorio).
-
-decimal
-
-**Concept**
-
-Descripción (Opcional).
-
-string
-
-int
-
-**AccountId**
-
-Id de la cuenta (Campo
-
-obligatorio).
-
-**ServiceId**
-
-Id del servicio (Campo
-
-obligatorio)
-
-int:
-
-\- 1 ANDE
-
-\- 2 Essap
-
-\- 3 Copaco
+|**DocumentNumber**|Número de documento (Campo obligatorio).|string|
+| :- | :- | :- |
+|**Amount**|Monto del pago (Campo obligatorio, no puede ser negativo, no puede llevar decimales).|decimal|
+|**Concept**|Descripción (Opcional).|string|
+|**AccountId**|Id de la cuenta (Campo obligatorio).|int|
+|**ServiceId**|Id del servicio (Campo obligatorio)|<p>int:</p><p>- 1 ANDE<br>- 2 Essap<br>- 3 Copaco</p>|
 
 
 
-<a name="br8"></a> 
+
+
+
+
 
 Ejemplo de petición:
 
-http://localhost:5278/api/PaymentService
-
-{
-
-"documentNumber": "1235674",
-
-"amount": 30000,
-
-"concept": "Pago de Essap",
-
-"accountId": 13,
-
-"serviceId": 2
-
-}
+|<p>http://localhost:5278/api/PaymentService</p><p>{</p><p>`  `"documentNumber": "1235674",</p><p>`  `"amount": 30000,</p><p>`  `"concept": "Pago de Essap",</p><p>`  `"accountId": 13,</p><p>`  `"serviceId": 2</p><p>}</p>|
+| :- |
 
 Ejemplo de respuesta:
 
-{
+|<p>{</p><p>`  `"id": 2,</p><p>`  `"documentNumber": "1235674",</p><p>`  `"amount": 30000,</p><p>`  `"concept": "Pago de Essap",</p><p>`  `"paymentServiceDateTime": "2024-04-26T01:37:25.2761013-04:00",</p><p>`  `"accountId": 13,</p><p>`  `"account": {</p><p>`    `"id": 13,</p><p>`    `"holder": "JUAN PEREZ",</p><p>`    `"number": "123",</p><p>`    `"type": 1,</p><p>`    `"balance": 520000,</p><p>`    `"status": "Active",</p><p>`    `"currency": {</p><p>`      `"id": 1,</p><p>`      `"name": "Guaranies",</p><p>`      `"buyValue": 1,</p><p>`      `"sellValue": 1</p><p>`    `},</p><p>`    `"customer": {</p><p>`      `"id": 13,</p><p>`      `"name": "Juan",</p><p>`      `"lastname": "Perez",</p><p>`      `"documentNumber": "1235674",</p><p>`      `"address": "Mcal. Lopez c/ Peru",</p><p>`      `"mail": "juan.perez@clt.com.py",</p><p>`      `"phone": "0992365789",</p><p>`      `"customerStatus": 0,</p><p>`      `"birth": null,</p><p>`      `"bank": {</p><p>`        `"id": 6,</p><p>`        `"name": "Banco Continental",</p><p>`        `"phone": "0993-856-415",</p><p>`        `"mail": "bancocontinental@banconcontinental.com.py",</p><p>`        `"address": "mcal lopez c/fds"</p><p>`      `}</p><p>`    `},</p><p>`    `"savingAccount": null,</p><p>`    `"currentAccount": {</p><p>`      `"id": 9,</p><p>`      `"operationalLimit": 500000,</p><p>`      `"monthAverage": 1,</p><p>`      `"interest": 20000</p><p>`    `}</p><p>`  `},</p><p>`  `"serviceId": 2,</p><p>`  `"service": {</p><p>`    `"id": 2,</p><p>`    `"name": "Essap"</p><p>`  `}</p><p>}</p>|
+| :- |
 
-"id": 2,
+1. **Deposito**
 
-"documentNumber": "1235674",
+   En este endpoint tenemos un servicio para realizar depósitos a una cuenta.
 
-"amount": 30000,
-
-"concept": "Pago de Essap",
-
-"paymentServiceDateTime": "2024-04-26T01:37:25.2761013-04:00",
-
-"accountId": 13,
-
-"account": {
-
-"id": 13,
-
-"holder": "JUAN PEREZ",
-
-"number": "123",
-
-"type": 1,
-
-"balance": 520000,
-
-"status": "Active",
-
-"currency": {
-
-"id": 1,
-
-"name": "Guaranies",
-
-"buyValue": 1,
-
-"sellValue": 1
-
-},
-
-"customer": {
-
-"id": 13,
-
-"name": "Juan",
-
-"lastname": "Perez",
-
-"documentNumber": "1235674",
-
-"address": "Mcal. Lopez c/ Peru",
-
-"mail": "juan.perez@clt.com.py",
-
-"phone": "0992365789",
-
-"customerStatus": 0,
-
-"birth": null,
-
-"bank": {
-
-"id": 6,
-
-"name": "Banco Continental",
-
-"phone": "0993-856-415",
-
-"mail": "bancocontinental@banconcontinental.com.py",
-
-"address": "mcal lopez c/fds"
-
-
-
-<a name="br9"></a> 
-
-}
-
-},
-
-"savingAccount": null,
-
-"currentAccount": {
-
-"id": 9,
-
-"operationalLimit": 500000,
-
-"monthAverage": 1,
-
-"interest": 20000
-
-}
-
-},
-
-"serviceId": 2,
-
-"service": {
-
-"id": 2,
-
-"name": "Essap"
-
-}
-
-}
-
-**4. Deposito**
-
-En este endpoint tenemos un servicio para realizar depósitos a una cuenta.
-
-POST http://localhost:5278/api/Deposit
+   POST http://localhost:5278/api/Deposit
 
 La petición estará compuesta por un JSON con los siguientes elementos:
 
-**Deposit**
-
-Información del usuario
-
-CreateDepositModel
+|**Deposit**|Información del usuario|CreateDepositModel|
+| :- | :- | :- |
 
 Elemento CreateDepositModel
 
-**AccountId**
-
-Id de la cuenta (Campo
-
-obligatorio).
-
-int
-
-**BankId**
-
-Id del banco (Campo
-
-Obligatorio).
-
-int
-
-**Amount**
-
-Monto del depósito (Campo
-
-obligatorio).
-
-decimal
+|**AccountId**|Id de la cuenta (Campo obligatorio).|int|
+| :- | :- | :- |
+|**BankId**|Id del banco (Campo Obligatorio).|int|
+|**Amount**|Monto del depósito (Campo obligatorio, no puede ser negativo, no puede llevar decimales).|decimal|
 
 Ejemplo de petición:
 
-http://localhost:5278/api/Deposit
-
-{
-
-"accountId": 13,
-
-"bankId": 6,
-
-"amount": 50000
-
-}
+|<p>http://localhost:5278/api/Deposit</p><p>{</p><p>`  `"accountId": 13,</p><p>`  `"bankId": 6,</p><p>`  `"amount": 50000</p><p>}</p><p></p>|
+| :- |
 
 
-
-<a name="br10"></a> 
 
 Ejemplo de respuesta
 
-{
+|<p>{</p><p>`  `"id": 5,</p><p>`  `"amount": 50000,</p><p>`  `"depositDateTime": "2024-04-26T01:57:55.2016661-04:00",</p><p>`  `"accountId": 13,</p><p>`  `"account": {</p><p>`    `"id": 13,</p><p>`    `"holder": "JUAN PEREZ",</p><p>`    `"number": "123",</p><p>`    `"type": 1,</p><p>`    `"balance": 570000,</p><p>`    `"status": "Active",</p><p>`    `"currency": {</p><p>`      `"id": 1,</p><p>`      `"name": "Guaranies",</p><p>`      `"buyValue": 1,</p><p>`      `"sellValue": 1</p><p>`    `},</p><p>`    `"customer": {</p><p>`      `"id": 13,</p><p>`      `"name": "Juan",</p><p>`      `"lastname": "Perez",</p><p>`      `"documentNumber": "1235674",</p><p>`      `"address": "Mcal. Lopez c/ Peru",</p><p>`      `"mail": "juan.perez@clt.com.py",</p><p>`      `"phone": "0992365789",</p><p>`      `"customerStatus": 0,</p><p>`      `"birth": null,</p><p>`      `"bank": {</p><p>`        `"id": 6,</p><p>`        `"name": "Banco Continental",</p><p>`        `"phone": "0993-856-415",</p><p>`        `"mail": "bancocontinental@banconcontinental.com.py",</p><p>`        `"address": "mcal lopez c/fds"</p><p>`      `}</p><p>`    `},</p><p>`    `"savingAccount": null,</p><p>`    `"currentAccount": {</p><p>`      `"id": 9,</p><p>`      `"operationalLimit": 500000,</p><p>`      `"monthAverage": 1,</p><p>`      `"interest": 20000</p><p>`    `}</p><p>`  `},</p><p>`  `"bankId": 6,</p><p>`  `"bank": {</p><p>`    `"id": 6,</p><p>`    `"name": "Banco Continental",</p><p>`    `"phone": "0993-856-415",</p><p>`    `"mail": "bancocontinental@banconcontinental.com.py",</p><p>`    `"address": "mcal lopez c/fds"</p><p>`  `}</p><p>}</p>|
+| :- |
 
-"id": 5,
+1. **Extraction**
 
-"amount": 50000,
+   En este endpoint tenemos un servicio para realizar extracciones de una cuenta.
 
-"depositDateTime": "2024-04-26T01:57:55.2016661-04:00",
-
-"accountId": 13,
-
-"account": {
-
-"id": 13,
-
-"holder": "JUAN PEREZ",
-
-"number": "123",
-
-"type": 1,
-
-"balance": 570000,
-
-"status": "Active",
-
-"currency": {
-
-"id": 1,
-
-"name": "Guaranies",
-
-"buyValue": 1,
-
-"sellValue": 1
-
-},
-
-"customer": {
-
-"id": 13,
-
-"name": "Juan",
-
-"lastname": "Perez",
-
-"documentNumber": "1235674",
-
-"address": "Mcal. Lopez c/ Peru",
-
-"mail": "juan.perez@clt.com.py",
-
-"phone": "0992365789",
-
-"customerStatus": 0,
-
-"birth": null,
-
-"bank": {
-
-"id": 6,
-
-"name": "Banco Continental",
-
-"phone": "0993-856-415",
-
-"mail": "bancocontinental@banconcontinental.com.py",
-
-"address": "mcal lopez c/fds"
-
-}
-
-},
-
-"savingAccount": null,
-
-"currentAccount": {
-
-"id": 9,
-
-"operationalLimit": 500000,
-
-"monthAverage": 1,
-
-"interest": 20000
-
-}
-
-},
-
-"bankId": 6,
-
-"bank": {
-
-"id": 6,
-
-"name": "Banco Continental",
-
-"phone": "0993-856-415",
-
-"mail": "bancocontinental@banconcontinental.com.py",
-
-"address": "mcal lopez c/fds"
-
-}
-
-}
-
-
-
-<a name="br11"></a> 
-
-**5. Extraction**
-
-En este endpoint tenemos un servicio para realizar extracciones de una cuenta.
-
-POST http://localhost:5278/api/Extraction
+   POST http://localhost:5278/api/Extraction
 
 La petición estará compuesta por un JSON con los siguientes elementos:
 
-**Extraction**
-
-Información del usuario
-
-CreateExtractiontModel
+|**Extraction**|Información del usuario|CreateExtractiontModel|
+| :- | :- | :- |
 
 Elemento CreatExtractionModel
 
-**AccountId**
-
-Id de la cuenta (Campo
-
-obligatorio).
-
-int
-
-int
-
-**BankId**
-
-Id del banco (Campo
-
-Obligatorio).
-
-**Amount**
-
-Monto de la extracción (Campo decimal
-
-obligatorio).
+|**AccountId**|Id de la cuenta (Campo obligatorio).|int|
+| :- | :- | :- |
+|**BankId**|Id del banco (Campo Obligatorio).|int|
+|**Amount**|Monto de la extracción (Campo obligatorio, no puede ser negativo, no puede llevar decimales).|decimal|
 
 Ejemplo de petición:
 
-http://localhost:5278/api/Extraction
-
-{
-
-"accountId": 13,
-
-"bankId": 6,
-
-"amount": 10000
-
-}
+|<p>http://localhost:5278/api/Extraction</p><p>{</p><p>`  `"accountId": 13,</p><p>`  `"bankId": 6,</p><p>`  `"amount": 10000</p><p>}</p>|
+| :- |
 
 Ejemplo de respuesta:
 
-{
+|<p>{</p><p>`  `"id": 6,</p><p>`  `"amount": 10000,</p><p>`  `"extractionDateTime": "2024-04-26T02:13:28.9618241-04:00",</p><p>`  `"accountId": 13,</p><p>`  `"account": {</p><p>`    `"id": 13,</p><p>`    `"holder": "JUAN PEREZ",</p><p>`    `"number": "123",</p><p>`    `"type": 1,</p><p>`    `"balance": 560000,</p><p>`    `"status": "Active",</p><p>`    `"currency": {</p><p>`      `"id": 1,</p><p>`      `"name": "Guaranies",</p><p>`      `"buyValue": 1,</p><p>`      `"sellValue": 1</p><p>`    `},</p><p>`    `"customer": {</p><p>`      `"id": 13,</p><p>`      `"name": "Juan",</p><p>`      `"lastname": "Perez",</p><p>`      `"documentNumber": "1235674",</p><p>`      `"address": "Mcal. Lopez c/ Peru",</p><p>`      `"mail": "juan.perez@clt.com.py",</p><p>`      `"phone": "0992365789",</p><p>`      `"customerStatus": 0,</p><p>`      `"birth": null,</p><p>`      `"bank": {</p><p>`        `"id": 6,</p><p>`        `"name": "Banco Continental",</p><p>`        `"phone": "0993-856-415",</p><p>`        `"mail": "bancocontinental@banconcontinental.com.py",</p><p>`        `"address": "mcal lopez c/fds"</p><p>`      `}</p><p>`    `},</p><p>`    `"savingAccount": null,</p><p>`    `"currentAccount": {</p><p>`      `"id": 9,</p><p>`      `"operationalLimit": 500000,</p><p>`      `"monthAverage": 1,</p><p>`      `"interest": 20000</p><p>`    `}</p><p>`  `},</p><p>`  `"bankId": 6,</p><p>`  `"bank": {</p><p>`    `"id": 6,</p><p>`    `"name": "Banco Continental",</p><p>`    `"phone": "0993-856-415",</p><p>`    `"mail": "bancocontinental@banconcontinental.com.py",</p><p>`    `"address": "mcal lopez c/fds"</p><p>`  `}</p><p>}</p>|
+| :- |
 
-"id": 6,
+1. **Historial de Transacciones de la Cuenta**
 
-"amount": 10000,
+   En este endpoint tenemos un servicio para realizar consultas y obtener un historial de las transacciones de las cuentas.
 
-"extractionDateTime": "2024-04-26T02:13:28.9618241-04:00",
-
-"accountId": 13,
-
-"account": {
-
-"id": 13,
-
-"holder": "JUAN PEREZ",
-
-"number": "123",
-
-"type": 1,
-
-"balance": 560000,
-
-"status": "Active",
-
-"currency": {
-
-"id": 1,
-
-"name": "Guaranies",
-
-"buyValue": 1,
-
-"sellValue": 1
-
-},
-
-"customer": {
-
-
-
-<a name="br12"></a> 
-
-"id": 13,
-
-"name": "Juan",
-
-"lastname": "Perez",
-
-"documentNumber": "1235674",
-
-"address": "Mcal. Lopez c/ Peru",
-
-"mail": "juan.perez@clt.com.py",
-
-"phone": "0992365789",
-
-"customerStatus": 0,
-
-"birth": null,
-
-"bank": {
-
-"id": 6,
-
-"name": "Banco Continental",
-
-"phone": "0993-856-415",
-
-"mail": "bancocontinental@banconcontinental.com.py",
-
-"address": "mcal lopez c/fds"
-
-}
-
-},
-
-"savingAccount": null,
-
-"currentAccount": {
-
-"id": 9,
-
-"operationalLimit": 500000,
-
-"monthAverage": 1,
-
-"interest": 20000
-
-}
-
-},
-
-"bankId": 6,
-
-"bank": {
-
-"id": 6,
-
-"name": "Banco Continental",
-
-"phone": "0993-856-415",
-
-"mail": "bancocontinental@banconcontinental.com.py",
-
-"address": "mcal lopez c/fds"
-
-}
-
-}
-
-**6. Historial de Transacciones de la Cuenta**
-
-En este endpoint tenemos un servicio para realizar consultas y obtener un
-
-historial de las transacciones de las cuentas.
-
-GET http://localhost:5278/api/TransactionHistory/filtered
+   GET http://localhost:5278/api/TransactionHistory/filtered
 
 La petición estará compuesta por los siguientes parámetros:
 
-**TransactionHistory**
-
-Información de los filtros
-
-FilterTransactionHistoryModel
+|**TransactionHistory**|Información de los filtros|FilterTransactionHistoryModel|
+| :- | :- | :- |
 
 
 
-<a name="br13"></a> 
+
+
 
 Elemento FilterTransactionHistoryModel
 
-**AccountId**
-
-Id de la cuenta (Campo
-
-obligatorio).
-
-int
-
-int
-
-**Month**
-
-Filtro de mes (Opcional pero
-
-obligatorio si ya se ingresó el
-
-año).
-
-**Year**
-
-Filtro del año (Opcional pero
-
-obligatorio si ya se ingresó el
-
-mes).
-
-int
-
-**DateFrom**
-
-**DateTo**
-
-**Concept**
-
-Filtro por rango de fechas desde DateTime (ejemplo 2024-04-26
-
-(Opcional pero obligatorio si ya 00:56:49)
-
-se ingresó el hasta).
-
-Filtro por rango de fechas
-
-DateTime (ejemplo 2024-04-26
-
-hasta(Opcional pero obligatorio 00:56:49)
-
-si ya se ingresó el desde).
-
-Filtro por tipo de transacción.
-
-int:
-
-\- 0 Todos (Por defecto)
-
-\- 1 Transferencias
-
-\- 2 Pago de servicios
-
-\- 3 Depositos
-
-\- 4 Extracciones
+|**AccountId**|Id de la cuenta (Campo obligatorio).|int|
+| :- | :- | :- |
+|**Month**|Filtro de mes (Opcional pero obligatorio si ya se ingresó el año).|int|
+|**Year**|Filtro del año (Opcional pero obligatorio si ya se ingresó el mes).|int|
+|**DateFrom**|Filtro por rango de fechas desde (Opcional pero obligatorio si ya se ingresó el hasta).|DateTime (ejemplo 2024-04-26 00:56:49)|
+|**DateTo**|Filtro por rango de fechas hasta(Opcional pero obligatorio si ya se ingresó el desde).|DateTime (ejemplo 2024-04-26 00:56:49)|
+|**Concept**|Filtro por tipo de transacción.|<p>int:</p><p>- 0 Todos (Por defecto)<br>- 1 Transferencias<br>- 2 Pago de servicios</p><p>- 3 Depositos</p><p>- 4 Extracciones</p>|
 
 Ejemplo de petición:
 
-http://localhost:5278/api/TransactionHistory/filtered?AccountId=13&Month=4&Year=2024&DateFrom=2
-
-024-04-24%2000%3A00%3A00&DateTo=2024-04-26%2023%3A00%3A00&Concept=0
+|http://localhost:5278/api/TransactionHistory/filtered?AccountId=13&Month=4&Year=2024&DateFrom=2024-04-24%2000%3A00%3A00&DateTo=2024-04-26%2023%3A00%3A00&Concept=0|
+| :- |
 
 Ejemplo de respuesta:
 
-[
-
-{
-
-"id": 9,
-
-"description": "Transfer",
-
-"amount": 200000,
-
-"transactionDateTime": "2024-04-26T00:56:49.252473",
-
-"concept": "Pago de salarios.",
-
-"currencyId": 1,
-
-"accountId": 13
-
-},
-
-{
-
-"id": 10,
-
-"description": "Transfer",
-
-"amount": 50000,
-
-"transactionDateTime": "2024-04-26T01:06:23.734491",
-
-"concept": "Segunda prueba.",
-
-"currencyId": 1,
-
-"accountId": 13
-
-},
-
-
-
-<a name="br14"></a> 
-
-{
-
-"id": 2,
-
-"description": "Payment Service",
-
-"amount": 30000,
-
-"transactionDateTime": "2024-04-26T01:06:23.734",
-
-"concept": "Pago de Essap",
-
-"currencyId": null,
-
-"accountId": 13
-
-},
-
-{
-
-"id": 5,
-
-"description": "Deposit",
-
-"amount": 50000,
-
-"transactionDateTime": "2024-04-26T01:57:55.201666",
-
-"concept": "",
-
-"currencyId": null,
-
-"accountId": 13
-
-},
-
-{
-
-"id": 6,
-
-"description": "Extraction",
-
-"amount": 10000,
-
-"transactionDateTime": "2024-04-26T02:13:28.961824",
-
-"concept": "",
-
-"currencyId": null,
-
-"accountId": 13
-
-}
-
-]
+|<p>[</p><p>`  `{</p><p>`    `"id": 9,</p><p>`    `"description": "Transfer",</p><p>`    `"amount": 200000,</p><p>`    `"transactionDateTime": "2024-04-26T00:56:49.252473",</p><p>`    `"concept": "Pago de salarios.",</p><p>`    `"currencyId": 1,</p><p>`    `"accountId": 13</p><p>`  `},</p><p>`  `{</p><p>`    `"id": 10,</p><p>`    `"description": "Transfer",</p><p>`    `"amount": 50000,</p><p>`    `"transactionDateTime": "2024-04-26T01:06:23.734491",</p><p>`    `"concept": "Segunda prueba.",</p><p>`    `"currencyId": 1,</p><p>`    `"accountId": 13</p><p>`  `},</p><p>`  `{</p><p>`    `"id": 2,</p><p>`    `"description": "Payment Service",</p><p>`    `"amount": 30000,</p><p>`    `"transactionDateTime": "2024-04-26T01:06:23.734",</p><p>`    `"concept": "Pago de Essap",</p><p>`    `"currencyId": null,</p><p>`    `"accountId": 13</p><p>`  `},</p><p>`  `{</p><p>`    `"id": 5,</p><p>`    `"description": "Deposit",</p><p>`    `"amount": 50000,</p><p>`    `"transactionDateTime": "2024-04-26T01:57:55.201666",</p><p>`    `"concept": "",</p><p>`    `"currencyId": null,</p><p>`    `"accountId": 13</p><p>`  `},</p><p>`  `{</p><p>`    `"id": 6,</p><p>`    `"description": "Extraction",</p><p>`    `"amount": 10000,</p><p>`    `"transactionDateTime": "2024-04-26T02:13:28.961824",</p><p>`    `"concept": "",</p><p>`    `"currencyId": null,</p><p>`    `"accountId": 13</p><p>`  `}</p><p>]</p>|
+| :- |
 
