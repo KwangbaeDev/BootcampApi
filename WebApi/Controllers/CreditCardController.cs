@@ -16,7 +16,7 @@ public class CreditCardController : BaseApiController
 
 
     [HttpPost]
-    [Authorize(Roles = "Client")]
+    //[Authorize(Roles = "Client")]
     public async Task<IActionResult> Create([FromBody] CreateCreditCardModel request)
     {
         return Ok(await _creditCardService.Add(request));
@@ -25,7 +25,7 @@ public class CreditCardController : BaseApiController
 
 
     [HttpGet("filtered")]
-    [Authorize(Roles = "Client")]
+    //[Authorize(Roles = "Client")]
     public async Task<IActionResult> GetFiltered([FromQuery] FilterCreditCardModel filter)
     {
         var creditCrad = await _creditCardService.GetFiltered(filter);
@@ -35,7 +35,7 @@ public class CreditCardController : BaseApiController
 
 
     [HttpGet("all")]
-    [Authorize(Roles = "Client")]
+    //[Authorize(Roles = "Client")]
     public async Task<IActionResult> GetAll()
     {
         var creditCard = await _creditCardService.GetAll();
@@ -45,7 +45,7 @@ public class CreditCardController : BaseApiController
 
 
     [HttpGet("{id}")]
-    [Authorize(Roles = "Client")]
+    //[Authorize(Roles = "Client")]
     public async Task<IActionResult> GetById([FromRoute] int id)
     {
         var creditCard = await _creditCardService.GetById(id);
@@ -55,7 +55,7 @@ public class CreditCardController : BaseApiController
 
 
     [HttpPut]
-    [Authorize(Roles = "Client")]
+    //[Authorize(Roles = "Client")]
     public async Task<IActionResult> Update([FromBody] UpdateCreditCardModel request)
     {
         return Ok(await _creditCardService.Update(request));
@@ -64,7 +64,7 @@ public class CreditCardController : BaseApiController
 
 
     [HttpDelete("{id}")]
-    [Authorize(Roles = "Admin")]
+    //[Authorize(Roles = "Admin")]
     public async Task<IActionResult> Delete([FromQuery] int id)
     {
         return Ok(await _creditCardService.Delete(id));

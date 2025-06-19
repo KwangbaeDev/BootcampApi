@@ -17,7 +17,7 @@ public class ExtractionController : BaseApiController
 
 
     [HttpPost]
-    [Authorize(Roles = "Client")]
+    //[Authorize(Roles = "Client")]
     public async Task<IActionResult> ToExtract([FromBody] CreateExtractionModel request)
     {
         return Ok(await _extractionService.Extracting(request));

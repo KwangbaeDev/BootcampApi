@@ -16,7 +16,7 @@ namespace WebApi.Controllers
 
 
         [HttpPost]
-        [Authorize(Roles = "Client")]
+        //[Authorize(Roles = "Client")]
         public async Task<IActionResult> Create([FromBody] CreatePromotionModel request)
         {
             return Ok(await _promotionService.Add(request));
@@ -25,7 +25,7 @@ namespace WebApi.Controllers
 
 
         [HttpGet("filtered")]
-        [Authorize(Roles = "Client")]
+        //[Authorize(Roles = "Client")]
         public async Task<IActionResult> GetFiltered([FromQuery] FilterPromotionModel filter)
         {
             var promotion = await _promotionService.GetFiltered(filter);
@@ -35,7 +35,7 @@ namespace WebApi.Controllers
 
 
         [HttpGet("{id}")]
-        [Authorize(Roles = "Client")]
+        //[Authorize(Roles = "Client")]
         public async Task<IActionResult> GetById([FromRoute] int id)
         {
             var promotion = await _promotionService.GetById(id);
@@ -45,7 +45,7 @@ namespace WebApi.Controllers
 
 
         [HttpGet("all")]
-        [Authorize(Roles = "Client")]
+        //[Authorize(Roles = "Client")]
         public async Task<IActionResult> GetAll()
         {
             var promotion = await _promotionService.GettAll();
@@ -55,7 +55,7 @@ namespace WebApi.Controllers
 
 
         [HttpPut]
-        [Authorize(Roles = "Client")]
+        //[Authorize(Roles = "Client")]
         public async Task<IActionResult> Update([FromBody] UpdatePromotionModel request)
         {
             return Ok(await _promotionService.Update(request));
@@ -64,7 +64,7 @@ namespace WebApi.Controllers
 
 
         [HttpDelete("{id}")]
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
             return Ok(await _promotionService.Delete(id));

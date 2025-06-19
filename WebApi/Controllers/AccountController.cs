@@ -16,7 +16,7 @@ public class AccountController : BaseApiController
 
 
     [HttpPost]
-    [Authorize(Roles = "Client")]
+    //[Authorize(Roles = "Client")]
     public async Task<IActionResult> Create([FromBody] CreateAccountModel request)
     {
         return Ok(await _accountService.Add(request));
@@ -26,7 +26,7 @@ public class AccountController : BaseApiController
 
 
     [HttpGet("filtered")]
-    [Authorize(Roles = "Client")]
+    //[Authorize(Roles = "Client")]
     public async Task<IActionResult> GetFiltered([FromQuery] FilterAccountModel filter)
     {
         var account = await _accountService.GetFiltered(filter);
@@ -37,7 +37,7 @@ public class AccountController : BaseApiController
 
 
     [HttpGet("{id}")]
-    [Authorize(Roles = "Client")]
+    //[Authorize(Roles = "Client")]
     public async Task<IActionResult> GetById([FromRoute] int id)
     {
         var account = await _accountService.GetById(id);

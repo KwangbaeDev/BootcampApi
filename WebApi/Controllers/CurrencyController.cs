@@ -16,7 +16,7 @@ public class CurrencyController : BaseApiController
 
 
     [HttpPost]
-    [Authorize(Roles = "Client")]
+    //[Authorize(Roles = "Client")]
     public async Task<IActionResult> Create([FromBody] CreateCurrencyModel request)
     {
         return Ok(await _currencyService.Add(request));
@@ -25,7 +25,7 @@ public class CurrencyController : BaseApiController
 
 
     [HttpGet("filtered")]
-    [Authorize(Roles = "Client")]
+    //[Authorize(Roles = "Client")]
     public async Task<IActionResult> GetFeltered([FromQuery] FilterCurrencysModel filter)
     {
         var currency = await _currencyService.GetFiltered(filter);
@@ -35,7 +35,7 @@ public class CurrencyController : BaseApiController
 
 
     [HttpGet("all")]
-    [Authorize(Roles = "Client")]
+    //[Authorize(Roles = "Client")]
     public async Task<IActionResult> GetAll()
     {
         var currency = await _currencyService.GetAll();
@@ -45,7 +45,7 @@ public class CurrencyController : BaseApiController
 
 
     [HttpGet("{id}")]
-    [Authorize(Roles = "Client")]
+    //[Authorize(Roles = "Client")]
     public async Task<IActionResult> GetById([FromRoute] int id)
     {
         var currency = await _currencyService.GetById(id);
@@ -55,7 +55,7 @@ public class CurrencyController : BaseApiController
 
 
     [HttpPut]
-    [Authorize(Roles = "Client")]
+    //[Authorize(Roles = "Client")]
     public async Task<IActionResult> Update([FromBody] UpdateCurrencyModel request)
     {
         return Ok(await _currencyService.Update(request));
@@ -64,7 +64,7 @@ public class CurrencyController : BaseApiController
 
 
     [HttpDelete("{id}")]
-    [Authorize(Roles = "Admin")]
+    //[Authorize(Roles = "Admin")]
     public async Task<IActionResult> Delete([FromRoute] int id)
     {
         return Ok(await _currencyService.Delete(id));

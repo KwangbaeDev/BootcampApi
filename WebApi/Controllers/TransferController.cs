@@ -17,7 +17,7 @@ namespace WebApi.Controllers
 
 
         [HttpPost]
-        [Authorize(Roles = "Client")]
+        //[Authorize(Roles = "Client")]
         public async Task<IActionResult> MakeTransfer([FromBody] CreateTransferModel request)
         {
             return Ok(await _transferService.Transferred(request));

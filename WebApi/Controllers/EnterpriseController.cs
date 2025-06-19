@@ -16,7 +16,7 @@ namespace WebApi.Controllers
 
 
         [HttpPost]
-        [Authorize(Roles = "Client")]
+        //[Authorize(Roles = "Client")]
         public async Task<IActionResult> Create([FromBody] CreateEnterpriseModel request)
         {
             return Ok(await _enterpriseService.Add(request));
@@ -25,7 +25,7 @@ namespace WebApi.Controllers
 
 
         [HttpGet("{id}")]
-        [Authorize(Roles = "Client")]
+        //[Authorize(Roles = "Client")]
         public async Task<IActionResult> GetById([FromRoute] int id)
         {
             var enterprise = await _enterpriseService.GetById(id);
@@ -35,7 +35,7 @@ namespace WebApi.Controllers
 
 
         [HttpGet("all")]
-        [Authorize(Roles = "Client")]
+        //[Authorize(Roles = "Client")]
         public async Task<IActionResult> GetAll()
         {
             var enterprise = await _enterpriseService.GettAll();
@@ -45,7 +45,7 @@ namespace WebApi.Controllers
 
 
         [HttpPut]
-        [Authorize(Roles = "Client")]
+        //[Authorize(Roles = "Client")]
         public async Task<IActionResult> Update([FromBody] UpdateEnterpriseModel request)
         {
             return Ok(await _enterpriseService.Update(request));
@@ -54,7 +54,7 @@ namespace WebApi.Controllers
 
 
         [HttpDelete("{id}")]
-        [Authorize(Roles = "Admin")]
+        //[Authorize(Roles = "Admin")]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
             return Ok(await _enterpriseService.Delete(id));

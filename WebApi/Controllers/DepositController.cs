@@ -16,7 +16,7 @@ public class DepositController : BaseApiController
 
 
     [HttpPost]
-    [Authorize(Roles = "Client")]
+    //[Authorize(Roles = "Client")]
     public async Task<IActionResult> ToDeposit([FromBody] CreateDepositModel request)
     {
         return Ok(await _depositService.Depositing(request));
