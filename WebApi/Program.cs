@@ -7,6 +7,18 @@ var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", builder =>
+    {
+        builder
+            .AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader();
+    });
+});
+
 builder.Services.AddSwaggerGen(option =>
 {
     option.SwaggerDoc("v1", new OpenApiInfo { Title = "WebApi", Version = "v1" });
@@ -49,6 +61,8 @@ AppContext.SetSwitch("Npgsql.EnableLegacyTimestampBehavior", true);
 
 app.UseSwagger();
 app.UseSwaggerUI();
+
+app.UseCors("AllowAll");
 
 app.UseMiddleware<ExceptionHandleMiddleware>();
 
