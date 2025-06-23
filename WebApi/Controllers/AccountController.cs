@@ -47,7 +47,7 @@ public class AccountController : BaseApiController
 
 
     [HttpGet("all")]
-    [Authorize(Roles = "Client")]
+    //[Authorize(Roles = "Client")]
     public async Task<IActionResult> GetAll()
     {
         var account = await _accountService.GettAll();
@@ -57,7 +57,7 @@ public class AccountController : BaseApiController
 
 
     [HttpPut]
-    [Authorize(Roles = "Client")]
+    //[Authorize(Roles = "Client")]
     public async Task<IActionResult> Update([FromBody] UpdateAccountModel request)
     {
         return Ok(await _accountService.Update(request));
@@ -66,7 +66,7 @@ public class AccountController : BaseApiController
 
 
     [HttpDelete("{id}")]
-    [Authorize(Roles = "Admin")]
+    //[Authorize(Roles = "Admin")]
     public async Task<IActionResult> Delete([FromRoute] int id)
     {
         return Ok(await _accountService.Delete(id));
